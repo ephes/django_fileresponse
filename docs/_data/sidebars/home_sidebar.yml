@@ -13,6 +13,6 @@ entries:
       title: module fileresponse here
       url: core.html
     output: web
-    title: fileresponse
+    title: django_fileresponse
   output: web
   title: Sidebar
