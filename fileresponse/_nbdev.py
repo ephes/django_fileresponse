@@ -6,8 +6,8 @@ index = {"say_hello": "00_core.ipynb"}
 
 modules = ["core.py"]
 
-doc_url = "https://ephes.github.io/fileresponse/"
+doc_url = "https://ephes.github.io/django_fileresponse/"
 
-git_url = "https://github.com/ephes/fileresponse/tree/main/"
+git_url = "https://github.com/ephes/django_fileresponse/tree/main/"
 
 def custom_doc_links(name): return None
