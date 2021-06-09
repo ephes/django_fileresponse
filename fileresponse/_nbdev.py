@@ -2,9 +2,11 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"say_hello": "00_core.ipynb"}
+index = {"say_hello": "00_core.ipynb",
+         "AsyncFileResponse": "01_http.ipynb"}
 
-modules = ["core.py"]
+modules = ["core.py",
+           "http.py"]
 
 doc_url = "https://ephes.github.io/django_fileresponse/"
 
