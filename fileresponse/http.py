@@ -9,9 +9,11 @@ import aiofiles
 
 
 class AsyncFileResponse:
-    def __init__(self, path):
+    def __init__(self, path, chunk_size=4096):
         self.path = path
-        self.chunk_size = kwargs.get("chunk_size", 4096)
+        self.chunk_size = chunk_size
+        self.status_code = 200
+        self.raw_headers = {}
 
     async def stream(self, send):
         started_serving = time.perf_counter()
