@@ -141,3 +141,6 @@ checklink/cookies.txt
 
 # conda
 conda
+
+# application testdata files
+testdata.bin
