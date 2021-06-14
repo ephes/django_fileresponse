@@ -144,3 +144,6 @@ conda
 
 # application testdata files
 testdata.bin
+
+# test settings file
+nbs/test.ini
