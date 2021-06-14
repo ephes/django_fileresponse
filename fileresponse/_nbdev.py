@@ -4,6 +4,8 @@ __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"say_hello": "00_core.ipynb",
          "AsyncFileResponse": "01_http.ipynb",
+         "patch_config": "01_scripts.ipynb",
+         "patch_lib_name": "01_scripts.ipynb",
          "nbdev_build_docs_patched": "01_scripts.ipynb"}
 
 modules = ["core.py",

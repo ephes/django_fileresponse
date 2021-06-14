@@ -14,7 +14,10 @@ entries:
       url: core.html
     - external_url: http.html
       output: web,pdf
-      title: http
+      title: Async File Response
+    - output: web,pdf
+      title: Title
+      url: scripts.html
     output: web
     title: django_fileresponse
   output: web

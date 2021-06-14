@@ -2,6 +2,7 @@
   "django_fileresponse": {
     "Overview": "/",
     "module fileresponse here": "core.html",
-    "http": "http.html"
+    "Async File Response": "http.html",
+    "Title": "scripts.html"
   }
 }
