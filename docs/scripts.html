@@ -1,6 +1,6 @@
 ---
 
-title: Title
+title: lib_name Workaround
 
 
 keywords: fastai
@@ -40,7 +40,285 @@ nb_path: "nbs/01_scripts.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="nbdev_build_docs_patched" class="doc_header"><code>nbdev_build_docs_patched</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/scripts.py#L13" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>nbdev_build_docs_patched</code>()</p>
+<h4 id="patch_config" class="doc_header"><code>patch_config</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/scripts.py#L11" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>patch_config</code>(<strong><code>settings_path</code></strong>, <strong><code>lib_name</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Test-Helper-Functions">Test Helper Functions<a class="anchor-link" href="#Test-Helper-Functions"> </a></h3>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">setup_settings_file</span><span class="p">(</span><span class="n">settings_path</span><span class="p">):</span>
+    <span class="n">original_lib_name</span> <span class="o">=</span> <span class="s2">&quot;django_fileresponse&quot;</span>
+    <span class="n">settings_content</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    [DEFAULT]</span>
+<span class="s2">    lib_name = </span><span class="si">{</span><span class="n">original_lib_name</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">settings_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">settings_content</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">settings_path</span><span class="p">,</span> <span class="n">original_lib_name</span>
+
+
+<span class="k">def</span> <span class="nf">get_actual_lib_name</span><span class="p">(</span><span class="n">settings_path</span><span class="p">):</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">()</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">settings_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;DEFAULT&quot;</span><span class="p">][</span><span class="s2">&quot;lib_name&quot;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="d65bd2f3-e410-46b7-8255-d38dd767ef3f"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#d65bd2f3-e410-46b7-8255-d38dd767ef3f');
+
+            setTimeout(function() {
+                var nbb_cell_id = 50;
+                var nbb_unformatted_code = "def setup_settings_file(settings_path):\n    original_lib_name = \"django_fileresponse\"\n    settings_content = f\"\"\"\n    [DEFAULT]\n    lib_name = {original_lib_name}\n    \"\"\"\n    with settings_path.open(\"w\") as f:\n        f.write(settings_content)\n    return settings_path, original_lib_name\n\n\ndef get_actual_lib_name(settings_path):\n    config = ConfigParser()\n    config.read(settings_path)\n    return config[\"DEFAULT\"][\"lib_name\"]";
+                var nbb_formatted_code = "def setup_settings_file(settings_path):\n    original_lib_name = \"django_fileresponse\"\n    settings_content = f\"\"\"\n    [DEFAULT]\n    lib_name = {original_lib_name}\n    \"\"\"\n    with settings_path.open(\"w\") as f:\n        f.write(settings_content)\n    return settings_path, original_lib_name\n\n\ndef get_actual_lib_name(settings_path):\n    config = ConfigParser()\n    config.read(settings_path)\n    return config[\"DEFAULT\"][\"lib_name\"]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Test-for-patch_config">Test for patch_config<a class="anchor-link" href="#Test-for-patch_config"> </a></h3>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">settings_path</span><span class="p">,</span> <span class="n">original_lib_name</span> <span class="o">=</span> <span class="n">setup_settings_file</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;test.ini&quot;</span><span class="p">)</span>
+
+<span class="c1"># act</span>
+<span class="n">patched_lib_name</span> <span class="o">=</span> <span class="s2">&quot;fileresponse&quot;</span>
+<span class="n">patch_config</span><span class="p">(</span><span class="n">settings_path</span><span class="p">,</span> <span class="n">patched_lib_name</span><span class="p">)</span>
+
+<span class="c1"># assert</span>
+<span class="n">actual_lib_name</span> <span class="o">=</span> <span class="n">get_actual_lib_name</span><span class="p">(</span><span class="n">settings_path</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">patched_lib_name</span> <span class="o">==</span> <span class="n">actual_lib_name</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="6d2b14fd-5e48-477c-9d7d-99be790f2abf"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#6d2b14fd-5e48-477c-9d7d-99be790f2abf');
+
+            setTimeout(function() {
+                var nbb_cell_id = 51;
+                var nbb_unformatted_code = "# arange\nsettings_path, original_lib_name = setup_settings_file(Path.cwd() / \"test.ini\")\n\n# act\npatched_lib_name = \"fileresponse\"\npatch_config(settings_path, patched_lib_name)\n\n# assert\nactual_lib_name = get_actual_lib_name(settings_path)\n\nassert patched_lib_name == actual_lib_name";
+                var nbb_formatted_code = "# arange\nsettings_path, original_lib_name = setup_settings_file(Path.cwd() / \"test.ini\")\n\n# act\npatched_lib_name = \"fileresponse\"\npatch_config(settings_path, patched_lib_name)\n\n# assert\nactual_lib_name = get_actual_lib_name(settings_path)\n\nassert patched_lib_name == actual_lib_name";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="patch_lib_name-contextmanager">patch_lib_name contextmanager<a class="anchor-link" href="#patch_lib_name-contextmanager"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="patch_lib_name" class="doc_header"><code>patch_lib_name</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/scripts.py#L24" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>patch_lib_name</code>(<strong><code>settings_path</code></strong>, <strong><code>lib_name</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Test-for-patch_lib_name-contextmanager">Test for patch_lib_name contextmanager<a class="anchor-link" href="#Test-for-patch_lib_name-contextmanager"> </a></h3>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">settings_path</span><span class="p">,</span> <span class="n">original_lib_name</span> <span class="o">=</span> <span class="n">setup_settings_file</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;test.ini&quot;</span><span class="p">)</span>
+
+<span class="c1"># act and assert</span>
+<span class="n">patched_lib_name</span> <span class="o">=</span> <span class="s2">&quot;fileresponse&quot;</span>
+<span class="k">with</span> <span class="n">patch_lib_name</span><span class="p">(</span><span class="n">settings_path</span><span class="p">,</span> <span class="n">patched_lib_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">patched_config</span><span class="p">:</span>
+    <span class="n">actual_lib_name</span> <span class="o">=</span> <span class="n">get_actual_lib_name</span><span class="p">(</span><span class="n">settings_path</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">patched_lib_name</span> <span class="o">==</span> <span class="n">actual_lib_name</span>
+
+<span class="c1"># assert</span>
+<span class="n">actual_lib_name</span> <span class="o">=</span> <span class="n">get_actual_lib_name</span><span class="p">(</span><span class="n">settings_path</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">original_lib_name</span> <span class="o">==</span> <span class="n">actual_lib_name</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="feb4f4dd-e1ac-49bf-9a35-38ed62bea398"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#feb4f4dd-e1ac-49bf-9a35-38ed62bea398');
+
+            setTimeout(function() {
+                var nbb_cell_id = 53;
+                var nbb_unformatted_code = "# arange\nsettings_path, original_lib_name = setup_settings_file(Path.cwd() / \"test.ini\")\n\n# act and assert\npatched_lib_name = \"fileresponse\"\nwith patch_lib_name(settings_path, patched_lib_name) as patched_config:\n    actual_lib_name = get_actual_lib_name(settings_path)\n    assert patched_lib_name == actual_lib_name\n\n# assert\nactual_lib_name = get_actual_lib_name(settings_path)\nassert original_lib_name == actual_lib_name";
+                var nbb_formatted_code = "# arange\nsettings_path, original_lib_name = setup_settings_file(Path.cwd() / \"test.ini\")\n\n# act and assert\npatched_lib_name = \"fileresponse\"\nwith patch_lib_name(settings_path, patched_lib_name) as patched_config:\n    actual_lib_name = get_actual_lib_name(settings_path)\n    assert patched_lib_name == actual_lib_name\n\n# assert\nactual_lib_name = get_actual_lib_name(settings_path)\nassert original_lib_name == actual_lib_name";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="nbdev_build_docs_patched" class="doc_header"><code>nbdev_build_docs_patched</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/scripts.py#L46" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>nbdev_build_docs_patched</code>()</p>
 </blockquote>
 
 </div>

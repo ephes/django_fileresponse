@@ -16,9 +16,9 @@ entries:
       output: web,pdf
       title: Async File Response
     - output: web,pdf
-      title: Title
+      title: lib_name Workaround
       url: scripts.html
     output: web
-    title: django_fileresponse
+    title: fileresponse
   output: web
   title: Sidebar

@@ -1,8 +1,8 @@
 {
-  "django_fileresponse": {
+  "fileresponse": {
     "Overview": "/",
     "module fileresponse here": "core.html",
     "Async File Response": "http.html",
-    "Title": "scripts.html"
+    "lib_name Workaround": "scripts.html"
   }
 }

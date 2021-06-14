@@ -44,7 +44,6 @@ from nbdev.export2html import nbdev_build_docs
 
 
 def nbdev_build_docs_patched():
-    print("hello world")
     cwd = Path.cwd()
     settings_path = cwd / "settings.ini"
     with patch_lib_name(settings_path, "fileresponse"):
