@@ -12,6 +12,9 @@ entries:
     - output: web,pdf
       title: module fileresponse here
       url: core.html
+    - external_url: http.html
+      output: web,pdf
+      title: http
     output: web
     title: django_fileresponse
   output: web

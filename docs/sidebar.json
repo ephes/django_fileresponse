@@ -1,6 +1,7 @@
 {
   "django_fileresponse": {
     "Overview": "/",
-    "module fileresponse here": "core.html"
+    "module fileresponse here": "core.html",
+    "http": "http.html"
   }
 }
