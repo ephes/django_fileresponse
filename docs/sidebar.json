@@ -3,6 +3,7 @@
     "Overview": "/",
     "module fileresponse here": "core.html",
     "Async File Response": "http.html",
-    "Workaround for lib_name != lib_path": "scripts.html"
+    "Workaround for lib_name != lib_path": "scripts.html",
+    "Create an Example Django Project": "create_sample_django_project.html"
   }
 }

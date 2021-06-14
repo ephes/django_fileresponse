@@ -18,6 +18,9 @@ entries:
     - output: web,pdf
       title: Workaround for lib_name != lib_path
       url: scripts.html
+    - output: web,pdf
+      title: Create an Example Django Project
+      url: create_sample_django_project.html
     output: web
     title: fileresponse
   output: web
