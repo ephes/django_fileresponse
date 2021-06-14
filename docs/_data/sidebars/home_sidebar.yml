@@ -16,7 +16,7 @@ entries:
       output: web,pdf
       title: Async File Response
     - output: web,pdf
-      title: lib_name Workaround
+      title: Workaround for lib_name != lib_path
       url: scripts.html
     output: web
     title: fileresponse

@@ -3,6 +3,6 @@
     "Overview": "/",
     "module fileresponse here": "core.html",
     "Async File Response": "http.html",
-    "lib_name Workaround": "scripts.html"
+    "Workaround for lib_name != lib_path": "scripts.html"
   }
 }
