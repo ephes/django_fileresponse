@@ -84,6 +84,12 @@ nb_path: "nbs/01_scripts.ipynb"
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Test-helper-functions">Test helper functions<a class="anchor-link" href="#Test-helper-functions"> </a></h3>
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -119,15 +125,15 @@ nb_path: "nbs/01_scripts.ipynb"
 
 
 
-<div id="2b1b8e1e-22d3-47c6-aaa2-444f41c6ab3a"></div>
+<div id="efa765de-6d37-4a80-a610-86dea22d3df2"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#2b1b8e1e-22d3-47c6-aaa2-444f41c6ab3a');
+var element = $('#efa765de-6d37-4a80-a610-86dea22d3df2');
 
             setTimeout(function() {
-                var nbb_cell_id = 65;
-                var nbb_unformatted_code = "# hide\n# Test helper functions\n\ndef setup_settings_file(settings_path):\n    original_lib_name = \"django_fileresponse\"\n    settings_content = f\"\"\"\n    [DEFAULT]\n    lib_name = {original_lib_name}\n    \"\"\"\n    with settings_path.open(\"w\") as f:\n        f.write(settings_content)\n    return settings_path, original_lib_name\n\n\ndef get_actual_lib_name(settings_path):\n    config = get_config(settings_path)\n    return config[\"DEFAULT\"][\"lib_name\"]";
-                var nbb_formatted_code = "# hide\n# Test helper functions\n\n\ndef setup_settings_file(settings_path):\n    original_lib_name = \"django_fileresponse\"\n    settings_content = f\"\"\"\n    [DEFAULT]\n    lib_name = {original_lib_name}\n    \"\"\"\n    with settings_path.open(\"w\") as f:\n        f.write(settings_content)\n    return settings_path, original_lib_name\n\n\ndef get_actual_lib_name(settings_path):\n    config = get_config(settings_path)\n    return config[\"DEFAULT\"][\"lib_name\"]";
+                var nbb_cell_id = 70;
+                var nbb_unformatted_code = "\n\ndef setup_settings_file(settings_path):\n    original_lib_name = \"django_fileresponse\"\n    settings_content = f\"\"\"\n    [DEFAULT]\n    lib_name = {original_lib_name}\n    \"\"\"\n    with settings_path.open(\"w\") as f:\n        f.write(settings_content)\n    return settings_path, original_lib_name\n\n\ndef get_actual_lib_name(settings_path):\n    config = get_config(settings_path)\n    return config[\"DEFAULT\"][\"lib_name\"]";
+                var nbb_formatted_code = "def setup_settings_file(settings_path):\n    original_lib_name = \"django_fileresponse\"\n    settings_content = f\"\"\"\n    [DEFAULT]\n    lib_name = {original_lib_name}\n    \"\"\"\n    with settings_path.open(\"w\") as f:\n        f.write(settings_content)\n    return settings_path, original_lib_name\n\n\ndef get_actual_lib_name(settings_path):\n    config = get_config(settings_path)\n    return config[\"DEFAULT\"][\"lib_name\"]";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
@@ -229,10 +235,10 @@ after leaving contextmanager, lib_name is back to original:  django_fileresponse
 
 
 
-<div id="7ecd17c3-ae26-4fd0-8b25-16c2556008d6"></div>
+<div id="2b1c682c-2b35-4e6d-98aa-1148d57b3bf6"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#7ecd17c3-ae26-4fd0-8b25-16c2556008d6');
+var element = $('#2b1c682c-2b35-4e6d-98aa-1148d57b3bf6');
 
             setTimeout(function() {
                 var nbb_cell_id = 68;
@@ -293,10 +299,10 @@ var element = $('#7ecd17c3-ae26-4fd0-8b25-16c2556008d6');
 
 
 
-<div id="887745f9-7e0c-4f79-a4a6-6a8aea4385b2"></div>
+<div id="988f6544-7392-423c-8d10-e6429dc003c3"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#887745f9-7e0c-4f79-a4a6-6a8aea4385b2');
+var element = $('#988f6544-7392-423c-8d10-e6429dc003c3');
 
             setTimeout(function() {
                 var nbb_cell_id = 69;
@@ -324,6 +330,12 @@ var element = $('#887745f9-7e0c-4f79-a4a6-6a8aea4385b2');
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Final-Replacement-for-nbdev_build_docs">Final Replacement for nbdev_build_docs<a class="anchor-link" href="#Final-Replacement-for-nbdev_build_docs"> </a></h2>
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
