@@ -21,6 +21,12 @@ entries:
     - output: web,pdf
       title: Create an Example Django Project
       url: create_sample_django_project.html
+    - output: web,pdf
+      title: Django Example Server
+      url: django_example_server_code.html
+    - output: web,pdf
+      title: Test Concurrent Downloads
+      url: test_concurrent_downloads.html
     output: web
     title: fileresponse
   output: web
