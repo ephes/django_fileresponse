@@ -147,3 +147,6 @@ testdata.bin
 
 # test settings file
 nbs/test.ini
+
+# example django app
+example/
