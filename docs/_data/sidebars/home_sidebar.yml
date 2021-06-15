@@ -12,6 +12,9 @@ entries:
     - output: web,pdf
       title: module fileresponse here
       url: core.html
+    - output: web,pdf
+      title: ASGIHandlers
+      url: handlers.html
     - external_url: http.html
       output: web,pdf
       title: Async File Response

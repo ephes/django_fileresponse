@@ -9,6 +9,8 @@ import aiofiles
 
 
 class AsyncFileResponse:
+    is_async = True
+
     def __init__(self, path, chunk_size=4096):
         self.path = path
         self.chunk_size = chunk_size
