@@ -65,10 +65,10 @@ nb_path: "nbs/test_concurrent_downloads.ipynb"
 
 
 
-<div id="3beaad6b-71ea-450e-b75e-b350fe3ef7ac"></div>
+<div id="f51908be-4822-4b02-b049-3c975e9792b9"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#3beaad6b-71ea-450e-b75e-b350fe3ef7ac');
+var element = $('#f51908be-4822-4b02-b049-3c975e9792b9');
 
             setTimeout(function() {
                 var nbb_cell_id = 2;
@@ -120,10 +120,10 @@ var element = $('#3beaad6b-71ea-450e-b75e-b350fe3ef7ac');
 
 
 
-<div id="9aed4a54-5a19-4b87-be63-70203fce238c"></div>
+<div id="eb6bd4fc-d97e-4ab8-9b00-7ed2b479fc72"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#9aed4a54-5a19-4b87-be63-70203fce238c');
+var element = $('#eb6bd4fc-d97e-4ab8-9b00-7ed2b479fc72');
 
             setTimeout(function() {
                 var nbb_cell_id = 3;
@@ -195,10 +195,10 @@ Wall time: 1.59 s
 
 
 
-<div id="b5827063-4e77-4c8f-9e9e-b5244b931443"></div>
+<div id="64a609f2-5f25-4535-bd47-86869ff05b15"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#b5827063-4e77-4c8f-9e9e-b5244b931443');
+var element = $('#64a609f2-5f25-4535-bd47-86869ff05b15');
 
             setTimeout(function() {
                 var nbb_cell_id = 4;
@@ -272,10 +272,10 @@ var element = $('#b5827063-4e77-4c8f-9e9e-b5244b931443');
 
 
 
-<div id="741aa0b1-3542-4df7-a96e-3ab530dd418e"></div>
+<div id="249596b2-0e53-41ed-b33f-f46c27c76f1d"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#741aa0b1-3542-4df7-a96e-3ab530dd418e');
+var element = $('#249596b2-0e53-41ed-b33f-f46c27c76f1d');
 
             setTimeout(function() {
                 var nbb_cell_id = 38;
@@ -345,10 +345,10 @@ python manage.py runserver <span class="m">0</span>.0.0.0:8000
 
 
 
-<div id="22129b50-e6ec-4cf6-8a0f-09858489b9a0"></div>
+<div id="9e3e804e-836e-4274-8b9d-96b270e1dede"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#22129b50-e6ec-4cf6-8a0f-09858489b9a0');
+var element = $('#9e3e804e-836e-4274-8b9d-96b270e1dede');
 
             setTimeout(function() {
                 var nbb_cell_id = 46;
@@ -413,10 +413,10 @@ height=374
 
 
 
-<div id="fc59093a-e70d-4fb2-9bf0-3bb0eb3a402f"></div>
+<div id="700e1b8d-a513-4675-8a24-42d9624423b9"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#fc59093a-e70d-4fb2-9bf0-3bb0eb3a402f');
+var element = $('#700e1b8d-a513-4675-8a24-42d9624423b9');
 
             setTimeout(function() {
                 var nbb_cell_id = 47;
@@ -500,15 +500,15 @@ gunicorn -w <span class="m">2</span> -k uvicorn.workers.UvicornWorker -b :8000 <
 
 
 
-<div id="43f93c4b-698e-4b4c-bbf8-eecd32e79530"></div>
+<div id="b56795af-fe2b-47f5-aa3b-6fd36d51e33c"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#43f93c4b-698e-4b4c-bbf8-eecd32e79530');
+var element = $('#b56795af-fe2b-47f5-aa3b-6fd36d51e33c');
 
             setTimeout(function() {
-                var nbb_cell_id = 42;
-                var nbb_unformatted_code = "import gevent\n\nfrom gevent import monkey\n\nmonkey.patch_all()\n\n\nclass Response:\n    def __init__(self, url, content, started, stopped):\n        self.url = url\n        self.content = content\n        self.started = started\n        self.stopped = stopped\n\n\ndef streaming_fetch(url):\n    chunks = []\n    with requests.get(url, stream=True) as r:\n        r.raise_for_status()\n        started = datetime.now()\n        for chunk in r.iter_content(chunk_size=4096):\n            chunks.append(chunk)\n    stopped = datetime.now()\n    response = Response(url, b\"\".join(chunks), started, stopped)\n    return response";
-                var nbb_formatted_code = "import gevent\n\nfrom gevent import monkey\n\nmonkey.patch_all()\n\n\nclass Response:\n    def __init__(self, url, content, started, stopped):\n        self.url = url\n        self.content = content\n        self.started = started\n        self.stopped = stopped\n\n\ndef streaming_fetch(url):\n    chunks = []\n    with requests.get(url, stream=True) as r:\n        r.raise_for_status()\n        started = datetime.now()\n        for chunk in r.iter_content(chunk_size=4096):\n            chunks.append(chunk)\n    stopped = datetime.now()\n    response = Response(url, b\"\".join(chunks), started, stopped)\n    return response";
+                var nbb_cell_id = 48;
+                var nbb_unformatted_code = "# dont_test\n\nimport gevent\n\nfrom gevent import monkey\n\nmonkey.patch_all()\n\n\nclass Response:\n    def __init__(self, url, content, started, stopped):\n        self.url = url\n        self.content = content\n        self.started = started\n        self.stopped = stopped\n\n\ndef streaming_fetch(url):\n    chunks = []\n    with requests.get(url, stream=True) as r:\n        r.raise_for_status()\n        started = datetime.now()\n        for chunk in r.iter_content(chunk_size=4096):\n            chunks.append(chunk)\n    stopped = datetime.now()\n    response = Response(url, b\"\".join(chunks), started, stopped)\n    return response";
+                var nbb_formatted_code = "# dont_test\n\nimport gevent\n\nfrom gevent import monkey\n\nmonkey.patch_all()\n\n\nclass Response:\n    def __init__(self, url, content, started, stopped):\n        self.url = url\n        self.content = content\n        self.started = started\n        self.stopped = stopped\n\n\ndef streaming_fetch(url):\n    chunks = []\n    with requests.get(url, stream=True) as r:\n        r.raise_for_status()\n        started = datetime.now()\n        for chunk in r.iter_content(chunk_size=4096):\n            chunks.append(chunk)\n    stopped = datetime.now()\n    response = Response(url, b\"\".join(chunks), started, stopped)\n    return response";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
@@ -568,10 +568,10 @@ var element = $('#43f93c4b-698e-4b4c-bbf8-eecd32e79530');
 
 
 
-<div id="c1f25dd2-bfb1-4db6-91c0-ac1ed959be85"></div>
+<div id="0ac22a07-2b77-4478-809e-8ee166385756"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#c1f25dd2-bfb1-4db6-91c0-ac1ed959be85');
+var element = $('#0ac22a07-2b77-4478-809e-8ee166385756');
 
             setTimeout(function() {
                 var nbb_cell_id = 43;
@@ -621,10 +621,10 @@ var element = $('#c1f25dd2-bfb1-4db6-91c0-ac1ed959be85');
 
 
 
-<div id="eb2cfbdf-22c4-4377-bd18-c9e41babe9fb"></div>
+<div id="3f127517-f2a9-41fe-9372-7591d9310673"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#eb2cfbdf-22c4-4377-bd18-c9e41babe9fb');
+var element = $('#3f127517-f2a9-41fe-9372-7591d9310673');
 
             setTimeout(function() {
                 var nbb_cell_id = 44;
@@ -690,10 +690,10 @@ height=374
 
 
 
-<div id="4941453f-c4b5-417d-b3ed-87fdcbd20771"></div>
+<div id="c54cffdf-c6d6-4fea-a683-0d1fb0b6b2e3"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#4941453f-c4b5-417d-b3ed-87fdcbd20771');
+var element = $('#c54cffdf-c6d6-4fea-a683-0d1fb0b6b2e3');
 
             setTimeout(function() {
                 var nbb_cell_id = 45;
