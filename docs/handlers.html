@@ -93,14 +93,14 @@ nb_path: "nbs/01_handlers.ipynb"
 
 
 
-<div id="8886ce5d-a494-463e-b379-7b8b423d2f15"></div>
+<div id="81b45a06-2376-4f0f-b00b-f4e57720029c"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#8886ce5d-a494-463e-b379-7b8b423d2f15');
+var element = $('#81b45a06-2376-4f0f-b00b-f4e57720029c');
 
             setTimeout(function() {
-                var nbb_cell_id = 8;
-                var nbb_unformatted_code = "class Response:\n    is_async = True\n    \n    async def stream(self, send):\n        await send(\"foobar\")";
+                var nbb_cell_id = 3;
+                var nbb_unformatted_code = "class Response:\n    is_async = True\n\n    async def stream(self, send):\n        await send(\"foobar\")";
                 var nbb_formatted_code = "class Response:\n    is_async = True\n\n    async def stream(self, send):\n        await send(\"foobar\")";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
@@ -147,13 +147,13 @@ var element = $('#8886ce5d-a494-463e-b379-7b8b423d2f15');
 
 
 
-<div id="784364ed-0a72-46ea-b97d-1caa3f1e983b"></div>
+<div id="83cc98ee-e141-4f2e-a507-f53e79ad4498"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#784364ed-0a72-46ea-b97d-1caa3f1e983b');
+var element = $('#83cc98ee-e141-4f2e-a507-f53e79ad4498');
 
             setTimeout(function() {
-                var nbb_cell_id = 9;
+                var nbb_cell_id = 4;
                 var nbb_unformatted_code = "async def send(data):\n    return data";
                 var nbb_formatted_code = "async def send(data):\n    return data";
                 var nbb_cells = Jupyter.notebook.get_cells();
@@ -185,8 +185,13 @@ var element = $('#784364ed-0a72-46ea-b97d-1caa3f1e983b');
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># response = Response()</span>
-<span class="c1"># app.send_response(response, send)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">env</span> DJANGO_SETTINGS_MODULE example.settings
+<span class="kn">import</span> <span class="nn">django</span>
+
+<span class="n">django</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">AsyncFileASGIHandler</span><span class="p">()</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">()</span>
+<span class="n">app</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -198,18 +203,36 @@ var element = $('#784364ed-0a72-46ea-b97d-1caa3f1e983b');
 
 <div class="output_area">
 
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>env: DJANGO_SETTINGS_MODULE=example.settings
+</pre>
+</div>
+</div>
+
+<div class="output_area">
 
 
 
-<div id="e98e8633-25ec-45a4-b7b8-8c0e97272a30"></div>
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;coroutine object AsyncFileASGIHandler.send_response at 0x10ffcb840&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="afcd142d-1078-4432-8724-cdd06dadb7d3"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#e98e8633-25ec-45a4-b7b8-8c0e97272a30');
+var element = $('#afcd142d-1078-4432-8724-cdd06dadb7d3');
 
             setTimeout(function() {
-                var nbb_cell_id = 12;
-                var nbb_unformatted_code = "# app = AsyncFileASGIHandler()\n# response = Response()\n# app.send_response(response, send)";
-                var nbb_formatted_code = "# app = AsyncFileASGIHandler()\n# response = Response()\n# app.send_response(response, send)";
+                var nbb_cell_id = 8;
+                var nbb_unformatted_code = "%env DJANGO_SETTINGS_MODULE example.settings\nimport django\n\ndjango.setup()\napp = AsyncFileASGIHandler()\nresponse = Response()\napp.send_response(response, send)";
+                var nbb_formatted_code = "%env DJANGO_SETTINGS_MODULE example.settings\nimport django\n\ndjango.setup()\napp = AsyncFileASGIHandler()\nresponse = Response()\napp.send_response(response, send)";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {

@@ -128,6 +128,29 @@ nb_path: "nbs/create_sample_django_project.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Link-example-to-Notebooks-Directory">Link example to Notebooks Directory<a class="anchor-link" href="#Link-example-to-Notebooks-Directory"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ln -nfs example ../nbs/example
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Start-Server">Start Server<a class="anchor-link" href="#Start-Server"> </a></h2><p>Just run:</p>
 <div class="highlight"><pre><span></span>python manage.py runserver <span class="m">0</span>.0.0.0:8000
 </pre></div>
