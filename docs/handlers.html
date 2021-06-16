@@ -75,19 +75,44 @@ nb_path: "nbs/01_handlers.ipynb"
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Response</span><span class="p">:</span>
-    <span class="n">is_async</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">cookies</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">streaming</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">status_code</span> <span class="o">=</span> <span class="mi">200</span>
     <span class="n">stream_called</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">content</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">is_async_fileresponse</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contents</span> <span class="o">=</span> <span class="p">[</span><span class="n">content</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">is_async_fileresponse</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_async_fileresponse</span> <span class="o">=</span> <span class="n">is_async_fileresponse</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stream_called</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">content</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">send</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span>
+
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+
+<span class="n">received_send</span> <span class="o">=</span> <span class="p">[]</span>
 
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">data</span>
+    <span class="n">received_send</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -102,15 +127,15 @@ nb_path: "nbs/01_handlers.ipynb"
 
 
 
-<div id="3617a5e7-6c70-4bdd-95ae-473cb7a10250"></div>
+<div id="78129ac5-c6da-40f2-8baa-da0edd56fe79"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#3617a5e7-6c70-4bdd-95ae-473cb7a10250');
+var element = $('#78129ac5-c6da-40f2-8baa-da0edd56fe79');
 
             setTimeout(function() {
-                var nbb_cell_id = 4;
-                var nbb_unformatted_code = "class Response:\n    is_async = True\n    stream_called = False\n\n    def __init__(self, content):\n        self.content = content\n\n    async def stream(self, send):\n        self.stream_called = True\n        return await send(self.content)\n\n\nasync def send(data):\n    return data";
-                var nbb_formatted_code = "class Response:\n    is_async = True\n    stream_called = False\n\n    def __init__(self, content):\n        self.content = content\n\n    async def stream(self, send):\n        self.stream_called = True\n        return await send(self.content)\n\n\nasync def send(data):\n    return data";
+                var nbb_cell_id = 57;
+                var nbb_unformatted_code = "class Response:\n    cookies = {}\n    streaming = True\n    status_code = 200\n    stream_called = False\n\n    def __init__(self, content, is_async_fileresponse=None):\n        self.index = -1\n        self.contents = [content]\n        if is_async_fileresponse is not None:\n            self.is_async_fileresponse = is_async_fileresponse\n\n    async def stream(self, send):\n        self.stream_called = True\n        for content in self.contents:\n            await send(content)\n\n    def __iter__(self):\n        return self\n\n    def __next__(self):\n        self.index += 1\n        try:\n            return self.contents[self.index]\n        except IndexError:\n            raise StopIteration\n\n    def items(self):\n        return []\n\n    def close(self):\n        pass\n\n\nreceived_send = []\n\n\nasync def send(data):\n    received_send.append(data)";
+                var nbb_formatted_code = "class Response:\n    cookies = {}\n    streaming = True\n    status_code = 200\n    stream_called = False\n\n    def __init__(self, content, is_async_fileresponse=None):\n        self.index = -1\n        self.contents = [content]\n        if is_async_fileresponse is not None:\n            self.is_async_fileresponse = is_async_fileresponse\n\n    async def stream(self, send):\n        self.stream_called = True\n        for content in self.contents:\n            await send(content)\n\n    def __iter__(self):\n        return self\n\n    def __next__(self):\n        self.index += 1\n        try:\n            return self.contents[self.index]\n        except IndexError:\n            raise StopIteration\n\n    def items(self):\n        return []\n\n    def close(self):\n        pass\n\n\nreceived_send = []\n\n\nasync def send(data):\n    received_send.append(data)";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
@@ -133,6 +158,12 @@ var element = $('#3617a5e7-6c70-4bdd-95ae-473cb7a10250');
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Happy-Path">Happy Path<a class="anchor-link" href="#Happy-Path"> </a></h3>
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -142,8 +173,10 @@ var element = $('#3617a5e7-6c70-4bdd-95ae-473cb7a10250');
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">AsyncFileASGIHandler</span><span class="p">()</span>
 <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&lt;h1&gt;Content!&lt;/h1&gt;&quot;</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-<span class="n">returned_content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">app</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">is_async_fileresponse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">received_send</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">await</span> <span class="n">app</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
+<span class="n">returned_content</span> <span class="o">=</span> <span class="n">received_send</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">stream_called</span>
 <span class="k">assert</span> <span class="n">content</span> <span class="o">==</span> <span class="n">returned_content</span>
 </pre></div>
@@ -160,15 +193,81 @@ var element = $('#3617a5e7-6c70-4bdd-95ae-473cb7a10250');
 
 
 
-<div id="e72e093f-9de0-4fc4-bef5-93aa668bec09"></div>
+<div id="105e70d0-5e6d-4508-aa53-8a19456128c4"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#e72e093f-9de0-4fc4-bef5-93aa668bec09');
+var element = $('#105e70d0-5e6d-4508-aa53-8a19456128c4');
 
             setTimeout(function() {
-                var nbb_cell_id = 5;
-                var nbb_unformatted_code = "app = AsyncFileASGIHandler()\ncontent = \"<h1>Content!</h1>\"\nresponse = Response(content)\nreturned_content = await app.send_response(response, send)\nassert response.stream_called\nassert content == returned_content";
-                var nbb_formatted_code = "app = AsyncFileASGIHandler()\ncontent = \"<h1>Content!</h1>\"\nresponse = Response(content)\nreturned_content = await app.send_response(response, send)\nassert response.stream_called\nassert content == returned_content";
+                var nbb_cell_id = 58;
+                var nbb_unformatted_code = "app = AsyncFileASGIHandler()\ncontent = \"<h1>Content!</h1>\"\nresponse = Response(content, is_async_fileresponse=True)\nreceived_send = []\nawait app.send_response(response, send)\nreturned_content = received_send[0]\nassert response.stream_called\nassert content == returned_content";
+                var nbb_formatted_code = "app = AsyncFileASGIHandler()\ncontent = \"<h1>Content!</h1>\"\nresponse = Response(content, is_async_fileresponse=True)\nreceived_send = []\nawait app.send_response(response, send)\nreturned_content = received_send[0]\nassert response.stream_called\nassert content == returned_content";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Response-Without-is_async_fileresponse-attribute">Response Without is_async_fileresponse attribute<a class="anchor-link" href="#Response-Without-is_async_fileresponse-attribute"> </a></h3>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">AsyncFileASGIHandler</span><span class="p">()</span>
+<span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&lt;h1&gt;Content!&lt;/h1&gt;&quot;</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+<span class="n">received_send</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">await</span> <span class="n">app</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
+<span class="n">returned_content</span> <span class="o">=</span> <span class="n">received_send</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;body&quot;</span><span class="p">]</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">stream_called</span>
+<span class="k">assert</span> <span class="n">content</span> <span class="o">==</span> <span class="n">returned_content</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="af61ad5f-daf5-4aff-9e09-1ed51dcf37fe"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#af61ad5f-daf5-4aff-9e09-1ed51dcf37fe');
+
+            setTimeout(function() {
+                var nbb_cell_id = 60;
+                var nbb_unformatted_code = "app = AsyncFileASGIHandler()\ncontent = \"<h1>Content!</h1>\"\nresponse = Response(content)\nreceived_send = []\nawait app.send_response(response, send)\nreturned_content = received_send[1][\"body\"]\nassert not response.stream_called\nassert content == returned_content";
+                var nbb_formatted_code = "app = AsyncFileASGIHandler()\ncontent = \"<h1>Content!</h1>\"\nresponse = Response(content)\nreceived_send = []\nawait app.send_response(response, send)\nreturned_content = received_send[1][\"body\"]\nassert not response.stream_called\nassert content == returned_content";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {

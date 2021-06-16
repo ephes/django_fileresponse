@@ -10,7 +10,8 @@ from django.core.handlers.asgi import ASGIHandler
 
 class AsyncFileASGIHandler(ASGIHandler):
     async def send_response(self, response, send):
-        if response.is_async:
+        is_async_fileresponse = getattr(response, "is_async_fileresponse", False)
+        if is_async_fileresponse:
             return await response.stream(send)
         else:
-            return super().send_response(response, send)
+            return await super().send_response(response, send)
