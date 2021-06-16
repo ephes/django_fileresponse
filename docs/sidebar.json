@@ -7,6 +7,6 @@
     "Workaround for lib_name != lib_path": "scripts.html",
     "Create an Example Django Project": "create_sample_django_project.html",
     "Django Example Server": "django_example_server_code.html",
-    "Test Concurrent Downloads": "test_concurrent_downloads.html"
+    "Test Downloads": "test_concurrent_downloads.html"
   }
 }
