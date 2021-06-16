@@ -9,13 +9,21 @@ import aiofiles
 
 
 class AsyncFileResponse:
-    is_async = True
+    headers = {
+        "Content-Type": "application/octet-stream"
+    }
+    streaming = True
+    _resource_closers = []
+    is_async_fileresponse = True
 
     def __init__(self, path, chunk_size=4096):
         self.path = path
         self.chunk_size = chunk_size
         self.status_code = 200
         self.raw_headers = {}
+
+    def get(self, header, alternate=None):
+        return None
 
     async def stream(self, send):
         started_serving = time.perf_counter()
