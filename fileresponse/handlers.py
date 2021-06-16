@@ -11,6 +11,6 @@ from django.core.handlers.asgi import ASGIHandler
 class AsyncFileASGIHandler(ASGIHandler):
     async def send_response(self, response, send):
         if response.is_async:
-            return response.stream(send)
+            return await response.stream(send)
         else:
             return super().send_response(response, send)
