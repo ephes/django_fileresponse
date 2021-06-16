@@ -84,10 +84,10 @@ nb_path: "nbs/django_example_server_code.ipynb"
 
 
 
-<div id="d948fb14-c6ed-4f7d-95cc-c07fa13fbc1b"></div>
+<div id="690ad178-7b91-4fff-bc0f-5dbc735b481c"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#d948fb14-c6ed-4f7d-95cc-c07fa13fbc1b');
+var element = $('#690ad178-7b91-4fff-bc0f-5dbc735b481c');
 
             setTimeout(function() {
                 var nbb_cell_id = 6;
@@ -164,15 +164,109 @@ var element = $('#d948fb14-c6ed-4f7d-95cc-c07fa13fbc1b');
 
 
 
-<div id="e0d45c03-1446-4f05-af5f-f9b6dadca78f"></div>
+<div id="a15fbef5-2bd9-4fae-b994-a1bcdfc7888f"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#e0d45c03-1446-4f05-af5f-f9b6dadca78f');
+var element = $('#a15fbef5-2bd9-4fae-b994-a1bcdfc7888f');
 
             setTimeout(function() {
                 var nbb_cell_id = 5;
                 var nbb_unformatted_code = "%%writefile ../example/example/urls.py\n# dont_test\n\nfrom django.urls import path\n\nfrom . import views\n\nurlpatterns = [\n    path('<int:num>', views.get_file),\n]\n\nasync_urlpatterns = [\n    path('<int:num>', views.aget_file),\n]";
                 var nbb_formatted_code = "%%writefile ../example/example/urls.py\n# dont_test\n\nfrom django.urls import path\n\nfrom . import views\n\nurlpatterns = [\n    path('<int:num>', views.get_file),\n]\n\nasync_urlpatterns = [\n    path('<int:num>', views.aget_file),\n]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="ASGI">ASGI<a class="anchor-link" href="#ASGI"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%writefile</span> ../example/example/asgi.py
+<span class="c1"># dont_test</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">django</span>
+<span class="kn">from</span> <span class="nn">django.core.asgi</span> <span class="kn">import</span> <span class="n">get_asgi_application</span>
+
+<span class="kn">from</span> <span class="nn">fileresponse.handlers</span> <span class="kn">import</span> <span class="n">AsyncFileASGIHandler</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">urls</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">,</span> <span class="s1">&#39;example.settings&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_fileresponse_asgi_application</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The public interface to Django&#39;s ASGI support. Return an ASGI 3 callable.</span>
+
+<span class="sd">    Avoids making django.core.handlers.ASGIHandler a public API, in case the</span>
+<span class="sd">    internal implementation changes or moves in the future.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">django</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">set_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">urls</span><span class="o">.</span><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">urls</span><span class="o">.</span><span class="n">async_urlpatterns</span>
+    <span class="k">return</span> <span class="n">AsyncFileASGIHandler</span><span class="p">()</span>
+
+
+<span class="c1"># application = get_asgi_application()</span>
+<span class="n">application</span> <span class="o">=</span> <span class="n">get_fileresponse_asgi_application</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Overwriting ../example/example/asgi.py
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="37ca6ff1-93ce-4ed6-9631-306645c12420"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#37ca6ff1-93ce-4ed6-9631-306645c12420');
+
+            setTimeout(function() {
+                var nbb_cell_id = 7;
+                var nbb_unformatted_code = "%%writefile ../example/example/asgi.py\n# dont_test\nimport os\n\nimport django\nfrom django.core.asgi import get_asgi_application\n\nfrom fileresponse.handlers import AsyncFileASGIHandler\n\nfrom . import urls\n\nos.environ.setdefault('DJANGO_SETTINGS_MODULE', 'example.settings')\n\n\ndef get_fileresponse_asgi_application():\n    \"\"\"\n    The public interface to Django's ASGI support. Return an ASGI 3 callable.\n\n    Avoids making django.core.handlers.ASGIHandler a public API, in case the\n    internal implementation changes or moves in the future.\n    \"\"\"\n    django.setup(set_prefix=False)\n    urls.urlpatterns = urls.async_urlpatterns\n    return AsyncFileASGIHandler()\n\n\n# application = get_asgi_application()\napplication = get_fileresponse_asgi_application()";
+                var nbb_formatted_code = "%%writefile ../example/example/asgi.py\n# dont_test\nimport os\n\nimport django\nfrom django.core.asgi import get_asgi_application\n\nfrom fileresponse.handlers import AsyncFileASGIHandler\n\nfrom . import urls\n\nos.environ.setdefault('DJANGO_SETTINGS_MODULE', 'example.settings')\n\n\ndef get_fileresponse_asgi_application():\n    \"\"\"\n    The public interface to Django's ASGI support. Return an ASGI 3 callable.\n\n    Avoids making django.core.handlers.ASGIHandler a public API, in case the\n    internal implementation changes or moves in the future.\n    \"\"\"\n    django.setup(set_prefix=False)\n    urls.urlpatterns = urls.async_urlpatterns\n    return AsyncFileASGIHandler()\n\n\n# application = get_asgi_application()\napplication = get_fileresponse_asgi_application()";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
