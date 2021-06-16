@@ -74,85 +74,6 @@ nb_path: "nbs/01_handlers.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">django</span>
-
-<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
-
-<span class="n">settings</span><span class="o">.</span><span class="n">configure</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">RuntimeError</span>                              Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-5-eb2ee1d5f2d2&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-green-fg">from</span> django<span class="ansi-blue-fg">.</span>conf <span class="ansi-green-fg">import</span> settings
-<span class="ansi-green-intense-fg ansi-bold">      4</span> 
-<span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg"> </span>settings<span class="ansi-blue-fg">.</span>configure<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/django/conf/__init__.py</span> in <span class="ansi-cyan-fg">configure</span><span class="ansi-blue-fg">(self, default_settings, **options)</span>
-<span class="ansi-green-intense-fg ansi-bold">    116</span>         &#34;&#34;&#34;
-<span class="ansi-green-intense-fg ansi-bold">    117</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>_wrapped <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> empty<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 118</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> RuntimeError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;Settings already configured.&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    119</span>         holder <span class="ansi-blue-fg">=</span> UserSettingsHolder<span class="ansi-blue-fg">(</span>default_settings<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    120</span>         <span class="ansi-green-fg">for</span> name<span class="ansi-blue-fg">,</span> value <span class="ansi-green-fg">in</span> options<span class="ansi-blue-fg">.</span>items<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-red-fg">RuntimeError</span>: Settings already configured.</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-
-
-
-<div id="bedb11ee-51d4-4bf5-86e7-923a2e750f89"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#bedb11ee-51d4-4bf5-86e7-923a2e750f89');
-
-            setTimeout(function() {
-                var nbb_cell_id = 5;
-                var nbb_unformatted_code = "import django\n\nfrom django.conf import settings\n\nsettings.configure()";
-                var nbb_formatted_code = "import django\n\nfrom django.conf import settings\n\nsettings.configure()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Response</span><span class="p">:</span>
     <span class="n">is_async</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">stream_called</span> <span class="o">=</span> <span class="kc">False</span>
@@ -181,13 +102,13 @@ var element = $('#bedb11ee-51d4-4bf5-86e7-923a2e750f89');
 
 
 
-<div id="0d0a6bb6-193b-424f-bb73-3658655fa734"></div>
+<div id="3617a5e7-6c70-4bdd-95ae-473cb7a10250"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#0d0a6bb6-193b-424f-bb73-3658655fa734');
+var element = $('#3617a5e7-6c70-4bdd-95ae-473cb7a10250');
 
             setTimeout(function() {
-                var nbb_cell_id = 3;
+                var nbb_cell_id = 4;
                 var nbb_unformatted_code = "class Response:\n    is_async = True\n    stream_called = False\n\n    def __init__(self, content):\n        self.content = content\n\n    async def stream(self, send):\n        self.stream_called = True\n        return await send(self.content)\n\n\nasync def send(data):\n    return data";
                 var nbb_formatted_code = "class Response:\n    is_async = True\n    stream_called = False\n\n    def __init__(self, content):\n        self.content = content\n\n    async def stream(self, send):\n        self.stream_called = True\n        return await send(self.content)\n\n\nasync def send(data):\n    return data";
                 var nbb_cells = Jupyter.notebook.get_cells();
@@ -239,13 +160,13 @@ var element = $('#0d0a6bb6-193b-424f-bb73-3658655fa734');
 
 
 
-<div id="e84ef619-4f2a-42e7-8c3e-d017e7c3288b"></div>
+<div id="e72e093f-9de0-4fc4-bef5-93aa668bec09"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#e84ef619-4f2a-42e7-8c3e-d017e7c3288b');
+var element = $('#e72e093f-9de0-4fc4-bef5-93aa668bec09');
 
             setTimeout(function() {
-                var nbb_cell_id = 6;
+                var nbb_cell_id = 5;
                 var nbb_unformatted_code = "app = AsyncFileASGIHandler()\ncontent = \"<h1>Content!</h1>\"\nresponse = Response(content)\nreturned_content = await app.send_response(response, send)\nassert response.stream_called\nassert content == returned_content";
                 var nbb_formatted_code = "app = AsyncFileASGIHandler()\ncontent = \"<h1>Content!</h1>\"\nresponse = Response(content)\nreturned_content = await app.send_response(response, send)\nassert response.stream_called\nassert content == returned_content";
                 var nbb_cells = Jupyter.notebook.get_cells();
