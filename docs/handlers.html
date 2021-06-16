@@ -74,6 +74,85 @@ nb_path: "nbs/01_handlers.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">django</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+
+<span class="n">settings</span><span class="o">.</span><span class="n">configure</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">RuntimeError</span>                              Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-5-eb2ee1d5f2d2&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-green-fg">from</span> django<span class="ansi-blue-fg">.</span>conf <span class="ansi-green-fg">import</span> settings
+<span class="ansi-green-intense-fg ansi-bold">      4</span> 
+<span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg"> </span>settings<span class="ansi-blue-fg">.</span>configure<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/django/conf/__init__.py</span> in <span class="ansi-cyan-fg">configure</span><span class="ansi-blue-fg">(self, default_settings, **options)</span>
+<span class="ansi-green-intense-fg ansi-bold">    116</span>         &#34;&#34;&#34;
+<span class="ansi-green-intense-fg ansi-bold">    117</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>_wrapped <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> empty<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 118</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> RuntimeError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;Settings already configured.&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    119</span>         holder <span class="ansi-blue-fg">=</span> UserSettingsHolder<span class="ansi-blue-fg">(</span>default_settings<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    120</span>         <span class="ansi-green-fg">for</span> name<span class="ansi-blue-fg">,</span> value <span class="ansi-green-fg">in</span> options<span class="ansi-blue-fg">.</span>items<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">RuntimeError</span>: Settings already configured.</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="bedb11ee-51d4-4bf5-86e7-923a2e750f89"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#bedb11ee-51d4-4bf5-86e7-923a2e750f89');
+
+            setTimeout(function() {
+                var nbb_cell_id = 5;
+                var nbb_unformatted_code = "import django\n\nfrom django.conf import settings\n\nsettings.configure()";
+                var nbb_formatted_code = "import django\n\nfrom django.conf import settings\n\nsettings.configure()";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Response</span><span class="p">:</span>
     <span class="n">is_async</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">stream_called</span> <span class="o">=</span> <span class="kc">False</span>
@@ -102,10 +181,10 @@ nb_path: "nbs/01_handlers.ipynb"
 
 
 
-<div id="a6dcf9d1-96e8-401b-8263-b0cb6dbfc262"></div>
+<div id="0d0a6bb6-193b-424f-bb73-3658655fa734"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#a6dcf9d1-96e8-401b-8263-b0cb6dbfc262');
+var element = $('#0d0a6bb6-193b-424f-bb73-3658655fa734');
 
             setTimeout(function() {
                 var nbb_cell_id = 3;
@@ -140,120 +219,7 @@ var element = $('#a6dcf9d1-96e8-401b-8263-b0cb6dbfc262');
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">env</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>{&#39;PWD&#39;: &#39;/Users/jochen/projects/django_fileresponse/nbs&#39;,
- &#39;FZF_DEFAULT_COMMAND&#39;: &#39;fd --type f&#39;,
- &#39;PYENV_ROOT&#39;: &#39;/Users/jochen/.pyenv&#39;,
- &#39;VIRTUAL_ENV&#39;: &#39;/Users/jochen/.virtualenvs/django-fileresponse&#39;,
- &#39;PYENV_SHELL&#39;: &#39;fish&#39;,
- &#39;OMF_PATH&#39;: &#39;/Users/jochen/.local/share/omf&#39;,
- &#39;LDFLAGS&#39;: &#39;-L/usr/local/opt/openssl@1.1/lib&#39;,
- &#39;HOME&#39;: &#39;/Users/jochen&#39;,
- &#39;PKG_CONFIG_PATH&#39;: &#39;/usr/local/opt/openssl@1.1/lib/pkgconfig&#39;,
- &#39;CPATH&#39;: &#39;/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include&#39;,
- &#39;__CF_USER_TEXT_ENCODING&#39;: &#39;0x1F5:0x0:0x3&#39;,
- &#39;XPC_SERVICE_NAME&#39;: &#39;0&#39;,
- &#39;LC_TERMINAL_VERSION&#39;: &#39;3.4.8&#39;,
- &#39;SHELL&#39;: &#39;/usr/local/bin/fish&#39;,
- &#39;__CFBundleIdentifier&#39;: &#39;com.googlecode.iterm2&#39;,
- &#39;TERM_SESSION_ID&#39;: &#39;w0t1p1:C06A30C0-D3A6-4160-8E3D-26F4CE6DE5A4&#39;,
- &#39;TERM_PROGRAM_VERSION&#39;: &#39;3.4.8&#39;,
- &#39;TERM_PROGRAM&#39;: &#39;iTerm.app&#39;,
- &#39;COMPOSE_DOCKER_CLI_BUILD&#39;: &#39;1&#39;,
- &#39;ITERM_PROFILE&#39;: &#39;Default&#39;,
- &#39;FZF_DEFAULT_OPTS&#39;: &#39;--layout=reverse --inline-info&#39;,
- &#39;COLORFGBG&#39;: &#39;7;0&#39;,
- &#39;PYTHON_CONFIGURE_OPTS&#39;: &#39;--enable-framework&#39;,
- &#39;XPC_FLAGS&#39;: &#39;0x0&#39;,
- &#39;LANG&#39;: &#39;de_DE.UTF-8&#39;,
- &#39;LOGNAME&#39;: &#39;jochen&#39;,
- &#39;COLORTERM&#39;: &#39;truecolor&#39;,
- &#39;LC_TERMINAL&#39;: &#39;iTerm2&#39;,
- &#39;PROJECT_HOME&#39;: &#39;/Users/jochen/projects&#39;,
- &#39;DOCKER_BUILDKIT&#39;: &#39;1&#39;,
- &#39;USER&#39;: &#39;jochen&#39;,
- &#39;PATH&#39;: &#39;/usr/local/opt/icu4c/sbin:/usr/local/opt/icu4c/bin:/Users/jochen/.pyenv/bin:/Users/jochen/.poetry/bin:/usr/local/opt/fzf/bin:/Users/jochen/.cargo/bin:/usr/local/opt/gettext/bin:/Users/jochen/.virtualenvs/django-fileresponse/bin:/Users/jochen/.cargo/bin:/usr/local/opt/gettext/bin:/Users/jochen/.pyenv/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/MacGPG2/bin:/Users/jochen/.local/bin:/Users/jochen/.local/bin&#39;,
- &#39;ITERM_SESSION_ID&#39;: &#39;w0t1p1:C06A30C0-D3A6-4160-8E3D-26F4CE6DE5A4&#39;,
- &#39;OMF_CONFIG&#39;: &#39;/Users/jochen/.config/omf&#39;,
- &#39;TMPDIR&#39;: &#39;/var/folders/dg/20nm141d3hj2hv67hjl6zmkc0000gn/T/&#39;,
- &#39;TERM&#39;: &#39;xterm-color&#39;,
- &#39;SSH_AUTH_SOCK&#39;: &#39;/private/tmp/com.apple.launchd.RRmSJERJ8m/Listeners&#39;,
- &#39;CPPFLAGS&#39;: &#39;-I/usr/local/opt/openssl@1.1/include&#39;,
- &#39;SHLVL&#39;: &#39;2&#39;,
- &#39;COMMAND_MODE&#39;: &#39;unix2003&#39;,
- &#39;JPY_PARENT_PID&#39;: &#39;34419&#39;,
- &#39;CLICOLOR&#39;: &#39;1&#39;,
- &#39;PAGER&#39;: &#39;cat&#39;,
- &#39;GIT_PAGER&#39;: &#39;cat&#39;,
- &#39;MPLBACKEND&#39;: &#39;module://ipykernel.pylab.backend_inline&#39;,
- &#39;DJANGO_SETTINGS_MODULE&#39;: &#39;example.settings&#39;,
- &#39;TZ&#39;: &#39;UTC&#39;}</pre>
-</div>
-
-</div>
-
-<div class="output_area">
-
-
-
-
-<div id="bbb336da-12f7-4a41-be88-fe1a75dcb5db"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#bbb336da-12f7-4a41-be88-fe1a75dcb5db');
-
-            setTimeout(function() {
-                var nbb_cell_id = 5;
-                var nbb_unformatted_code = "%env";
-                var nbb_formatted_code = "%env";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">env</span> DJANGO_SETTINGS_MODULE example.settings
-<span class="kn">import</span> <span class="nn">django</span>
-
-<span class="n">django</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
-<span class="n">app</span> <span class="o">=</span> <span class="n">AsyncFileASGIHandler</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">AsyncFileASGIHandler</span><span class="p">()</span>
 <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&lt;h1&gt;Content!&lt;/h1&gt;&quot;</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
 <span class="n">returned_content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">app</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
@@ -270,26 +236,18 @@ var element = $('#bbb336da-12f7-4a41-be88-fe1a75dcb5db');
 
 <div class="output_area">
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>env: DJANGO_SETTINGS_MODULE=example.settings
-</pre>
-</div>
-</div>
-
-<div class="output_area">
 
 
 
-
-<div id="58ca4812-684f-4727-86ba-37010f48227f"></div>
+<div id="e84ef619-4f2a-42e7-8c3e-d017e7c3288b"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#58ca4812-684f-4727-86ba-37010f48227f');
+var element = $('#e84ef619-4f2a-42e7-8c3e-d017e7c3288b');
 
             setTimeout(function() {
-                var nbb_cell_id = 4;
-                var nbb_unformatted_code = "%env DJANGO_SETTINGS_MODULE example.settings\nimport django\n\ndjango.setup()\napp = AsyncFileASGIHandler()\ncontent = \"<h1>Content!</h1>\"\nresponse = Response(content)\nreturned_content = await app.send_response(response, send)\nassert response.stream_called\nassert content == returned_content";
-                var nbb_formatted_code = "%env DJANGO_SETTINGS_MODULE example.settings\nimport django\n\ndjango.setup()\napp = AsyncFileASGIHandler()\ncontent = \"<h1>Content!</h1>\"\nresponse = Response(content)\nreturned_content = await app.send_response(response, send)\nassert response.stream_called\nassert content == returned_content";
+                var nbb_cell_id = 6;
+                var nbb_unformatted_code = "app = AsyncFileASGIHandler()\ncontent = \"<h1>Content!</h1>\"\nresponse = Response(content)\nreturned_content = await app.send_response(response, send)\nassert response.stream_called\nassert content == returned_content";
+                var nbb_formatted_code = "app = AsyncFileASGIHandler()\ncontent = \"<h1>Content!</h1>\"\nresponse = Response(content)\nreturned_content = await app.send_response(response, send)\nassert response.stream_called\nassert content == returned_content";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
