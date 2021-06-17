@@ -151,3 +151,6 @@ nbs/test.ini
 # example django app
 example/
 nbs/example
+
+# minio
+minio
