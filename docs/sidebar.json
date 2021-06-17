@@ -3,7 +3,7 @@
     "Overview": "/",
     "module fileresponse here": "core.html",
     "ASGIHandlers": "handlers.html",
-    "Async File Response": "http.html",
+    "Async File Responses": "http.html",
     "Workaround for lib_name != lib_path": "scripts.html",
     "Create an Example Django Project": "create_sample_django_project.html",
     "Test Downloads": "test_concurrent_downloads.html"

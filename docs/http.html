@@ -1,6 +1,6 @@
 ---
 
-title: Async File Response
+title: Async File Responses
 
 
 keywords: fastai
@@ -29,6 +29,13 @@ nb_path: "nbs/01_http.ipynb"
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="AiofileFileResponse">AiofileFileResponse<a class="anchor-link" href="#AiofileFileResponse"> </a></h2><p>Serve a file asynchronously using <a href="https://github.com/Tinche/aiofiles">aiofiles</a>.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -40,7 +47,7 @@ nb_path: "nbs/01_http.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AsyncFileResponse" class="doc_header"><code>class</code> <code>AsyncFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L11" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AsyncFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>)</p>
+<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L11" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>)</p>
 </blockquote>
 
 </div>
@@ -103,7 +110,7 @@ nb_path: "nbs/01_http.ipynb"
     <span class="n">chunk_datas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk_data</span><span class="p">)</span>
 
 
-<span class="n">response</span> <span class="o">=</span> <span class="n">AsyncFileResponse</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">AiofileFileResponse</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 <span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">send</span><span class="p">)</span>
 <span class="n">received_content</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">cd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;body&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">cd</span> <span class="ow">in</span> <span class="n">chunk_datas</span><span class="p">])</span>
 
@@ -111,42 +118,6 @@ nb_path: "nbs/01_http.ipynb"
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-
-<div id="bab1d477-fa08-45d6-a344-3ea430e7b164"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#bab1d477-fa08-45d6-a344-3ea430e7b164');
-
-            setTimeout(function() {
-                var nbb_cell_id = 36;
-                var nbb_unformatted_code = "import os\n\nfrom pathlib import Path\n\npath = Path(\"testdata.bin\")\n\nwith path.open(\"wb\") as f:\n    f.write(os.urandom(10000))\n    \nwith path.open(\"rb\") as f:\n    content = f.read()\n    \nchunk_datas = []\nasync def send(chunk_data):\n    chunk_datas.append(chunk_data)\n    \nresponse = AsyncFileResponse(path)\nawait response.stream(send)\nreceived_content = b\"\".join([cd.get(\"body\", b\"\") for cd in chunk_datas])\n\nassert content == received_content";
-                var nbb_formatted_code = "import os\n\nfrom pathlib import Path\n\npath = Path(\"testdata.bin\")\n\nwith path.open(\"wb\") as f:\n    f.write(os.urandom(10000))\n\nwith path.open(\"rb\") as f:\n    content = f.read()\n\nchunk_datas = []\n\n\nasync def send(chunk_data):\n    chunk_datas.append(chunk_data)\n\n\nresponse = AsyncFileResponse(path)\nawait response.stream(send)\nreceived_content = b\"\".join([cd.get(\"body\", b\"\") for cd in chunk_datas])\n\nassert content == received_content";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
 </div>
 </div>
 

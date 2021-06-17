@@ -17,7 +17,7 @@ entries:
       url: handlers.html
     - external_url: http.html
       output: web,pdf
-      title: Async File Response
+      title: Async File Responses
     - output: web,pdf
       title: Workaround for lib_name != lib_path
       url: scripts.html
