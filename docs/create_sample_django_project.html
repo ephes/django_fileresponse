@@ -121,6 +121,7 @@ nb_path: "nbs/create_sample_django_project.ipynb"
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">FileResponse</span>
 
 <span class="kn">from</span> <span class="nn">fileresponse.http</span> <span class="kn">import</span> <span class="n">AiofileFileResponse</span>
+<span class="kn">from</span> <span class="nn">fileresponse.http</span> <span class="kn">import</span> <span class="n">AiobotocoreFileResponse</span>
 
 
 <span class="k">def</span> <span class="nf">get_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -132,6 +133,12 @@ nb_path: "nbs/create_sample_django_project.ipynb"
 <span class="k">async</span> <span class="k">def</span> <span class="nf">aget_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">AsyncFileResponse</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">aminio_get_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="s2">&quot;fileresponse-test&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">AiobotocoreFileResponse</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -181,6 +188,10 @@ nb_path: "nbs/create_sample_django_project.ipynb"
 
 <span class="n">async_urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">path</span><span class="p">(</span><span class="s1">&#39;&lt;int:num&gt;&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">aget_file</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">minio_urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;&lt;int:num&gt;&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">aminio_get_file</span><span class="p">),</span>
 <span class="p">]</span>
 </pre></div>
 
@@ -241,6 +252,12 @@ nb_path: "nbs/create_sample_django_project.ipynb"
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">django</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">set_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">urls</span><span class="o">.</span><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">urls</span><span class="o">.</span><span class="n">async_urlpatterns</span>
+    <span class="k">return</span> <span class="n">AsyncFileASGIHandler</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">get_minio_application</span><span class="p">():</span>
+    <span class="n">django</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">set_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">urls</span><span class="o">.</span><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">urls</span><span class="o">.</span><span class="n">minio_urlpatterns</span>
     <span class="k">return</span> <span class="n">AsyncFileASGIHandler</span><span class="p">()</span>
 
 

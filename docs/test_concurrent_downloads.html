@@ -42,7 +42,8 @@ nb_path: "nbs/test_concurrent_downloads.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">hashlib</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 
@@ -51,6 +52,10 @@ nb_path: "nbs/test_concurrent_downloads.ipynb"
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+
+
+<span class="k">def</span> <span class="nf">calculate_checksum</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -65,15 +70,15 @@ nb_path: "nbs/test_concurrent_downloads.ipynb"
 
 
 
-<div id="c0d0d2bd-12c0-43e7-8756-d02eb2ec72e2"></div>
+<div id="abecf618-4047-418e-9712-bd6b52cd2c99"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#c0d0d2bd-12c0-43e7-8756-d02eb2ec72e2');
+var element = $('#abecf618-4047-418e-9712-bd6b52cd2c99');
 
             setTimeout(function() {
-                var nbb_cell_id = 2;
-                var nbb_unformatted_code = "# dont_test\n\nimport os\nimport hashlib\nimport requests\n\nimport pandas as pd\n\nfrom pathlib import Path\nfrom datetime import datetime\nfrom urllib.parse import urljoin";
-                var nbb_formatted_code = "# dont_test\n\nimport os\nimport hashlib\nimport requests\n\nimport pandas as pd\n\nfrom pathlib import Path\nfrom datetime import datetime\nfrom urllib.parse import urljoin";
+                var nbb_cell_id = 5;
+                var nbb_unformatted_code = "# dont_test\n\nimport io\nimport os\nimport hashlib\nimport requests\n\nimport pandas as pd\n\nfrom pathlib import Path\nfrom datetime import datetime\nfrom urllib.parse import urljoin\n\n\ndef calculate_checksum(content):\n    return hashlib.md5(content).hexdigest()";
+                var nbb_formatted_code = "# dont_test\n\nimport io\nimport os\nimport hashlib\nimport requests\n\nimport pandas as pd\n\nfrom pathlib import Path\nfrom datetime import datetime\nfrom urllib.parse import urljoin\n\n\ndef calculate_checksum(content):\n    return hashlib.md5(content).hexdigest()";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
@@ -120,10 +125,10 @@ var element = $('#c0d0d2bd-12c0-43e7-8756-d02eb2ec72e2');
 
 
 
-<div id="c33d3ca2-b070-43c0-8a52-b48ffd183622"></div>
+<div id="28729cfc-68b9-4c5e-b78a-d16192e63992"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#c33d3ca2-b070-43c0-8a52-b48ffd183622');
+var element = $('#28729cfc-68b9-4c5e-b78a-d16192e63992');
 
             setTimeout(function() {
                 var nbb_cell_id = 3;
@@ -161,7 +166,7 @@ var element = $('#c33d3ca2-b070-43c0-8a52-b48ffd183622');
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
 <span class="c1"># dont_test</span>
 <span class="n">file_size</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">10</span>
-<span class="n">num_to_md5sum</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">num_to_hash</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
     <span class="n">file_path</span> <span class="o">=</span> <span class="n">data_root</span> <span class="o">/</span> <span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">file_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -171,7 +176,7 @@ var element = $('#c33d3ca2-b070-43c0-8a52-b48ffd183622');
         <span class="k">with</span> <span class="n">file_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="n">file_size</span><span class="p">)</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="n">num_to_md5sum</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="n">num_to_hash</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculate_checksum</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -195,10 +200,10 @@ Wall time: 1.93 s
 
 
 
-<div id="2eb7e647-cb85-4166-b84f-b5a146097631"></div>
+<div id="0d6322ad-5d3d-4512-b1cb-130f87996d66"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#2eb7e647-cb85-4166-b84f-b5a146097631');
+var element = $('#0d6322ad-5d3d-4512-b1cb-130f87996d66');
 
             setTimeout(function() {
                 var nbb_cell_id = 4;
@@ -272,10 +277,10 @@ var element = $('#2eb7e647-cb85-4166-b84f-b5a146097631');
 
 
 
-<div id="57a23f1c-df3a-40ee-b9cc-8bf6377f795c"></div>
+<div id="c2f8f16d-1265-423a-94f9-db79d7d8c5c7"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#57a23f1c-df3a-40ee-b9cc-8bf6377f795c');
+var element = $('#c2f8f16d-1265-423a-94f9-db79d7d8c5c7');
 
             setTimeout(function() {
                 var nbb_cell_id = 5;
@@ -322,15 +327,15 @@ python manage.py runserver <span class="m">0</span>.0.0.0:8000
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">timestamps</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:8000&quot;</span>
-<span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">expected_md5sum</span> <span class="ow">in</span> <span class="n">num_to_md5sum</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">expected_hash</span> <span class="ow">in</span> <span class="n">num_to_hash</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">started</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="n">stopped</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
     <span class="n">timestamps</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">started</span><span class="p">,</span> <span class="n">stopped</span><span class="p">))</span>
     <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-    <span class="n">actual_md5sum</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="n">expected_md5sum</span> <span class="o">==</span> <span class="n">actual_md5sum</span>
+    <span class="n">actual_hash</span> <span class="o">=</span> <span class="n">calculate_checksum</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">expected_hash</span> <span class="o">==</span> <span class="n">actual_hash</span>
 </pre></div>
 
     </div>
@@ -345,10 +350,10 @@ python manage.py runserver <span class="m">0</span>.0.0.0:8000
 
 
 
-<div id="d991110f-3889-4680-a84f-09bdd9f4ba2b"></div>
+<div id="44acece7-e3f7-449f-9d84-4ec63c37798c"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#d991110f-3889-4680-a84f-09bdd9f4ba2b');
+var element = $('#44acece7-e3f7-449f-9d84-4ec63c37798c');
 
             setTimeout(function() {
                 var nbb_cell_id = 6;
@@ -413,10 +418,10 @@ height=374
 
 
 
-<div id="dfd15a0f-04f4-4352-84a0-3dc2b794df97"></div>
+<div id="d5176638-ecb7-4ace-a45b-92e818f12bc2"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#dfd15a0f-04f4-4352-84a0-3dc2b794df97');
+var element = $('#d5176638-ecb7-4ace-a45b-92e818f12bc2');
 
             setTimeout(function() {
                 var nbb_cell_id = 7;
@@ -449,6 +454,7 @@ var element = $('#dfd15a0f-04f4-4352-84a0-3dc2b794df97');
 <h2 id="Downloads-Concurrently">Downloads Concurrently<a class="anchor-link" href="#Downloads-Concurrently"> </a></h2><p>Start server with:</p>
 <div class="highlight"><pre><span></span><span class="nb">cd</span> example
 gunicorn -w <span class="m">2</span> -k uvicorn.workers.UvicornWorker -b :8000 <span class="s2">&quot;example.asgi:application&quot;</span>
+gunicorn -w <span class="m">2</span> -k uvicorn.workers.UvicornWorker -b :8000 <span class="s2">&quot;example.asgi:get_minio_application()&quot;</span>
 </pre></div>
 
 </div>
@@ -498,7 +504,7 @@ gunicorn -w <span class="m">2</span> -k uvicorn.workers.UvicornWorker -b :8000 <
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>&lt;ipython-input-8-181895b379cf&gt;:7: MonkeyPatchWarning: Monkey-patching ssl after ssl has already been imported may lead to errors, including RecursionError on Python 3.6. It may also silently lead to incorrect behaviour on Python 3.7. Please monkey-patch earlier. See https://github.com/gevent/gevent/issues/1016. Modules that had direct imports (NOT patched): [&#39;urllib3.util (/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/urllib3/util/__init__.py)&#39;, &#39;urllib3.util.ssl_ (/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/urllib3/util/ssl_.py)&#39;]. 
+<pre>&lt;ipython-input-7-181895b379cf&gt;:7: MonkeyPatchWarning: Monkey-patching ssl after ssl has already been imported may lead to errors, including RecursionError on Python 3.6. It may also silently lead to incorrect behaviour on Python 3.7. Please monkey-patch earlier. See https://github.com/gevent/gevent/issues/1016. Modules that had direct imports (NOT patched): [&#39;urllib3.util (/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/urllib3/util/__init__.py)&#39;, &#39;urllib3.util.ssl_ (/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/urllib3/util/ssl_.py)&#39;]. 
   monkey.patch_all()
 </pre>
 </div>
@@ -509,13 +515,13 @@ gunicorn -w <span class="m">2</span> -k uvicorn.workers.UvicornWorker -b :8000 <
 
 
 
-<div id="61459e94-9bd7-4dcd-9b9d-7cc6f0e345b9"></div>
+<div id="0edacd81-2e22-4a65-afb3-ebbbd0bcea85"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#61459e94-9bd7-4dcd-9b9d-7cc6f0e345b9');
+var element = $('#0edacd81-2e22-4a65-afb3-ebbbd0bcea85');
 
             setTimeout(function() {
-                var nbb_cell_id = 8;
+                var nbb_cell_id = 7;
                 var nbb_unformatted_code = "# dont_test\n\nimport gevent\n\nfrom gevent import monkey\n\nmonkey.patch_all()\n\n\nclass Response:\n    def __init__(self, url, content, started, stopped):\n        self.url = url\n        self.content = content\n        self.started = started\n        self.stopped = stopped\n\n\ndef streaming_fetch(url):\n    chunks = []\n    with requests.get(url, stream=True) as r:\n        r.raise_for_status()\n        started = datetime.now()\n        for chunk in r.iter_content(chunk_size=4096):\n            chunks.append(chunk)\n    stopped = datetime.now()\n    response = Response(url, b\"\".join(chunks), started, stopped)\n    return response";
                 var nbb_formatted_code = "# dont_test\n\nimport gevent\n\nfrom gevent import monkey\n\nmonkey.patch_all()\n\n\nclass Response:\n    def __init__(self, url, content, started, stopped):\n        self.url = url\n        self.content = content\n        self.started = started\n        self.stopped = stopped\n\n\ndef streaming_fetch(url):\n    chunks = []\n    with requests.get(url, stream=True) as r:\n        r.raise_for_status()\n        started = datetime.now()\n        for chunk in r.iter_content(chunk_size=4096):\n            chunks.append(chunk)\n    stopped = datetime.now()\n    response = Response(url, b\"\".join(chunks), started, stopped)\n    return response";
                 var nbb_cells = Jupyter.notebook.get_cells();
@@ -549,7 +555,7 @@ var element = $('#61459e94-9bd7-4dcd-9b9d-7cc6f0e345b9');
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">urls</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:8000&quot;</span>
-<span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">expected_md5sum</span> <span class="ow">in</span> <span class="n">num_to_md5sum</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">expected_hash</span> <span class="ow">in</span> <span class="n">num_to_hash</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">urls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
@@ -560,8 +566,8 @@ var element = $('#61459e94-9bd7-4dcd-9b9d-7cc6f0e345b9');
 <span class="n">timestamps</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">response</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">responses</span><span class="p">):</span>
     <span class="n">timestamps</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">response</span><span class="o">.</span><span class="n">started</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">stopped</span><span class="p">))</span>
-    <span class="n">expected_md5sum</span> <span class="o">=</span> <span class="n">num_to_md5sum</span><span class="p">[</span><span class="n">num</span><span class="p">]</span>
-    <span class="n">actual_md5sum</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="n">expected_hash</span> <span class="o">=</span> <span class="n">num_to_hash</span><span class="p">[</span><span class="n">num</span><span class="p">]</span>
+    <span class="n">actual_hash</span> <span class="o">=</span> <span class="n">calculate_checksum</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -573,18 +579,942 @@ var element = $('#61459e94-9bd7-4dcd-9b9d-7cc6f0e345b9');
 
 <div class="output_area">
 
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/2
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12f7eb9d0: streaming_fetch(&#39;http://localhost:8000/2&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/0
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12f672480: streaming_fetch(&#39;http://localhost:8000/0&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/1
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12f7eb7b0: streaming_fetch(&#39;http://localhost:8000/1&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/3
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12f7ebd00: streaming_fetch(&#39;http://localhost:8000/3&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/4
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12f7ebe10: streaming_fetch(&#39;http://localhost:8000/4&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/8
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fb02370: streaming_fetch(&#39;http://localhost:8000/8&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/6
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fb02150: streaming_fetch(&#39;http://localhost:8000/6&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/10
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fb02590: streaming_fetch(&#39;http://localhost:8000/10&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/5
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fb02040: streaming_fetch(&#39;http://localhost:8000/5&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/7
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fb02260: streaming_fetch(&#39;http://localhost:8000/7&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/49
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fac9260: streaming_fetch(&#39;http://localhost:8000/49&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/9
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fb02480: streaming_fetch(&#39;http://localhost:8000/9&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/50
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fac9370: streaming_fetch(&#39;http://localhost:8000/50&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/51
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fac9480: streaming_fetch(&#39;http://localhost:8000/51&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/52
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fac9590: streaming_fetch(&#39;http://localhost:8000/52&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/53
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fac96a0: streaming_fetch(&#39;http://localhost:8000/53&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/54
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fac97b0: streaming_fetch(&#39;http://localhost:8000/54&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/55
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fac98c0: streaming_fetch(&#39;http://localhost:8000/55&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/65
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12f961480: streaming_fetch(&#39;http://localhost:8000/65&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/11
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fb026a0: streaming_fetch(&#39;http://localhost:8000/11&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/66
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12f961590: streaming_fetch(&#39;http://localhost:8000/66&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/99
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12f7dbae0: streaming_fetch(&#39;http://localhost:8000/99&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/59
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fac9d00: streaming_fetch(&#39;http://localhost:8000/59&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/13
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fb028c0: streaming_fetch(&#39;http://localhost:8000/13&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/16
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fb2cbf0: streaming_fetch(&#39;http://localhost:8000/16&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/12
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fb027b0: streaming_fetch(&#39;http://localhost:8000/12&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/14
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fb029d0: streaming_fetch(&#39;http://localhost:8000/14&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/15
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fb02ae0: streaming_fetch(&#39;http://localhost:8000/15&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/17
+2021-06-17T09:35:00Z &lt;Greenlet at 0x12fb2cd00: streaming_fetch(&#39;http://localhost:8000/17&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/60
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fac9e10: streaming_fetch(&#39;http://localhost:8000/60&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/48
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fac9150: streaming_fetch(&#39;http://localhost:8000/48&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/56
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fac99d0: streaming_fetch(&#39;http://localhost:8000/56&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/57
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fac9ae0: streaming_fetch(&#39;http://localhost:8000/57&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/58
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fac9bf0: streaming_fetch(&#39;http://localhost:8000/58&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/43
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fadeae0: streaming_fetch(&#39;http://localhost:8000/43&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/44
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fadebf0: streaming_fetch(&#39;http://localhost:8000/44&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/37
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fade480: streaming_fetch(&#39;http://localhost:8000/37&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/38
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fade590: streaming_fetch(&#39;http://localhost:8000/38&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/35
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fade260: streaming_fetch(&#39;http://localhost:8000/35&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/31
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f832d00: streaming_fetch(&#39;http://localhost:8000/31&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/34
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fade150: streaming_fetch(&#39;http://localhost:8000/34&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/29
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f832ae0: streaming_fetch(&#39;http://localhost:8000/29&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/36
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fade370: streaming_fetch(&#39;http://localhost:8000/36&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/32
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f832e10: streaming_fetch(&#39;http://localhost:8000/32&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/45
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12faded00: streaming_fetch(&#39;http://localhost:8000/45&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/46
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fadee10: streaming_fetch(&#39;http://localhost:8000/46&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/47
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fac9040: streaming_fetch(&#39;http://localhost:8000/47&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/64
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f961370: streaming_fetch(&#39;http://localhost:8000/64&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/61
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f961040: streaming_fetch(&#39;http://localhost:8000/61&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/62
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f961150: streaming_fetch(&#39;http://localhost:8000/62&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/63
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f961260: streaming_fetch(&#39;http://localhost:8000/63&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/18
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fb2ce10: streaming_fetch(&#39;http://localhost:8000/18&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/23
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f832480: streaming_fetch(&#39;http://localhost:8000/23&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/20
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f832150: streaming_fetch(&#39;http://localhost:8000/20&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/19
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f832040: streaming_fetch(&#39;http://localhost:8000/19&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/40
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fade7b0: streaming_fetch(&#39;http://localhost:8000/40&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/41
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fade8c0: streaming_fetch(&#39;http://localhost:8000/41&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/71
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f961ae0: streaming_fetch(&#39;http://localhost:8000/71&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/69
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f9618c0: streaming_fetch(&#39;http://localhost:8000/69&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/68
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f9617b0: streaming_fetch(&#39;http://localhost:8000/68&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/42
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fade9d0: streaming_fetch(&#39;http://localhost:8000/42&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/70
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f9619d0: streaming_fetch(&#39;http://localhost:8000/70&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/72
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f961bf0: streaming_fetch(&#39;http://localhost:8000/72&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/21
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f832260: streaming_fetch(&#39;http://localhost:8000/21&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/22
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f832370: streaming_fetch(&#39;http://localhost:8000/22&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/24
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f832590: streaming_fetch(&#39;http://localhost:8000/24&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/25
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f8326a0: streaming_fetch(&#39;http://localhost:8000/25&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/28
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f8329d0: streaming_fetch(&#39;http://localhost:8000/28&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/26
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f8327b0: streaming_fetch(&#39;http://localhost:8000/26&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/27
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f8328c0: streaming_fetch(&#39;http://localhost:8000/27&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/39
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fade6a0: streaming_fetch(&#39;http://localhost:8000/39&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/30
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f832bf0: streaming_fetch(&#39;http://localhost:8000/30&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/33
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12fade040: streaming_fetch(&#39;http://localhost:8000/33&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/67
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f9616a0: streaming_fetch(&#39;http://localhost:8000/67&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/74
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f961e10: streaming_fetch(&#39;http://localhost:8000/74&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/73
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f961d00: streaming_fetch(&#39;http://localhost:8000/73&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/79
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f956480: streaming_fetch(&#39;http://localhost:8000/79&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/86
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f956bf0: streaming_fetch(&#39;http://localhost:8000/86&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/89
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f7db040: streaming_fetch(&#39;http://localhost:8000/89&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/90
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f7db150: streaming_fetch(&#39;http://localhost:8000/90&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/97
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f7db8c0: streaming_fetch(&#39;http://localhost:8000/97&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/75
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f956040: streaming_fetch(&#39;http://localhost:8000/75&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/76
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f956150: streaming_fetch(&#39;http://localhost:8000/76&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/91
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f7db260: streaming_fetch(&#39;http://localhost:8000/91&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/92
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f7db370: streaming_fetch(&#39;http://localhost:8000/92&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/87
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f956d00: streaming_fetch(&#39;http://localhost:8000/87&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/88
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f956e10: streaming_fetch(&#39;http://localhost:8000/88&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/93
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f7db480: streaming_fetch(&#39;http://localhost:8000/93&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/98
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f7db9d0: streaming_fetch(&#39;http://localhost:8000/98&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/84
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f9569d0: streaming_fetch(&#39;http://localhost:8000/84&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/80
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f956590: streaming_fetch(&#39;http://localhost:8000/80&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/81
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f9566a0: streaming_fetch(&#39;http://localhost:8000/81&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/77
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f956260: streaming_fetch(&#39;http://localhost:8000/77&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/85
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f956ae0: streaming_fetch(&#39;http://localhost:8000/85&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/82
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f9567b0: streaming_fetch(&#39;http://localhost:8000/82&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/78
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f956370: streaming_fetch(&#39;http://localhost:8000/78&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/83
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f9568c0: streaming_fetch(&#39;http://localhost:8000/83&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/94
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f7db590: streaming_fetch(&#39;http://localhost:8000/94&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/95
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f7db6a0: streaming_fetch(&#39;http://localhost:8000/95&#39;)&gt; failed with HTTPError
+
+Traceback (most recent call last):
+  File &#34;src/gevent/greenlet.py&#34;, line 906, in gevent._gevent_cgreenlet.Greenlet.run
+  File &#34;&lt;ipython-input-7-181895b379cf&gt;&#34;, line 21, in streaming_fetch
+    r.raise_for_status()
+  File &#34;/Users/jochen/.virtualenvs/django-fileresponse/lib/python3.9/site-packages/requests/models.py&#34;, line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/96
+2021-06-17T09:35:01Z &lt;Greenlet at 0x12f7db7b0: streaming_fetch(&#39;http://localhost:8000/96&#39;)&gt; failed with HTTPError
+
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-11-eede67e5f759&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     13</span> timestamps <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">     14</span> <span class="ansi-green-fg">for</span> num<span class="ansi-blue-fg">,</span> response <span class="ansi-green-fg">in</span> enumerate<span class="ansi-blue-fg">(</span>responses<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 15</span><span class="ansi-red-fg">     </span>timestamps<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span>response<span class="ansi-blue-fg">.</span>started<span class="ansi-blue-fg">,</span> response<span class="ansi-blue-fg">.</span>stopped<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     16</span>     expected_hash <span class="ansi-blue-fg">=</span> num_to_hash<span class="ansi-blue-fg">[</span>num<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">     17</span>     actual_hash <span class="ansi-blue-fg">=</span> calculate_checksum<span class="ansi-blue-fg">(</span>response<span class="ansi-blue-fg">.</span>content<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;started&#39;</pre>
+</div>
+</div>
+
+<div class="output_area">
 
 
 
-<div id="59fba2a9-7d38-42a4-b121-70a095b3c0e6"></div>
+
+<div id="dbf257a4-bc70-4bc4-9aa5-42e878b8982b"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#59fba2a9-7d38-42a4-b121-70a095b3c0e6');
+var element = $('#dbf257a4-bc70-4bc4-9aa5-42e878b8982b');
 
             setTimeout(function() {
-                var nbb_cell_id = 15;
-                var nbb_unformatted_code = "# dont_test\n\nurls = []\nbase_url = \"http://localhost:8000\"\nfor num, expected_md5sum in num_to_md5sum.items():\n    url = urljoin(base_url, f\"{num}\")\n    urls.append(url)\n\njobs = [gevent.spawn(streaming_fetch, _url) for _url in urls]\nresponses = gevent.wait(jobs)\nresponses = [r.value for r in responses]\n\ntimestamps = []\nfor num, response in enumerate(responses):\n    timestamps.append((response.started, response.stopped))\n    expected_md5sum = num_to_md5sum[num]\n    actual_md5sum = hashlib.md5(response.content).hexdigest()";
-                var nbb_formatted_code = "# dont_test\n\nurls = []\nbase_url = \"http://localhost:8000\"\nfor num, expected_md5sum in num_to_md5sum.items():\n    url = urljoin(base_url, f\"{num}\")\n    urls.append(url)\n\njobs = [gevent.spawn(streaming_fetch, _url) for _url in urls]\nresponses = gevent.wait(jobs)\nresponses = [r.value for r in responses]\n\ntimestamps = []\nfor num, response in enumerate(responses):\n    timestamps.append((response.started, response.stopped))\n    expected_md5sum = num_to_md5sum[num]\n    actual_md5sum = hashlib.md5(response.content).hexdigest()";
+                var nbb_cell_id = 11;
+                var nbb_unformatted_code = "# dont_test\n\nurls = []\nbase_url = \"http://localhost:8000\"\nfor num, expected_hash in num_to_hash.items():\n    url = urljoin(base_url, f\"{num}\")\n    urls.append(url)\n\njobs = [gevent.spawn(streaming_fetch, _url) for _url in urls]\nresponses = gevent.wait(jobs)\nresponses = [r.value for r in responses]\n\ntimestamps = []\nfor num, response in enumerate(responses):\n    timestamps.append((response.started, response.stopped))\n    expected_hash = num_to_hash[num]\n    actual_hash = calculate_checksum(response.content)";
+                var nbb_formatted_code = "# dont_test\n\nurls = []\nbase_url = \"http://localhost:8000\"\nfor num, expected_hash in num_to_hash.items():\n    url = urljoin(base_url, f\"{num}\")\n    urls.append(url)\n\njobs = [gevent.spawn(streaming_fetch, _url) for _url in urls]\nresponses = gevent.wait(jobs)\nresponses = [r.value for r in responses]\n\ntimestamps = []\nfor num, response in enumerate(responses):\n    timestamps.append((response.started, response.stopped))\n    expected_hash = num_to_hash[num]\n    actual_hash = calculate_checksum(response.content)";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
@@ -644,15 +1574,177 @@ height=375
 
 
 
-<div id="06bacaed-3e6f-4a00-8719-8d84ef6bf887"></div>
+<div id="a3ad1205-860d-47b8-9672-eec354b7262b"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#06bacaed-3e6f-4a00-8719-8d84ef6bf887');
+var element = $('#a3ad1205-860d-47b8-9672-eec354b7262b');
 
             setTimeout(function() {
                 var nbb_cell_id = 11;
                 var nbb_unformatted_code = "# dont_test\n\nax = df.plot(figsize=(10, 6), legend=False, title=\"Bandwidth used by clients\")\nax.set_xlabel(\"Time\")\n_ = ax.set_ylabel(\"MB/s\")";
                 var nbb_formatted_code = "# dont_test\n\nax = df.plot(figsize=(10, 6), legend=False, title=\"Bandwidth used by clients\")\nax.set_xlabel(\"Time\")\n_ = ax.set_ylabel(\"MB/s\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Create-MinIO-Objects">Create MinIO Objects<a class="anchor-link" href="#Create-MinIO-Objects"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">minio</span> <span class="kn">import</span> <span class="n">Minio</span>
+<span class="kn">from</span> <span class="nn">minio.error</span> <span class="kn">import</span> <span class="n">S3Error</span>
+
+
+<span class="k">def</span> <span class="nf">get_minio_client_and_bucket</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">Minio</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">bucket_exists</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">make_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">client</span>
+
+
+<span class="k">def</span> <span class="nf">checksum_for_minio</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">release_conn</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">calculate_checksum</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">create_file_minio</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">put_object</span><span class="p">(</span>
+        <span class="n">bucket</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">,</span>
+        <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+        <span class="n">size</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">calculate_checksum</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="7338308b-c366-45b7-8e4c-529a65c602b5"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#7338308b-c366-45b7-8e4c-529a65c602b5');
+
+            setTimeout(function() {
+                var nbb_cell_id = 3;
+                var nbb_unformatted_code = "# dont_test\n\nfrom minio import Minio\nfrom minio.error import S3Error\n\n\ndef get_minio_client_and_bucket(endpoint, params, bucket):\n    client = Minio(endpoint, **params)\n    found = client.bucket_exists(bucket)\n    if not found:\n        client.make_bucket(bucket)\n    return client\n\n\ndef checksum_for_minio(client, bucket, key):\n    try:\n        response = client.get_object(bucket, key)\n        data = response.read()\n    finally:\n        response.close()\n        response.release_conn()\n    return calculate_checksum(data)\n\n\ndef create_file_minio(client, bucket, key, size):\n    data = os.urandom(size)\n\n    result = client.put_object(\n        bucket,\n        key,\n        io.BytesIO(data),\n        size,\n    )\n    return calculate_checksum(data)";
+                var nbb_formatted_code = "# dont_test\n\nfrom minio import Minio\nfrom minio.error import S3Error\n\n\ndef get_minio_client_and_bucket(endpoint, params, bucket):\n    client = Minio(endpoint, **params)\n    found = client.bucket_exists(bucket)\n    if not found:\n        client.make_bucket(bucket)\n    return client\n\n\ndef checksum_for_minio(client, bucket, key):\n    try:\n        response = client.get_object(bucket, key)\n        data = response.read()\n    finally:\n        response.close()\n        response.release_conn()\n    return calculate_checksum(data)\n\n\ndef create_file_minio(client, bucket, key, size):\n    data = os.urandom(size)\n\n    result = client.put_object(\n        bucket,\n        key,\n        io.BytesIO(data),\n        size,\n    )\n    return calculate_checksum(data)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;127.0.0.1:9000&quot;</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;access_key&quot;</span><span class="p">:</span> <span class="s2">&quot;minioadmin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;secret_key&quot;</span><span class="p">:</span> <span class="s2">&quot;minioadmin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;secure&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">bucket</span> <span class="o">=</span> <span class="s2">&quot;fileresponse-test&quot;</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">get_minio_client_and_bucket</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">bucket</span><span class="p">)</span>
+
+<span class="n">file_size</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">10</span>
+<span class="n">num_to_hash</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">stat_object</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="n">checksum</span> <span class="o">=</span> <span class="n">checksum_for_minio</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">S3Error</span><span class="p">:</span>
+        <span class="c1"># object does not exist -&gt; create</span>
+        <span class="n">checksum</span> <span class="o">=</span> <span class="n">create_file_minio</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">file_size</span><span class="p">)</span>
+    <span class="n">num_to_hash</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="n">checksum</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="04b857c4-7b2e-48a8-a939-7c2755abd9a0"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#04b857c4-7b2e-48a8-a939-7c2755abd9a0');
+
+            setTimeout(function() {
+                var nbb_cell_id = 6;
+                var nbb_unformatted_code = "endpoint = \"127.0.0.1:9000\"\nparams = {\n    \"access_key\": \"minioadmin\",\n    \"secret_key\": \"minioadmin\",\n    \"secure\": False,\n}\nbucket = \"fileresponse-test\"\nclient = get_minio_client_and_bucket(endpoint, params, bucket)\n\nfile_size = 1024 * 1024 * 10\nnum_to_hash = {}\nfor num in range(100):\n    key = str(num)\n    try:\n        result = client.stat_object(bucket, key)\n        checksum = checksum_for_minio(client, bucket, key)\n    except S3Error:\n        # object does not exist -> create\n        checksum = create_file_minio(client, bucket, key, file_size)\n    num_to_hash[num] = checksum";
+                var nbb_formatted_code = "endpoint = \"127.0.0.1:9000\"\nparams = {\n    \"access_key\": \"minioadmin\",\n    \"secret_key\": \"minioadmin\",\n    \"secure\": False,\n}\nbucket = \"fileresponse-test\"\nclient = get_minio_client_and_bucket(endpoint, params, bucket)\n\nfile_size = 1024 * 1024 * 10\nnum_to_hash = {}\nfor num in range(100):\n    key = str(num)\n    try:\n        result = client.stat_object(bucket, key)\n        checksum = checksum_for_minio(client, bucket, key)\n    except S3Error:\n        # object does not exist -> create\n        checksum = create_file_minio(client, bucket, key, file_size)\n    num_to_hash[num] = checksum";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {

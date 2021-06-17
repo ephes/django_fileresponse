@@ -5,7 +5,7 @@ __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 index = {"say_hello": "00_core.ipynb",
          "AsyncFileASGIHandler": "01_handlers.ipynb",
          "AiofileFileResponse": "01_http.ipynb",
-         "AsyncMinioResponse": "01_http.ipynb",
+         "AiobotocoreFileResponse": "01_http.ipynb",
          "AWS_ACCESS_KEY_ID": "01_http.ipynb",
          "AWS_SECRET_ACCESS_KEY": "01_http.ipynb",
          "get_config": "01_scripts.ipynb",
