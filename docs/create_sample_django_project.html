@@ -132,7 +132,7 @@ nb_path: "nbs/create_sample_django_project.ipynb"
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">aget_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">AsyncFileResponse</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">AiofileFileResponse</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
 
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">aminio_get_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
