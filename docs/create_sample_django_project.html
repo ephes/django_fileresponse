@@ -118,6 +118,7 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">FileResponse</span>
 
@@ -133,11 +134,11 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">aget_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">AiofileFileResponse</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">AiofileFileResponse</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
 
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">aminio_get_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">bucket</span> <span class="o">=</span> <span class="s2">&quot;fileresponse-test&quot;</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">DJANGO_AWS_STORAGE_BUCKET_NAME</span>
     <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">AiobotocoreFileResponse</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
 </pre></div>
@@ -152,7 +153,7 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Writing example/example/views.py
+<pre>Overwriting example/example/views.py
 </pre>
 </div>
 </div>
@@ -289,6 +290,166 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Settings">Settings<a class="anchor-link" href="#Settings"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%writefile</span> example/example/settings.py
+<span class="c1"># dont_test</span>
+
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># Build paths inside the project like this: BASE_DIR / &#39;subdir&#39;.</span>
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
+
+
+<span class="c1"># Quick-start development settings - unsuitable for production</span>
+<span class="c1"># See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/</span>
+
+<span class="c1"># SECURITY WARNING: keep the secret key used in production secret!</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s1">&#39;django-insecure-eyj(*+5=#xb1(5$50p*k0</span><span class="si">%5e</span><span class="s1">vl)80dcoh(i6(tx9a7dq9i5#9f&#39;</span>
+
+<span class="c1"># SECURITY WARNING: don&#39;t run with debug turned on in production!</span>
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<span class="c1"># Application definition</span>
+
+<span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.staticfiles&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">MIDDLEWARE</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;django.middleware.security.SecurityMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.csrf.CsrfViewMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.messages.middleware.MessageMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.clickjacking.XFrameOptionsMiddleware&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">ROOT_URLCONF</span> <span class="o">=</span> <span class="s1">&#39;example.urls&#39;</span>
+
+<span class="n">TEMPLATES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;BACKEND&#39;</span><span class="p">:</span> <span class="s1">&#39;django.template.backends.django.DjangoTemplates&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;DIRS&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s1">&#39;APP_DIRS&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;OPTIONS&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;context_processors&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s1">&#39;django.template.context_processors.debug&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;django.template.context_processors.request&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;django.contrib.auth.context_processors.auth&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;django.contrib.messages.context_processors.messages&#39;</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+<span class="n">WSGI_APPLICATION</span> <span class="o">=</span> <span class="s1">&#39;example.wsgi.application&#39;</span>
+
+
+<span class="c1"># Database</span>
+<span class="c1"># https://docs.djangoproject.com/en/3.2/ref/settings/#databases</span>
+
+<span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s1">&#39;django.db.backends.sqlite3&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s1">&#39;db.sqlite3&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="c1"># Password validation</span>
+<span class="c1"># https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators</span>
+
+<span class="n">AUTH_PASSWORD_VALIDATORS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;django.contrib.auth.password_validation.UserAttributeSimilarityValidator&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;django.contrib.auth.password_validation.MinimumLengthValidator&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;django.contrib.auth.password_validation.CommonPasswordValidator&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;django.contrib.auth.password_validation.NumericPasswordValidator&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+
+<span class="c1"># Internationalization</span>
+<span class="c1"># https://docs.djangoproject.com/en/3.2/topics/i18n/</span>
+
+<span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
+
+<span class="n">TIME_ZONE</span> <span class="o">=</span> <span class="s1">&#39;UTC&#39;</span>
+
+<span class="n">USE_I18N</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">USE_L10N</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">USE_TZ</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+<span class="c1"># Static files (CSS, JavaScript, Images)</span>
+<span class="c1"># https://docs.djangoproject.com/en/3.2/howto/static-files/</span>
+
+<span class="n">STATIC_URL</span> <span class="o">=</span> <span class="s1">&#39;/static/&#39;</span>
+
+<span class="c1"># Default primary key field type</span>
+<span class="c1"># https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field</span>
+
+<span class="n">DEFAULT_AUTO_FIELD</span> <span class="o">=</span> <span class="s1">&#39;django.db.models.BigAutoField&#39;</span>
+
+<span class="c1"># AWS S3 / MinIO settings</span>
+<span class="n">DJANGO_AWS_ACCESS_KEY_ID</span><span class="o">=</span><span class="s2">&quot;minioadmin&quot;</span>
+<span class="n">DJANGO_AWS_SECRET_ACCESS_KEY</span><span class="o">=</span><span class="s2">&quot;minioadmin&quot;</span>
+<span class="n">DJANGO_AWS_REGION</span><span class="o">=</span><span class="s2">&quot;us-west-2&quot;</span>
+<span class="n">DJANGO_AWS_STORAGE_BUCKET_NAME</span><span class="o">=</span><span class="s2">&quot;fileresponse&quot;</span>
+<span class="n">MINIO_ENDPOINT_URL</span><span class="o">=</span><span class="s2">&quot;http://localhost:9000&quot;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Overwriting example/example/settings.py
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Apply-Migrations">Apply Migrations<a class="anchor-link" href="#Apply-Migrations"> </a></h2>
 </div>
 </div>
@@ -379,6 +540,7 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 <pre>/Users/jochen/projects/django_fileresponse/nbs
 WARNING: `pyenv init -` no longer sets PATH.
 Run `pyenv init` to see the necessary changes to make to your configuration.
+ln: ./example: File exists
 /Users/jochen/projects/django_fileresponse/example
 </pre>
 </div>
