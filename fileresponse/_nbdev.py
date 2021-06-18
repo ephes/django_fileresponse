@@ -4,6 +4,7 @@ __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"say_hello": "00_core.ipynb",
          "AsyncFileASGIHandler": "01_handlers.ipynb",
+         "AsyncResponseBase": "01_http.ipynb",
          "AiofileFileResponse": "01_http.ipynb",
          "AiobotocoreFileResponse": "01_http.ipynb",
          "get_config": "01_scripts.ipynb",
