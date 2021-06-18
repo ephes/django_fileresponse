@@ -86,7 +86,8 @@ nb_path: "nbs/create_sample_django_project.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>/Users/jochen/projects/django_fileresponse
+<pre>WARNING: `pyenv init -` no longer sets PATH.
+Run `pyenv init` to see the necessary changes to make to your configuration.
 </pre>
 </div>
 </div>
@@ -151,7 +152,7 @@ nb_path: "nbs/create_sample_django_project.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Overwriting example/example/views.py
+<pre>Writing example/example/views.py
 </pre>
 </div>
 </div>
@@ -314,6 +315,8 @@ nb_path: "nbs/create_sample_django_project.ipynb"
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/Users/jochen/projects/django_fileresponse/example
+WARNING: `pyenv init -` no longer sets PATH.
+Run `pyenv init` to see the necessary changes to make to your configuration.
 <span class="ansi-cyan-intense-fg ansi-bold">Operations to perform:</span>
 <span class="ansi-bold">  Apply all migrations: </span>admin, auth, contenttypes, sessions
 <span class="ansi-cyan-intense-fg ansi-bold">Running migrations:</span>
@@ -374,7 +377,8 @@ nb_path: "nbs/create_sample_django_project.ipynb"
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/Users/jochen/projects/django_fileresponse/nbs
-ln: ./example: File exists
+WARNING: `pyenv init -` no longer sets PATH.
+Run `pyenv init` to see the necessary changes to make to your configuration.
 /Users/jochen/projects/django_fileresponse/example
 </pre>
 </div>
@@ -395,6 +399,47 @@ ln: ./example: File exists
 </div>
 </div>
 </div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>python manage.py runserver <span class="m">0</span>.0.0.0:8000
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>WARNING: `pyenv init -` no longer sets PATH.
+Run `pyenv init` to see the necessary changes to make to your configuration.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+June 18, 2021 - 12:27:45
+Django version 3.2.4, using settings &#39;example.settings&#39;
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+^C
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 </div>
  
 
