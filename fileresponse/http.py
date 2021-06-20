@@ -23,11 +23,13 @@ class AsyncResponseBase:
 
     async def send_stream_to_client(self, stream, send):
         started_serving = time.perf_counter()
-        await send({
-            "type": "http.response.start",
-            "status": self.status_code,
-            "headers": self.raw_headers,
-        })
+        await send(
+            {
+                "type": "http.response.start",
+                "status": self.status_code,
+                "headers": self.raw_headers,
+            }
+        )
         chunks = []
         sent_size = 0
 
@@ -58,6 +60,12 @@ class AiofileFileResponse(AsyncResponseBase):
         super().__init__(path, chunk_size=chunk_size)
         self.path = path
 
+    def __repr__(self):
+        return "<%(cls)s status_code=%(status_code)d>" % {
+            "cls": self.__class__.__name__,
+            "status_code": self.status_code,
+        }
+
     async def stream(self, send):
         async with aiofiles.open(self.path, mode="rb") as stream:  # type: ignore
             await self.send_stream_to_client(stream, send)
@@ -75,6 +83,12 @@ class AiobotocoreFileResponse(AsyncResponseBase):
         self.bucket = bucket
         self.key = key
 
+    def __repr__(self):
+        return "<%(cls)s status_code=%(status_code)d>" % {
+            "cls": self.__class__.__name__,
+            "status_code": self.status_code,
+        }
+
     async def stream(self, send):
         session = aiobotocore.get_session()
         async with session.create_client(
@@ -83,7 +97,7 @@ class AiobotocoreFileResponse(AsyncResponseBase):
             region_name=settings.DJANGO_AWS_REGION,
             aws_secret_access_key=settings.DJANGO_AWS_SECRET_ACCESS_KEY,
             aws_access_key_id=settings.DJANGO_AWS_ACCESS_KEY_ID,
-            use_ssl=False
+            use_ssl=False,
         ) as client:
             minio_response = await client.get_object(Bucket=self.bucket, Key=self.key)
             async with minio_response["Body"] as stream:

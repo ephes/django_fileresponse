@@ -142,7 +142,7 @@ nb_path: "nbs/01_http.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L56" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/fileresponse/http.html#AsyncResponseBase"><code>AsyncResponseBase</code></a></p>
+<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L58" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/fileresponse/http.html#AsyncResponseBase"><code>AsyncResponseBase</code></a></p>
 </blockquote>
 
 </div>
@@ -227,6 +227,96 @@ nb_path: "nbs/01_http.ipynb"
 </div>
 </div>
 
+<div class="output_area">
+
+
+
+
+<div id="e1e09e71-6e45-484f-940c-961035f0d14f"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#e1e09e71-6e45-484f-940c-961035f0d14f');
+
+            setTimeout(function() {
+                var nbb_cell_id = 13;
+                var nbb_unformatted_code = "import os\n\nfrom pathlib import Path\n\npath = Path(\"testdata.bin\")\n\nwith path.open(\"wb\") as f:\n    f.write(os.urandom(10000))\n\nwith path.open(\"rb\") as f:\n    content = f.read()\n\nchunk_datas = []\n\n\nasync def send(chunk_data):\n    chunk_datas.append(chunk_data)\n\n\nresponse = AiofileFileResponse(path)\nawait response.stream(send)\nreceived_content = b\"\".join([cd.get(\"body\", b\"\") for cd in chunk_datas])\n\nassert content == received_content";
+                var nbb_formatted_code = "import os\n\nfrom pathlib import Path\n\npath = Path(\"testdata.bin\")\n\nwith path.open(\"wb\") as f:\n    f.write(os.urandom(10000))\n\nwith path.open(\"rb\") as f:\n    content = f.read()\n\nchunk_datas = []\n\n\nasync def send(chunk_data):\n    chunk_datas.append(chunk_data)\n\n\nresponse = AiofileFileResponse(path)\nawait response.stream(send)\nreceived_content = b\"\".join([cd.get(\"body\", b\"\") for cd in chunk_datas])\n\nassert content == received_content";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="test-repr">test <strong>repr</strong><a class="anchor-link" href="#test-repr"> </a></h3>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">AiofileFileResponse</span><span class="p">(</span><span class="s2">&quot;foobar&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="s2">&quot;&lt;AiofileFileResponse status_code=200&gt;&quot;</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="0856ac6d-cb92-496e-89f1-96b17acac1e2"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#0856ac6d-cb92-496e-89f1-96b17acac1e2');
+
+            setTimeout(function() {
+                var nbb_cell_id = 15;
+                var nbb_unformatted_code = "response = AiofileFileResponse(\"foobar\")\nassert '<AiofileFileResponse status_code=200>' == repr(response)";
+                var nbb_formatted_code = "response = AiofileFileResponse(\"foobar\")\nassert \"<AiofileFileResponse status_code=200>\" == repr(response)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -251,7 +341,7 @@ nb_path: "nbs/01_http.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L72" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/fileresponse/http.html#AsyncResponseBase"><code>AsyncResponseBase</code></a></p>
+<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L80" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/fileresponse/http.html#AsyncResponseBase"><code>AsyncResponseBase</code></a></p>
 </blockquote>
 
 </div>
@@ -267,6 +357,66 @@ nb_path: "nbs/01_http.ipynb"
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Tests">Tests<a class="anchor-link" href="#Tests"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">AiobotocoreFileResponse</span><span class="p">(</span><span class="s2">&quot;bucket&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="s2">&quot;&lt;AiobotocoreFileResponse status_code=200&gt;&quot;</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="fe9a4ebe-e8cb-4ece-99d9-32813650940d"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#fe9a4ebe-e8cb-4ece-99d9-32813650940d');
+
+            setTimeout(function() {
+                var nbb_cell_id = 21;
+                var nbb_unformatted_code = "response = AiobotocoreFileResponse(\"bucket\", \"key\")\nassert '<AiobotocoreFileResponse status_code=200>' == repr(response)";
+                var nbb_formatted_code = "response = AiobotocoreFileResponse(\"bucket\", \"key\")\nassert \"<AiobotocoreFileResponse status_code=200>\" == repr(response)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
 
 </div>
     {% endraw %}
