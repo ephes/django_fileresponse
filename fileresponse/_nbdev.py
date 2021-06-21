@@ -3,6 +3,7 @@
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"say_hello": "00_core.ipynb",
+         "get_asgi_application": "01_asgi.ipynb",
          "AsyncFileASGIHandler": "01_handlers.ipynb",
          "AsyncResponseBase": "01_http.ipynb",
          "AiofileFileResponse": "01_http.ipynb",
@@ -13,6 +14,7 @@ index = {"say_hello": "00_core.ipynb",
          "nbdev_build_docs_patched": "01_scripts.ipynb"}
 
 modules = ["core.py",
+           "asgi.py",
            "handlers.py",
            "http.py",
            "scripts.py"]

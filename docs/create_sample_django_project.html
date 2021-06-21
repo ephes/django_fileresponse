@@ -65,10 +65,10 @@ nb_path: "nbs/create_sample_django_project.ipynb"
 
 
 
-<div id="5bdfa7d3-fa4a-487e-9d59-806e352a7f11"></div>
+<div id="7d4c7ad1-0fc8-41c0-961f-c2ade5b5a310"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#5bdfa7d3-fa4a-487e-9d59-806e352a7f11');
+var element = $('#7d4c7ad1-0fc8-41c0-961f-c2ade5b5a310');
 
             setTimeout(function() {
                 var nbb_cell_id = 11;
@@ -191,10 +191,10 @@ var element = $('#5bdfa7d3-fa4a-487e-9d59-806e352a7f11');
 
 
 
-<div id="a1c9c209-b222-4d15-83b9-5665bf2de6e6"></div>
+<div id="61238412-c243-4ddc-af6b-d8bfaa16be96"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#a1c9c209-b222-4d15-83b9-5665bf2de6e6');
+var element = $('#61238412-c243-4ddc-af6b-d8bfaa16be96');
 
             setTimeout(function() {
                 var nbb_cell_id = 12;
@@ -243,9 +243,9 @@ var element = $('#a1c9c209-b222-4d15-83b9-5665bf2de6e6');
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">views</span>
 
 <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;/sync/&lt;int:num&gt;&quot;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">get_file</span><span class="p">),</span>
-    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;/async_filesystem/&lt;int:num&gt;&quot;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">aget_file</span><span class="p">),</span>
-    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;/async_minio/&lt;int:num&gt;&quot;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">aminio_get_file</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;sync/&lt;int:num&gt;&quot;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">get_file</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;async_filesystem/&lt;int:num&gt;&quot;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">aget_file</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;async_minio/&lt;int:num&gt;&quot;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">aminio_get_file</span><span class="p">),</span>
 <span class="p">]</span>
 </pre></div>
 
@@ -269,15 +269,15 @@ var element = $('#a1c9c209-b222-4d15-83b9-5665bf2de6e6');
 
 
 
-<div id="e9b1c6f5-0711-4436-837a-98a19b515bdd"></div>
+<div id="208126ae-50b9-4430-9bc6-32b2f88ad735"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#e9b1c6f5-0711-4436-837a-98a19b515bdd');
+var element = $('#208126ae-50b9-4430-9bc6-32b2f88ad735');
 
             setTimeout(function() {
-                var nbb_cell_id = 14;
-                var nbb_unformatted_code = "%%writefile example/example/urls.py\n# dont_test\n\nfrom django.urls import path\n\nfrom . import views\n\nurlpatterns = [\n    path(\"/sync/<int:num>\", views.get_file),\n    path(\"/async_filesystem/<int:num>\", views.aget_file),\n    path(\"/async_minio/<int:num>\", views.aminio_get_file),\n]";
-                var nbb_formatted_code = "%%writefile example/example/urls.py\n# dont_test\n\nfrom django.urls import path\n\nfrom . import views\n\nurlpatterns = [\n    path(\"/sync/<int:num>\", views.get_file),\n    path(\"/async_filesystem/<int:num>\", views.aget_file),\n    path(\"/async_minio/<int:num>\", views.aminio_get_file),\n]";
+                var nbb_cell_id = 20;
+                var nbb_unformatted_code = "%%writefile example/example/urls.py\n# dont_test\n\nfrom django.urls import path\n\nfrom . import views\n\nurlpatterns = [\n    path(\"sync/<int:num>\", views.get_file),\n    path(\"async_filesystem/<int:num>\", views.aget_file),\n    path(\"async_minio/<int:num>\", views.aminio_get_file),\n]";
+                var nbb_formatted_code = "%%writefile example/example/urls.py\n# dont_test\n\nfrom django.urls import path\n\nfrom . import views\n\nurlpatterns = [\n    path(\"sync/<int:num>\", views.get_file),\n    path(\"async_filesystem/<int:num>\", views.aget_file),\n    path(\"async_minio/<int:num>\", views.aminio_get_file),\n]";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
@@ -316,31 +316,14 @@ var element = $('#e9b1c6f5-0711-4436-837a-98a19b515bdd');
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%writefile</span> example/example/asgi.py
 <span class="c1"># dont_test</span>
 <span class="kn">import</span> <span class="nn">os</span>
-
 <span class="kn">import</span> <span class="nn">django</span>
-<span class="kn">from</span> <span class="nn">django.core.asgi</span> <span class="kn">import</span> <span class="n">get_asgi_application</span>
 
-<span class="kn">from</span> <span class="nn">fileresponse.handlers</span> <span class="kn">import</span> <span class="n">AsyncFileASGIHandler</span>
+<span class="kn">from</span> <span class="nn">fileresponse.asgi</span> <span class="kn">import</span> <span class="n">get_asgi_application</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">urls</span>
 
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">,</span> <span class="s1">&#39;example.settings&#39;</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">get_fileresponse_asgi_application</span><span class="p">():</span>
-    <span class="n">django</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">set_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">urls</span><span class="o">.</span><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">urls</span><span class="o">.</span><span class="n">async_urlpatterns</span>
-    <span class="k">return</span> <span class="n">AsyncFileASGIHandler</span><span class="p">()</span>
-
-
-<span class="k">def</span> <span class="nf">get_minio_application</span><span class="p">():</span>
-    <span class="n">django</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">set_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">urls</span><span class="o">.</span><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">urls</span><span class="o">.</span><span class="n">minio_urlpatterns</span>
-    <span class="k">return</span> <span class="n">AsyncFileASGIHandler</span><span class="p">()</span>
-
-
-<span class="c1"># application = get_asgi_application()</span>
-<span class="n">application</span> <span class="o">=</span> <span class="n">get_fileresponse_asgi_application</span><span class="p">()</span>
+<span class="n">application</span> <span class="o">=</span> <span class="n">get_asgi_application</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -363,15 +346,15 @@ var element = $('#e9b1c6f5-0711-4436-837a-98a19b515bdd');
 
 
 
-<div id="49b57d33-1342-4698-b7a8-1ff266a36b88"></div>
+<div id="f697283b-a431-4889-a6ba-1c43d0babfab"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#49b57d33-1342-4698-b7a8-1ff266a36b88');
+var element = $('#f697283b-a431-4889-a6ba-1c43d0babfab');
 
             setTimeout(function() {
-                var nbb_cell_id = 15;
-                var nbb_unformatted_code = "%%writefile example/example/asgi.py\n# dont_test\nimport os\n\nimport django\nfrom django.core.asgi import get_asgi_application\n\nfrom fileresponse.handlers import AsyncFileASGIHandler\n\nfrom . import urls\n\nos.environ.setdefault('DJANGO_SETTINGS_MODULE', 'example.settings')\n\n\ndef get_fileresponse_asgi_application():\n    django.setup(set_prefix=False)\n    urls.urlpatterns = urls.async_urlpatterns\n    return AsyncFileASGIHandler()\n\n\ndef get_minio_application():\n    django.setup(set_prefix=False)\n    urls.urlpatterns = urls.minio_urlpatterns\n    return AsyncFileASGIHandler()\n\n\n# application = get_asgi_application()\napplication = get_fileresponse_asgi_application()";
-                var nbb_formatted_code = "%%writefile example/example/asgi.py\n# dont_test\nimport os\n\nimport django\nfrom django.core.asgi import get_asgi_application\n\nfrom fileresponse.handlers import AsyncFileASGIHandler\n\nfrom . import urls\n\nos.environ.setdefault('DJANGO_SETTINGS_MODULE', 'example.settings')\n\n\ndef get_fileresponse_asgi_application():\n    django.setup(set_prefix=False)\n    urls.urlpatterns = urls.async_urlpatterns\n    return AsyncFileASGIHandler()\n\n\ndef get_minio_application():\n    django.setup(set_prefix=False)\n    urls.urlpatterns = urls.minio_urlpatterns\n    return AsyncFileASGIHandler()\n\n\n# application = get_asgi_application()\napplication = get_fileresponse_asgi_application()";
+                var nbb_cell_id = 18;
+                var nbb_unformatted_code = "%%writefile example/example/asgi.py\n# dont_test\nimport os\nimport django\n\nfrom fileresponse.asgi import get_asgi_application\n\nfrom . import urls\n\nos.environ.setdefault('DJANGO_SETTINGS_MODULE', 'example.settings')\napplication = get_asgi_application()";
+                var nbb_formatted_code = "%%writefile example/example/asgi.py\n# dont_test\nimport os\nimport django\n\nfrom fileresponse.asgi import get_asgi_application\n\nfrom . import urls\n\nos.environ.setdefault('DJANGO_SETTINGS_MODULE', 'example.settings')\napplication = get_asgi_application()";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
@@ -553,13 +536,13 @@ var element = $('#49b57d33-1342-4698-b7a8-1ff266a36b88');
 
 
 
-<div id="2640284b-7274-4aed-b077-9f96e3da3bdc"></div>
+<div id="9913f80b-6017-45af-9121-937407981069"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#2640284b-7274-4aed-b077-9f96e3da3bdc');
+var element = $('#9913f80b-6017-45af-9121-937407981069');
 
             setTimeout(function() {
-                var nbb_cell_id = 17;
+                var nbb_cell_id = 19;
                 var nbb_unformatted_code = "%%writefile example/example/settings.py\n# dont_test\n\n\nfrom pathlib import Path\n\n# Build paths inside the project like this: BASE_DIR / \"subdir\".\nBASE_DIR = Path(__file__).resolve().parent.parent\n\n\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/\n\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = \"django-insecure-eyj(*+5=#xb1(5$50p*k0%5evl)80dcoh(i6(tx9a7dq9i5#9f\"\n\n# SECURITY WARNING: don\"t run with debug turned on in production!\nDEBUG = True\n\nALLOWED_HOSTS = []\n\n\n# Application definition\n\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",\n]\n\nMIDDLEWARE = [\n    \"django.middleware.security.SecurityMiddleware\",\n    \"django.contrib.sessions.middleware.SessionMiddleware\",\n    \"django.middleware.common.CommonMiddleware\",\n    \"django.middleware.csrf.CsrfViewMiddleware\",\n    \"django.contrib.auth.middleware.AuthenticationMiddleware\",\n    \"django.contrib.messages.middleware.MessageMiddleware\",\n    \"django.middleware.clickjacking.XFrameOptionsMiddleware\",\n]\n\nROOT_URLCONF = \"example.urls\"\n\nTEMPLATES = [\n    {\n        \"BACKEND\": \"django.template.backends.django.DjangoTemplates\",\n        \"DIRS\": [],\n        \"APP_DIRS\": True,\n        \"OPTIONS\": {\n            \"context_processors\": [\n                \"django.template.context_processors.debug\",\n                \"django.template.context_processors.request\",\n                \"django.contrib.auth.context_processors.auth\",\n                \"django.contrib.messages.context_processors.messages\",\n            ],\n        },\n    },\n]\n\nWSGI_APPLICATION = \"example.wsgi.application\"\n\n\n# Database\n# https://docs.djangoproject.com/en/3.2/ref/settings/#databases\n\nDATABASES = {\n    \"default\": {\n        \"ENGINE\": \"django.db.backends.sqlite3\",\n        \"NAME\": BASE_DIR / \"db.sqlite3\",\n    }\n}\n\n\n# Password validation\n# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators\n\nAUTH_PASSWORD_VALIDATORS = [\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.UserAttributeSimilarityValidator\",\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.MinimumLengthValidator\",\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.CommonPasswordValidator\",\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.NumericPasswordValidator\",\n    },\n]\n\n\n# Internationalization\n# https://docs.djangoproject.com/en/3.2/topics/i18n/\n\nLANGUAGE_CODE = \"en-us\"\n\nTIME_ZONE = \"UTC\"\n\nUSE_I18N = True\n\nUSE_L10N = True\n\nUSE_TZ = True\n\n\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/3.2/howto/static-files/\n\nSTATIC_URL = \"/static/\"\n\n# Default primary key field type\n# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field\n\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\n\n# AWS S3 / MinIO settings\nDJANGO_AWS_ACCESS_KEY_ID=\"minioadmin\"\nDJANGO_AWS_SECRET_ACCESS_KEY=\"minioadmin\"\nDJANGO_AWS_REGION=\"us-west-2\"\nDJANGO_AWS_STORAGE_BUCKET_NAME=\"fileresponse\"\nMINIO_ENDPOINT_URL=\"http://localhost:9000\"";
                 var nbb_formatted_code = "%%writefile example/example/settings.py\n# dont_test\n\n\nfrom pathlib import Path\n\n# Build paths inside the project like this: BASE_DIR / \"subdir\".\nBASE_DIR = Path(__file__).resolve().parent.parent\n\n\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/\n\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = \"django-insecure-eyj(*+5=#xb1(5$50p*k0%5evl)80dcoh(i6(tx9a7dq9i5#9f\"\n\n# SECURITY WARNING: don\"t run with debug turned on in production!\nDEBUG = True\n\nALLOWED_HOSTS = []\n\n\n# Application definition\n\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",\n]\n\nMIDDLEWARE = [\n    \"django.middleware.security.SecurityMiddleware\",\n    \"django.contrib.sessions.middleware.SessionMiddleware\",\n    \"django.middleware.common.CommonMiddleware\",\n    \"django.middleware.csrf.CsrfViewMiddleware\",\n    \"django.contrib.auth.middleware.AuthenticationMiddleware\",\n    \"django.contrib.messages.middleware.MessageMiddleware\",\n    \"django.middleware.clickjacking.XFrameOptionsMiddleware\",\n]\n\nROOT_URLCONF = \"example.urls\"\n\nTEMPLATES = [\n    {\n        \"BACKEND\": \"django.template.backends.django.DjangoTemplates\",\n        \"DIRS\": [],\n        \"APP_DIRS\": True,\n        \"OPTIONS\": {\n            \"context_processors\": [\n                \"django.template.context_processors.debug\",\n                \"django.template.context_processors.request\",\n                \"django.contrib.auth.context_processors.auth\",\n                \"django.contrib.messages.context_processors.messages\",\n            ],\n        },\n    },\n]\n\nWSGI_APPLICATION = \"example.wsgi.application\"\n\n\n# Database\n# https://docs.djangoproject.com/en/3.2/ref/settings/#databases\n\nDATABASES = {\n    \"default\": {\n        \"ENGINE\": \"django.db.backends.sqlite3\",\n        \"NAME\": BASE_DIR / \"db.sqlite3\",\n    }\n}\n\n\n# Password validation\n# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators\n\nAUTH_PASSWORD_VALIDATORS = [\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.UserAttributeSimilarityValidator\",\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.MinimumLengthValidator\",\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.CommonPasswordValidator\",\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.NumericPasswordValidator\",\n    },\n]\n\n\n# Internationalization\n# https://docs.djangoproject.com/en/3.2/topics/i18n/\n\nLANGUAGE_CODE = \"en-us\"\n\nTIME_ZONE = \"UTC\"\n\nUSE_I18N = True\n\nUSE_L10N = True\n\nUSE_TZ = True\n\n\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/3.2/howto/static-files/\n\nSTATIC_URL = \"/static/\"\n\n# Default primary key field type\n# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field\n\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\n\n# AWS S3 / MinIO settings\nDJANGO_AWS_ACCESS_KEY_ID=\"minioadmin\"\nDJANGO_AWS_SECRET_ACCESS_KEY=\"minioadmin\"\nDJANGO_AWS_REGION=\"us-west-2\"\nDJANGO_AWS_STORAGE_BUCKET_NAME=\"fileresponse\"\nMINIO_ENDPOINT_URL=\"http://localhost:9000\"";
                 var nbb_cells = Jupyter.notebook.get_cells();
