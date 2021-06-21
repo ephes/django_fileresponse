@@ -54,10 +54,10 @@ nb_path: "nbs/create_local_minio_server.ipynb"
 
 
 
-<div id="0a5f042a-3e7d-4594-a114-e2aa7d161b59"></div>
+<div id="a7ffaa72-ea4c-45cb-85dd-c6811598e291"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#0a5f042a-3e7d-4594-a114-e2aa7d161b59');
+var element = $('#a7ffaa72-ea4c-45cb-85dd-c6811598e291');
 
             setTimeout(function() {
                 var nbb_cell_id = 2;
@@ -121,14 +121,14 @@ var element = $('#0a5f042a-3e7d-4594-a114-e2aa7d161b59');
 
 
 
-<div id="452cbe15-60d8-46c6-83eb-4575417eeeac"></div>
+<div id="26833c77-7a7e-47e2-b92c-bdbc27fea17d"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#452cbe15-60d8-46c6-83eb-4575417eeeac');
+var element = $('#26833c77-7a7e-47e2-b92c-bdbc27fea17d');
 
             setTimeout(function() {
-                var nbb_cell_id = 7;
-                var nbb_unformatted_code = "# dont_test\n\ndef download_minio(path):\n    minio_url = \"https://dl.min.io/server/minio/release/darwin-amd64/minio\"\n    with httpx.stream(\"GET\", minio_url) as r:\n        r.raise_for_status()\n        with path.open(\"wb\") as f:\n            for data in r.iter_bytes():\n                f.write(data)\n    path.chmod(path.stat().st_mode | stat.S_IEXEC)\n    return path";
+                var nbb_cell_id = 3;
+                var nbb_unformatted_code = "# dont_test\n\n\ndef download_minio(path):\n    minio_url = \"https://dl.min.io/server/minio/release/darwin-amd64/minio\"\n    with httpx.stream(\"GET\", minio_url) as r:\n        r.raise_for_status()\n        with path.open(\"wb\") as f:\n            for data in r.iter_bytes():\n                f.write(data)\n    path.chmod(path.stat().st_mode | stat.S_IEXEC)\n    return path";
                 var nbb_formatted_code = "# dont_test\n\n\ndef download_minio(path):\n    minio_url = \"https://dl.min.io/server/minio/release/darwin-amd64/minio\"\n    with httpx.stream(\"GET\", minio_url) as r:\n        r.raise_for_status()\n        with path.open(\"wb\") as f:\n            for data in r.iter_bytes():\n                f.write(data)\n    path.chmod(path.stat().st_mode | stat.S_IEXEC)\n    return path";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
@@ -182,10 +182,10 @@ var element = $('#452cbe15-60d8-46c6-83eb-4575417eeeac');
 
 
 
-<div id="ae6dee63-c1c2-4aac-b743-6b9862d7a07b"></div>
+<div id="6fde4f35-f0ae-4ac3-812d-a1b1f22705de"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#ae6dee63-c1c2-4aac-b743-6b9862d7a07b');
+var element = $('#6fde4f35-f0ae-4ac3-812d-a1b1f22705de');
 
             setTimeout(function() {
                 var nbb_cell_id = 4;
@@ -232,14 +232,6 @@ var element = $('#ae6dee63-c1c2-4aac-b743-6b9862d7a07b');
 
 <div class="output_area">
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>/Users/jochen/projects/django_fileresponse
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -253,15 +245,15 @@ var element = $('#ae6dee63-c1c2-4aac-b743-6b9862d7a07b');
 
 
 
-<div id="90499c83-7970-473d-b2ac-71f8b9217baf"></div>
+<div id="195e160d-269c-4486-b351-b2a281f811a4"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#90499c83-7970-473d-b2ac-71f8b9217baf');
+var element = $('#195e160d-269c-4486-b351-b2a281f811a4');
 
             setTimeout(function() {
                 var nbb_cell_id = 5;
-                var nbb_unformatted_code = "%cd ..\ndownload_minio(Path(\"minio\"))";
-                var nbb_formatted_code = "%cd ..\ndownload_minio(Path(\"minio\"))";
+                var nbb_unformatted_code = "# dont_test\n\ndownload_minio(Path(\"minio\"))";
+                var nbb_formatted_code = "# dont_test\n\ndownload_minio(Path(\"minio\"))";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
@@ -316,13 +308,13 @@ var element = $('#90499c83-7970-473d-b2ac-71f8b9217baf');
 
 
 
-<div id="a4068d0a-b64c-485a-adb6-97e95487ad65"></div>
+<div id="56e4ca46-2038-48a7-a532-399ed3f4c2e1"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#a4068d0a-b64c-485a-adb6-97e95487ad65');
+var element = $('#56e4ca46-2038-48a7-a532-399ed3f4c2e1');
 
             setTimeout(function() {
-                var nbb_cell_id = 5;
+                var nbb_cell_id = 6;
                 var nbb_unformatted_code = "# dont_test\n\n%pwd";
                 var nbb_formatted_code = "# dont_test\n\n%pwd";
                 var nbb_cells = Jupyter.notebook.get_cells();
@@ -375,19 +367,17 @@ var element = $('#a4068d0a-b64c-485a-adb6-97e95487ad65');
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>WARNING: `pyenv init -` no longer sets PATH.
-Run `pyenv init` to see the necessary changes to make to your configuration.
-<span class="ansi-red-fg">No credential environment variables defined. Going with the defaults.
+<pre><span class="ansi-red-fg">No credential environment variables defined. Going with the defaults.
 It is strongly recommended to define your own credentials via environment variables MINIO_ROOT_USER and MINIO_ROOT_PASSWORD instead of using default values</span>
-<span class="ansi-blue-fg">Endpoint: </span><span class="ansi-bold">http://192.168.178.37:9000  http://127.0.0.1:9000                                 </span>
+<span class="ansi-blue-fg">Endpoint: </span><span class="ansi-bold">http://192.168.178.28:9000  http://127.0.0.1:9000                             </span>
 <span class="ansi-blue-fg">RootUser: </span><span class="ansi-bold">minioadmin </span>
 <span class="ansi-blue-fg">RootPass: </span><span class="ansi-bold">minioadmin </span>
 <span class="ansi-blue-fg">
 Browser Access:</span>
-   http://192.168.178.37:9000  http://127.0.0.1:9000                                
+   http://192.168.178.28:9000  http://127.0.0.1:9000                            
 <span class="ansi-blue-fg">
 Command-line Access: </span>https://docs.min.io/docs/minio-client-quickstart-guide
-   $ mc alias set myminio http://192.168.178.37:9000 minioadmin minioadmin
+   $ mc alias set myminio http://192.168.178.28:9000 minioadmin minioadmin
 <span class="ansi-blue-fg">
 Object API (Amazon S3 compatible):</span>
 <span class="ansi-blue-fg">   Go: </span>        https://docs.min.io/docs/golang-client-quickstart-guide
@@ -397,18 +387,6 @@ Object API (Amazon S3 compatible):</span>
 <span class="ansi-blue-fg">   .NET: </span>      https://docs.min.io/docs/dotnet-client-quickstart-guide
 <span class="ansi-red-intense-fg ansi-bold">Detected default credentials &#39;minioadmin:minioadmin&#39;, please change the credentials immediately by setting &#39;MINIO_ROOT_USER&#39; and &#39;MINIO_ROOT_PASSWORD&#39; environment values</span>
 IAM initialization complete
-
-API: GetObject(bucket=fileresponse, object=85)
-Time: 21:45:38 CEST 06/18/2021
-DeploymentID: 34d0db61-0aac-4f29-9588-9c1d8b541e80
-RequestID: 1689C4D02062AD90
-RemoteHost: ::1
-Host: localhost:9000
-UserAgent: Botocore/1.20.49 Python/3.9.5 Darwin/20.5.0
-Error: <span class="ansi-red-intense-fg ansi-bold">Unable to write all the data to client write tcp [::1]:9000-&gt;[::1]:65095: write: protocol wrong type for socket (*fmt.wrapError)</span>
-       3: cmd/object-handlers.go:511:cmd.objectAPIHandlers.getObjectHandler()
-       2: cmd/object-handlers.go:565:cmd.objectAPIHandlers.GetObjectHandler()
-       1: net/http/server.go:2069:http.HandlerFunc.ServeHTTP()
 </pre>
 </div>
 </div>

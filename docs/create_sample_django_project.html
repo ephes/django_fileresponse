@@ -60,6 +60,36 @@ nb_path: "nbs/create_sample_django_project.ipynb"
 </div>
 </div>
 
+<div class="output_area">
+
+
+
+
+<div id="5bdfa7d3-fa4a-487e-9d59-806e352a7f11"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#5bdfa7d3-fa4a-487e-9d59-806e352a7f11');
+
+            setTimeout(function() {
+                var nbb_cell_id = 11;
+                var nbb_unformatted_code = "# dont_test\n\n%cd ..";
+                var nbb_formatted_code = "# dont_test\n\n%cd ..";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -86,9 +116,7 @@ nb_path: "nbs/create_sample_django_project.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>WARNING: `pyenv init -` no longer sets PATH.
-Run `pyenv init` to see the necessary changes to make to your configuration.
-</pre>
+<pre></pre>
 </div>
 </div>
 
@@ -158,6 +186,36 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 </div>
 </div>
 
+<div class="output_area">
+
+
+
+
+<div id="a1c9c209-b222-4d15-83b9-5665bf2de6e6"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#a1c9c209-b222-4d15-83b9-5665bf2de6e6');
+
+            setTimeout(function() {
+                var nbb_cell_id = 12;
+                var nbb_unformatted_code = "%%writefile example/example/views.py\n# dont_test\n\nimport aiofiles\n\nfrom pathlib import Path\n\nfrom django.conf import settings\nfrom django.http import HttpResponse\nfrom django.http import FileResponse\n\nfrom fileresponse.http import AiofileFileResponse\nfrom fileresponse.http import AiobotocoreFileResponse\n\n\ndef get_file(request, num=None):\n    file_path = Path(__file__).parent.parent / \"data\" / str(num)\n    print(str(file_path))\n    return FileResponse(file_path.open(\"rb\"))\n\n\nasync def aget_file(request, num=None):\n    file_path = Path(__file__).parent.parent / \"data\" / str(num)\n    return AiofileFileResponse(file_path, chunk_size=4096)\n\n\nasync def aminio_get_file(request, num=None):\n    bucket = settings.DJANGO_AWS_STORAGE_BUCKET_NAME\n    key = str(num)\n    return AiobotocoreFileResponse(bucket, key, chunk_size=4096)";
+                var nbb_formatted_code = "%%writefile example/example/views.py\n# dont_test\n\nimport aiofiles\n\nfrom pathlib import Path\n\nfrom django.conf import settings\nfrom django.http import HttpResponse\nfrom django.http import FileResponse\n\nfrom fileresponse.http import AiofileFileResponse\nfrom fileresponse.http import AiobotocoreFileResponse\n\n\ndef get_file(request, num=None):\n    file_path = Path(__file__).parent.parent / \"data\" / str(num)\n    print(str(file_path))\n    return FileResponse(file_path.open(\"rb\"))\n\n\nasync def aget_file(request, num=None):\n    file_path = Path(__file__).parent.parent / \"data\" / str(num)\n    return AiofileFileResponse(file_path, chunk_size=4096)\n\n\nasync def aminio_get_file(request, num=None):\n    bucket = settings.DJANGO_AWS_STORAGE_BUCKET_NAME\n    key = str(num)\n    return AiobotocoreFileResponse(bucket, key, chunk_size=4096)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -185,15 +243,9 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">views</span>
 
 <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;&lt;int:num&gt;&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">get_file</span><span class="p">),</span>
-<span class="p">]</span>
-
-<span class="n">async_urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;&lt;int:num&gt;&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">aget_file</span><span class="p">),</span>
-<span class="p">]</span>
-
-<span class="n">minio_urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;&lt;int:num&gt;&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">aminio_get_file</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;/sync/&lt;int:num&gt;&quot;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">get_file</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;/async_filesystem/&lt;int:num&gt;&quot;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">aget_file</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;/async_minio/&lt;int:num&gt;&quot;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">aminio_get_file</span><span class="p">),</span>
 <span class="p">]</span>
 </pre></div>
 
@@ -210,6 +262,36 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 <pre>Overwriting example/example/urls.py
 </pre>
 </div>
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="e9b1c6f5-0711-4436-837a-98a19b515bdd"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#e9b1c6f5-0711-4436-837a-98a19b515bdd');
+
+            setTimeout(function() {
+                var nbb_cell_id = 14;
+                var nbb_unformatted_code = "%%writefile example/example/urls.py\n# dont_test\n\nfrom django.urls import path\n\nfrom . import views\n\nurlpatterns = [\n    path(\"/sync/<int:num>\", views.get_file),\n    path(\"/async_filesystem/<int:num>\", views.aget_file),\n    path(\"/async_minio/<int:num>\", views.aminio_get_file),\n]";
+                var nbb_formatted_code = "%%writefile example/example/urls.py\n# dont_test\n\nfrom django.urls import path\n\nfrom . import views\n\nurlpatterns = [\n    path(\"/sync/<int:num>\", views.get_file),\n    path(\"/async_filesystem/<int:num>\", views.aget_file),\n    path(\"/async_minio/<int:num>\", views.aminio_get_file),\n]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
 </div>
 
 </div>
@@ -246,12 +328,6 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 
 
 <span class="k">def</span> <span class="nf">get_fileresponse_asgi_application</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The public interface to Django&#39;s ASGI support. Return an ASGI 3 callable.</span>
-
-<span class="sd">    Avoids making django.core.handlers.ASGIHandler a public API, in case the</span>
-<span class="sd">    internal implementation changes or moves in the future.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">django</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">set_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">urls</span><span class="o">.</span><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">urls</span><span class="o">.</span><span class="n">async_urlpatterns</span>
     <span class="k">return</span> <span class="n">AsyncFileASGIHandler</span><span class="p">()</span>
@@ -282,6 +358,36 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 </div>
 </div>
 
+<div class="output_area">
+
+
+
+
+<div id="49b57d33-1342-4698-b7a8-1ff266a36b88"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#49b57d33-1342-4698-b7a8-1ff266a36b88');
+
+            setTimeout(function() {
+                var nbb_cell_id = 15;
+                var nbb_unformatted_code = "%%writefile example/example/asgi.py\n# dont_test\nimport os\n\nimport django\nfrom django.core.asgi import get_asgi_application\n\nfrom fileresponse.handlers import AsyncFileASGIHandler\n\nfrom . import urls\n\nos.environ.setdefault('DJANGO_SETTINGS_MODULE', 'example.settings')\n\n\ndef get_fileresponse_asgi_application():\n    django.setup(set_prefix=False)\n    urls.urlpatterns = urls.async_urlpatterns\n    return AsyncFileASGIHandler()\n\n\ndef get_minio_application():\n    django.setup(set_prefix=False)\n    urls.urlpatterns = urls.minio_urlpatterns\n    return AsyncFileASGIHandler()\n\n\n# application = get_asgi_application()\napplication = get_fileresponse_asgi_application()";
+                var nbb_formatted_code = "%%writefile example/example/asgi.py\n# dont_test\nimport os\n\nimport django\nfrom django.core.asgi import get_asgi_application\n\nfrom fileresponse.handlers import AsyncFileASGIHandler\n\nfrom . import urls\n\nos.environ.setdefault('DJANGO_SETTINGS_MODULE', 'example.settings')\n\n\ndef get_fileresponse_asgi_application():\n    django.setup(set_prefix=False)\n    urls.urlpatterns = urls.async_urlpatterns\n    return AsyncFileASGIHandler()\n\n\ndef get_minio_application():\n    django.setup(set_prefix=False)\n    urls.urlpatterns = urls.minio_urlpatterns\n    return AsyncFileASGIHandler()\n\n\n# application = get_asgi_application()\napplication = get_fileresponse_asgi_application()";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -307,7 +413,7 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
-<span class="c1"># Build paths inside the project like this: BASE_DIR / &#39;subdir&#39;.</span>
+<span class="c1"># Build paths inside the project like this: BASE_DIR / &quot;subdir&quot;.</span>
 <span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
 
 
@@ -315,9 +421,9 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 <span class="c1"># See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/</span>
 
 <span class="c1"># SECURITY WARNING: keep the secret key used in production secret!</span>
-<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s1">&#39;django-insecure-eyj(*+5=#xb1(5$50p*k0</span><span class="si">%5e</span><span class="s1">vl)80dcoh(i6(tx9a7dq9i5#9f&#39;</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s2">&quot;django-insecure-eyj(*+5=#xb1(5$50p*k0</span><span class="si">%5e</span><span class="s2">vl)80dcoh(i6(tx9a7dq9i5#9f&quot;</span>
 
-<span class="c1"># SECURITY WARNING: don&#39;t run with debug turned on in production!</span>
+<span class="c1"># SECURITY WARNING: don&quot;t run with debug turned on in production!</span>
 <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>
 
 <span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[]</span>
@@ -326,52 +432,52 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 <span class="c1"># Application definition</span>
 
 <span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;django.contrib.staticfiles&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;django.contrib.admin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;django.contrib.auth&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;django.contrib.contenttypes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;django.contrib.sessions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;django.contrib.messages&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;django.contrib.staticfiles&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="n">MIDDLEWARE</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;django.middleware.security.SecurityMiddleware&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;django.middleware.csrf.CsrfViewMiddleware&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;django.contrib.messages.middleware.MessageMiddleware&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;django.middleware.clickjacking.XFrameOptionsMiddleware&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;django.middleware.security.SecurityMiddleware&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;django.contrib.sessions.middleware.SessionMiddleware&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;django.middleware.common.CommonMiddleware&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;django.middleware.csrf.CsrfViewMiddleware&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;django.contrib.auth.middleware.AuthenticationMiddleware&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;django.contrib.messages.middleware.MessageMiddleware&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;django.middleware.clickjacking.XFrameOptionsMiddleware&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">ROOT_URLCONF</span> <span class="o">=</span> <span class="s1">&#39;example.urls&#39;</span>
+<span class="n">ROOT_URLCONF</span> <span class="o">=</span> <span class="s2">&quot;example.urls&quot;</span>
 
 <span class="n">TEMPLATES</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s1">&#39;BACKEND&#39;</span><span class="p">:</span> <span class="s1">&#39;django.template.backends.django.DjangoTemplates&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;DIRS&#39;</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s1">&#39;APP_DIRS&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s1">&#39;OPTIONS&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;context_processors&#39;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="s1">&#39;django.template.context_processors.debug&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;django.template.context_processors.request&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;django.contrib.auth.context_processors.auth&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;django.contrib.messages.context_processors.messages&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;BACKEND&quot;</span><span class="p">:</span> <span class="s2">&quot;django.template.backends.django.DjangoTemplates&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DIRS&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;APP_DIRS&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;OPTIONS&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;context_processors&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;django.template.context_processors.debug&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;django.template.context_processors.request&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;django.contrib.auth.context_processors.auth&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;django.contrib.messages.context_processors.messages&quot;</span><span class="p">,</span>
             <span class="p">],</span>
         <span class="p">},</span>
     <span class="p">},</span>
 <span class="p">]</span>
 
-<span class="n">WSGI_APPLICATION</span> <span class="o">=</span> <span class="s1">&#39;example.wsgi.application&#39;</span>
+<span class="n">WSGI_APPLICATION</span> <span class="o">=</span> <span class="s2">&quot;example.wsgi.application&quot;</span>
 
 
 <span class="c1"># Database</span>
 <span class="c1"># https://docs.djangoproject.com/en/3.2/ref/settings/#databases</span>
 
 <span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s1">&#39;django.db.backends.sqlite3&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s1">&#39;db.sqlite3&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;ENGINE&quot;</span><span class="p">:</span> <span class="s2">&quot;django.db.backends.sqlite3&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;NAME&quot;</span><span class="p">:</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;db.sqlite3&quot;</span><span class="p">,</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -381,16 +487,16 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 
 <span class="n">AUTH_PASSWORD_VALIDATORS</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;django.contrib.auth.password_validation.UserAttributeSimilarityValidator&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NAME&quot;</span><span class="p">:</span> <span class="s2">&quot;django.contrib.auth.password_validation.UserAttributeSimilarityValidator&quot;</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;django.contrib.auth.password_validation.MinimumLengthValidator&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NAME&quot;</span><span class="p">:</span> <span class="s2">&quot;django.contrib.auth.password_validation.MinimumLengthValidator&quot;</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;django.contrib.auth.password_validation.CommonPasswordValidator&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NAME&quot;</span><span class="p">:</span> <span class="s2">&quot;django.contrib.auth.password_validation.CommonPasswordValidator&quot;</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;django.contrib.auth.password_validation.NumericPasswordValidator&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NAME&quot;</span><span class="p">:</span> <span class="s2">&quot;django.contrib.auth.password_validation.NumericPasswordValidator&quot;</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">]</span>
 
@@ -398,9 +504,9 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 <span class="c1"># Internationalization</span>
 <span class="c1"># https://docs.djangoproject.com/en/3.2/topics/i18n/</span>
 
-<span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
+<span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s2">&quot;en-us&quot;</span>
 
-<span class="n">TIME_ZONE</span> <span class="o">=</span> <span class="s1">&#39;UTC&#39;</span>
+<span class="n">TIME_ZONE</span> <span class="o">=</span> <span class="s2">&quot;UTC&quot;</span>
 
 <span class="n">USE_I18N</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -412,12 +518,12 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 <span class="c1"># Static files (CSS, JavaScript, Images)</span>
 <span class="c1"># https://docs.djangoproject.com/en/3.2/howto/static-files/</span>
 
-<span class="n">STATIC_URL</span> <span class="o">=</span> <span class="s1">&#39;/static/&#39;</span>
+<span class="n">STATIC_URL</span> <span class="o">=</span> <span class="s2">&quot;/static/&quot;</span>
 
 <span class="c1"># Default primary key field type</span>
 <span class="c1"># https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field</span>
 
-<span class="n">DEFAULT_AUTO_FIELD</span> <span class="o">=</span> <span class="s1">&#39;django.db.models.BigAutoField&#39;</span>
+<span class="n">DEFAULT_AUTO_FIELD</span> <span class="o">=</span> <span class="s2">&quot;django.db.models.BigAutoField&quot;</span>
 
 <span class="c1"># AWS S3 / MinIO settings</span>
 <span class="n">DJANGO_AWS_ACCESS_KEY_ID</span><span class="o">=</span><span class="s2">&quot;minioadmin&quot;</span>
@@ -440,6 +546,36 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 <pre>Overwriting example/example/settings.py
 </pre>
 </div>
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="2640284b-7274-4aed-b077-9f96e3da3bdc"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#2640284b-7274-4aed-b077-9f96e3da3bdc');
+
+            setTimeout(function() {
+                var nbb_cell_id = 17;
+                var nbb_unformatted_code = "%%writefile example/example/settings.py\n# dont_test\n\n\nfrom pathlib import Path\n\n# Build paths inside the project like this: BASE_DIR / \"subdir\".\nBASE_DIR = Path(__file__).resolve().parent.parent\n\n\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/\n\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = \"django-insecure-eyj(*+5=#xb1(5$50p*k0%5evl)80dcoh(i6(tx9a7dq9i5#9f\"\n\n# SECURITY WARNING: don\"t run with debug turned on in production!\nDEBUG = True\n\nALLOWED_HOSTS = []\n\n\n# Application definition\n\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",\n]\n\nMIDDLEWARE = [\n    \"django.middleware.security.SecurityMiddleware\",\n    \"django.contrib.sessions.middleware.SessionMiddleware\",\n    \"django.middleware.common.CommonMiddleware\",\n    \"django.middleware.csrf.CsrfViewMiddleware\",\n    \"django.contrib.auth.middleware.AuthenticationMiddleware\",\n    \"django.contrib.messages.middleware.MessageMiddleware\",\n    \"django.middleware.clickjacking.XFrameOptionsMiddleware\",\n]\n\nROOT_URLCONF = \"example.urls\"\n\nTEMPLATES = [\n    {\n        \"BACKEND\": \"django.template.backends.django.DjangoTemplates\",\n        \"DIRS\": [],\n        \"APP_DIRS\": True,\n        \"OPTIONS\": {\n            \"context_processors\": [\n                \"django.template.context_processors.debug\",\n                \"django.template.context_processors.request\",\n                \"django.contrib.auth.context_processors.auth\",\n                \"django.contrib.messages.context_processors.messages\",\n            ],\n        },\n    },\n]\n\nWSGI_APPLICATION = \"example.wsgi.application\"\n\n\n# Database\n# https://docs.djangoproject.com/en/3.2/ref/settings/#databases\n\nDATABASES = {\n    \"default\": {\n        \"ENGINE\": \"django.db.backends.sqlite3\",\n        \"NAME\": BASE_DIR / \"db.sqlite3\",\n    }\n}\n\n\n# Password validation\n# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators\n\nAUTH_PASSWORD_VALIDATORS = [\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.UserAttributeSimilarityValidator\",\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.MinimumLengthValidator\",\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.CommonPasswordValidator\",\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.NumericPasswordValidator\",\n    },\n]\n\n\n# Internationalization\n# https://docs.djangoproject.com/en/3.2/topics/i18n/\n\nLANGUAGE_CODE = \"en-us\"\n\nTIME_ZONE = \"UTC\"\n\nUSE_I18N = True\n\nUSE_L10N = True\n\nUSE_TZ = True\n\n\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/3.2/howto/static-files/\n\nSTATIC_URL = \"/static/\"\n\n# Default primary key field type\n# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field\n\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\n\n# AWS S3 / MinIO settings\nDJANGO_AWS_ACCESS_KEY_ID=\"minioadmin\"\nDJANGO_AWS_SECRET_ACCESS_KEY=\"minioadmin\"\nDJANGO_AWS_REGION=\"us-west-2\"\nDJANGO_AWS_STORAGE_BUCKET_NAME=\"fileresponse\"\nMINIO_ENDPOINT_URL=\"http://localhost:9000\"";
+                var nbb_formatted_code = "%%writefile example/example/settings.py\n# dont_test\n\n\nfrom pathlib import Path\n\n# Build paths inside the project like this: BASE_DIR / \"subdir\".\nBASE_DIR = Path(__file__).resolve().parent.parent\n\n\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/\n\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = \"django-insecure-eyj(*+5=#xb1(5$50p*k0%5evl)80dcoh(i6(tx9a7dq9i5#9f\"\n\n# SECURITY WARNING: don\"t run with debug turned on in production!\nDEBUG = True\n\nALLOWED_HOSTS = []\n\n\n# Application definition\n\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",\n]\n\nMIDDLEWARE = [\n    \"django.middleware.security.SecurityMiddleware\",\n    \"django.contrib.sessions.middleware.SessionMiddleware\",\n    \"django.middleware.common.CommonMiddleware\",\n    \"django.middleware.csrf.CsrfViewMiddleware\",\n    \"django.contrib.auth.middleware.AuthenticationMiddleware\",\n    \"django.contrib.messages.middleware.MessageMiddleware\",\n    \"django.middleware.clickjacking.XFrameOptionsMiddleware\",\n]\n\nROOT_URLCONF = \"example.urls\"\n\nTEMPLATES = [\n    {\n        \"BACKEND\": \"django.template.backends.django.DjangoTemplates\",\n        \"DIRS\": [],\n        \"APP_DIRS\": True,\n        \"OPTIONS\": {\n            \"context_processors\": [\n                \"django.template.context_processors.debug\",\n                \"django.template.context_processors.request\",\n                \"django.contrib.auth.context_processors.auth\",\n                \"django.contrib.messages.context_processors.messages\",\n            ],\n        },\n    },\n]\n\nWSGI_APPLICATION = \"example.wsgi.application\"\n\n\n# Database\n# https://docs.djangoproject.com/en/3.2/ref/settings/#databases\n\nDATABASES = {\n    \"default\": {\n        \"ENGINE\": \"django.db.backends.sqlite3\",\n        \"NAME\": BASE_DIR / \"db.sqlite3\",\n    }\n}\n\n\n# Password validation\n# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators\n\nAUTH_PASSWORD_VALIDATORS = [\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.UserAttributeSimilarityValidator\",\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.MinimumLengthValidator\",\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.CommonPasswordValidator\",\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.NumericPasswordValidator\",\n    },\n]\n\n\n# Internationalization\n# https://docs.djangoproject.com/en/3.2/topics/i18n/\n\nLANGUAGE_CODE = \"en-us\"\n\nTIME_ZONE = \"UTC\"\n\nUSE_I18N = True\n\nUSE_L10N = True\n\nUSE_TZ = True\n\n\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/3.2/howto/static-files/\n\nSTATIC_URL = \"/static/\"\n\n# Default primary key field type\n# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field\n\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\n\n# AWS S3 / MinIO settings\nDJANGO_AWS_ACCESS_KEY_ID=\"minioadmin\"\nDJANGO_AWS_SECRET_ACCESS_KEY=\"minioadmin\"\nDJANGO_AWS_REGION=\"us-west-2\"\nDJANGO_AWS_STORAGE_BUCKET_NAME=\"fileresponse\"\nMINIO_ENDPOINT_URL=\"http://localhost:9000\"";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
 </div>
 
 </div>
@@ -476,8 +612,6 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/Users/jochen/projects/django_fileresponse/example
-WARNING: `pyenv init -` no longer sets PATH.
-Run `pyenv init` to see the necessary changes to make to your configuration.
 <span class="ansi-cyan-intense-fg ansi-bold">Operations to perform:</span>
 <span class="ansi-bold">  Apply all migrations: </span>admin, auth, contenttypes, sessions
 <span class="ansi-cyan-intense-fg ansi-bold">Running migrations:</span>
@@ -538,8 +672,6 @@ Run `pyenv init` to see the necessary changes to make to your configuration.
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/Users/jochen/projects/django_fileresponse/nbs
-WARNING: `pyenv init -` no longer sets PATH.
-Run `pyenv init` to see the necessary changes to make to your configuration.
 ln: ./example: File exists
 /Users/jochen/projects/django_fileresponse/example
 </pre>
@@ -581,16 +713,214 @@ ln: ./example: File exists
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>WARNING: `pyenv init -` no longer sets PATH.
-Run `pyenv init` to see the necessary changes to make to your configuration.
-Watching for file changes with StatReloader
+<pre>Watching for file changes with StatReloader
 Performing system checks...
 
 System check identified no issues (0 silenced).
-June 18, 2021 - 12:27:45
-Django version 3.2.4, using settings &#39;example.settings&#39;
+June 21, 2021 - 08:13:00
+Django version 3.2.3, using settings &#39;example.settings&#39;
 Starting development server at http://0.0.0.0:8000/
 Quit the server with CONTROL-C.
+/Users/jochen/projects/django_fileresponse/example/data/0
+[21/Jun/2021 08:13:25] &#34;GET /0 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/1
+[21/Jun/2021 08:13:25] &#34;GET /1 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/2
+[21/Jun/2021 08:13:25] &#34;GET /2 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/3
+[21/Jun/2021 08:13:25] &#34;GET /3 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/4
+[21/Jun/2021 08:13:25] &#34;GET /4 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/5
+[21/Jun/2021 08:13:25] &#34;GET /5 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/6
+[21/Jun/2021 08:13:25] &#34;GET /6 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/7
+[21/Jun/2021 08:13:25] &#34;GET /7 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/8
+[21/Jun/2021 08:13:25] &#34;GET /8 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/9
+[21/Jun/2021 08:13:25] &#34;GET /9 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/10
+[21/Jun/2021 08:13:25] &#34;GET /10 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/11
+[21/Jun/2021 08:13:26] &#34;GET /11 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/12
+[21/Jun/2021 08:13:26] &#34;GET /12 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/13
+[21/Jun/2021 08:13:26] &#34;GET /13 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/14
+[21/Jun/2021 08:13:26] &#34;GET /14 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/15
+[21/Jun/2021 08:13:26] &#34;GET /15 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/16
+[21/Jun/2021 08:13:26] &#34;GET /16 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/17
+[21/Jun/2021 08:13:26] &#34;GET /17 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/18
+[21/Jun/2021 08:13:26] &#34;GET /18 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/19
+[21/Jun/2021 08:13:26] &#34;GET /19 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/20
+[21/Jun/2021 08:13:26] &#34;GET /20 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/21
+[21/Jun/2021 08:13:26] &#34;GET /21 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/22
+[21/Jun/2021 08:13:26] &#34;GET /22 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/23
+[21/Jun/2021 08:13:26] &#34;GET /23 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/24
+[21/Jun/2021 08:13:26] &#34;GET /24 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/25
+[21/Jun/2021 08:13:26] &#34;GET /25 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/26
+[21/Jun/2021 08:13:26] &#34;GET /26 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/27
+[21/Jun/2021 08:13:26] &#34;GET /27 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/28
+[21/Jun/2021 08:13:26] &#34;GET /28 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/29
+[21/Jun/2021 08:13:26] &#34;GET /29 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/30
+[21/Jun/2021 08:13:26] &#34;GET /30 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/31
+[21/Jun/2021 08:13:26] &#34;GET /31 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/32
+[21/Jun/2021 08:13:27] &#34;GET /32 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/33
+[21/Jun/2021 08:13:27] &#34;GET /33 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/34
+[21/Jun/2021 08:13:27] &#34;GET /34 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/35
+[21/Jun/2021 08:13:27] &#34;GET /35 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/36
+[21/Jun/2021 08:13:27] &#34;GET /36 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/37
+[21/Jun/2021 08:13:27] &#34;GET /37 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/38
+[21/Jun/2021 08:13:27] &#34;GET /38 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/39
+[21/Jun/2021 08:13:27] &#34;GET /39 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/40
+[21/Jun/2021 08:13:27] &#34;GET /40 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/41
+[21/Jun/2021 08:13:27] &#34;GET /41 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/42
+[21/Jun/2021 08:13:27] &#34;GET /42 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/43
+[21/Jun/2021 08:13:27] &#34;GET /43 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/44
+[21/Jun/2021 08:13:27] &#34;GET /44 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/45
+[21/Jun/2021 08:13:27] &#34;GET /45 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/46
+[21/Jun/2021 08:13:27] &#34;GET /46 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/47
+[21/Jun/2021 08:13:27] &#34;GET /47 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/48
+[21/Jun/2021 08:13:27] &#34;GET /48 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/49
+[21/Jun/2021 08:13:27] &#34;GET /49 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/50
+[21/Jun/2021 08:13:27] &#34;GET /50 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/51
+[21/Jun/2021 08:13:27] &#34;GET /51 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/52
+[21/Jun/2021 08:13:27] &#34;GET /52 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/53
+[21/Jun/2021 08:13:27] &#34;GET /53 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/54
+[21/Jun/2021 08:13:27] &#34;GET /54 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/55
+[21/Jun/2021 08:13:27] &#34;GET /55 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/56
+[21/Jun/2021 08:13:28] &#34;GET /56 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/57
+[21/Jun/2021 08:13:28] &#34;GET /57 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/58
+[21/Jun/2021 08:13:28] &#34;GET /58 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/59
+[21/Jun/2021 08:13:28] &#34;GET /59 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/60
+[21/Jun/2021 08:13:28] &#34;GET /60 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/61
+[21/Jun/2021 08:13:28] &#34;GET /61 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/62
+[21/Jun/2021 08:13:28] &#34;GET /62 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/63
+[21/Jun/2021 08:13:28] &#34;GET /63 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/64
+[21/Jun/2021 08:13:28] &#34;GET /64 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/65
+[21/Jun/2021 08:13:28] &#34;GET /65 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/66
+[21/Jun/2021 08:13:28] &#34;GET /66 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/67
+[21/Jun/2021 08:13:28] &#34;GET /67 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/68
+[21/Jun/2021 08:13:28] &#34;GET /68 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/69
+[21/Jun/2021 08:13:28] &#34;GET /69 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/70
+[21/Jun/2021 08:13:28] &#34;GET /70 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/71
+[21/Jun/2021 08:13:28] &#34;GET /71 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/72
+[21/Jun/2021 08:13:28] &#34;GET /72 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/73
+[21/Jun/2021 08:13:28] &#34;GET /73 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/74
+[21/Jun/2021 08:13:28] &#34;GET /74 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/75
+[21/Jun/2021 08:13:28] &#34;GET /75 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/76
+[21/Jun/2021 08:13:28] &#34;GET /76 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/77
+[21/Jun/2021 08:13:28] &#34;GET /77 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/78
+[21/Jun/2021 08:13:28] &#34;GET /78 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/79
+[21/Jun/2021 08:13:28] &#34;GET /79 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/80
+[21/Jun/2021 08:13:29] &#34;GET /80 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/81
+[21/Jun/2021 08:13:29] &#34;GET /81 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/82
+[21/Jun/2021 08:13:29] &#34;GET /82 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/83
+[21/Jun/2021 08:13:29] &#34;GET /83 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/84
+[21/Jun/2021 08:13:29] &#34;GET /84 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/85
+[21/Jun/2021 08:13:29] &#34;GET /85 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/86
+[21/Jun/2021 08:13:29] &#34;GET /86 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/87
+[21/Jun/2021 08:13:29] &#34;GET /87 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/88
+[21/Jun/2021 08:13:29] &#34;GET /88 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/89
+[21/Jun/2021 08:13:29] &#34;GET /89 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/90
+[21/Jun/2021 08:13:29] &#34;GET /90 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/91
+[21/Jun/2021 08:13:29] &#34;GET /91 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/92
+[21/Jun/2021 08:13:29] &#34;GET /92 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/93
+[21/Jun/2021 08:13:29] &#34;GET /93 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/94
+[21/Jun/2021 08:13:29] &#34;GET /94 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/95
+[21/Jun/2021 08:13:29] &#34;GET /95 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/96
+[21/Jun/2021 08:13:29] &#34;GET /96 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/97
+[21/Jun/2021 08:13:29] &#34;GET /97 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/98
+[21/Jun/2021 08:13:29] &#34;GET /98 HTTP/1.1&#34; 200 10485760
+/Users/jochen/projects/django_fileresponse/example/data/99
+[21/Jun/2021 08:13:29] &#34;GET /99 HTTP/1.1&#34; 200 10485760
 ^C
 </pre>
 </div>
