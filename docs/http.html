@@ -40,8 +40,11 @@ nb_path: "nbs/01_http.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AsyncResponseBase" class="doc_header"><code>class</code> <code>AsyncResponseBase</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L10" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AsyncResponseBase</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h2 id="AsyncResponse" class="doc_header"><code>class</code> <code>AsyncResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L12" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AsyncResponse</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <code>HttpResponseBase</code></p>
 </blockquote>
+<p>An HTTP response base class with dictionary-accessed headers.</p>
+<p>This class doesn't handle content. It should not be used directly.
+Use the HttpResponse and StreamingHttpResponse subclasses instead.</p>
 
 </div>
 
@@ -75,28 +78,29 @@ nb_path: "nbs/01_http.ipynb"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">chunks</span> <span class="o">=</span> <span class="p">[]</span>
 
+
 <span class="k">async</span> <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="n">chunk</span><span class="p">):</span>
     <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-    
-    
+
+
 <span class="k">class</span> <span class="nc">Stream</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    
+
     <span class="k">async</span> <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="n">chunk_size</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_len</span><span class="p">:</span>
-            <span class="n">chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">:]</span>
+            <span class="n">chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="p">:]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="n">chunk_size</span><span class="p">]</span>
+            <span class="n">chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="n">chunk_size</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+=</span> <span class="n">chunk_size</span>
         <span class="k">return</span> <span class="n">chunk</span>
-            
+
 
 <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;1234567890&quot;</span>
 <span class="n">stream</span> <span class="o">=</span> <span class="n">Stream</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">AsyncResponseBase</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">AsyncResponse</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">send_stream_to_client</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
 
 <span class="n">sent_body</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">chunks</span> <span class="k">if</span> <span class="s2">&quot;body&quot;</span> <span class="ow">in</span> <span class="n">c</span><span class="p">])</span>
@@ -116,6 +120,90 @@ nb_path: "nbs/01_http.ipynb"
 <pre>sent size:  10
 </pre>
 </div>
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="f9ed1fc0-6bdd-4422-bbd1-701f4e5e7e2a"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#f9ed1fc0-6bdd-4422-bbd1-701f4e5e7e2a');
+
+            setTimeout(function() {
+                var nbb_cell_id = 4;
+                var nbb_unformatted_code = "chunks = []\n\n\nasync def send(chunk):\n    chunks.append(chunk)\n\n\nclass Stream:\n    def __init__(self, data):\n        self.index = 0\n        self.data = data\n        self.data_len = len(data)\n\n    async def read(self, chunk_size):\n        if self.index + chunk_size >= self.data_len:\n            chunk = self.data[self.index :]\n        else:\n            chunk = self.data[self.index : self.index + chunk_size]\n        self.index += chunk_size\n        return chunk\n\n\ncontent = \"1234567890\"\nstream = Stream(content)\nresponse = AsyncResponse(chunk_size=3)\nawait response.send_stream_to_client(stream, send)\n\nsent_body = \"\".join([c[\"body\"] for c in chunks if \"body\" in c])\nassert content == sent_body";
+                var nbb_formatted_code = "chunks = []\n\n\nasync def send(chunk):\n    chunks.append(chunk)\n\n\nclass Stream:\n    def __init__(self, data):\n        self.index = 0\n        self.data = data\n        self.data_len = len(data)\n\n    async def read(self, chunk_size):\n        if self.index + chunk_size >= self.data_len:\n            chunk = self.data[self.index :]\n        else:\n            chunk = self.data[self.index : self.index + chunk_size]\n        self.index += chunk_size\n        return chunk\n\n\ncontent = \"1234567890\"\nstream = Stream(content)\nresponse = AsyncResponse(chunk_size=3)\nawait response.send_stream_to_client(stream, send)\n\nsent_body = \"\".join([c[\"body\"] for c in chunks if \"body\" in c])\nassert content == sent_body";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">AsyncResponse</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">response_headers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="4cd2d9e3-4f8f-4413-85f5-5a4b92e51000"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#4cd2d9e3-4f8f-4413-85f5-5a4b92e51000');
+
+            setTimeout(function() {
+                var nbb_cell_id = 18;
+                var nbb_unformatted_code = "# make sure response_headers are set\nresponse = AsyncResponse(chunk_size=3)\nassert len(response.response_headers) > 0";
+                var nbb_formatted_code = "# make sure response_headers are set\nresponse = AsyncResponse(chunk_size=3)\nassert len(response.response_headers) > 0";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
 </div>
 
 </div>
@@ -142,8 +230,11 @@ nb_path: "nbs/01_http.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L58" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/fileresponse/http.html#AsyncResponseBase"><code>AsyncResponseBase</code></a></p>
+<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L80" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
 </blockquote>
+<p>An HTTP response base class with dictionary-accessed headers.</p>
+<p>This class doesn't handle content. It should not be used directly.
+Use the HttpResponse and StreamingHttpResponse subclasses instead.</p>
 
 </div>
 
@@ -232,13 +323,13 @@ nb_path: "nbs/01_http.ipynb"
 
 
 
-<div id="3cea4f2d-712c-4723-ade3-169b9b5b8660"></div>
+<div id="e537d9b4-f782-4326-90df-d068b18e0190"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#3cea4f2d-712c-4723-ade3-169b9b5b8660');
+var element = $('#e537d9b4-f782-4326-90df-d068b18e0190');
 
             setTimeout(function() {
-                var nbb_cell_id = 13;
+                var nbb_cell_id = 6;
                 var nbb_unformatted_code = "import os\n\nfrom pathlib import Path\n\npath = Path(\"testdata.bin\")\n\nwith path.open(\"wb\") as f:\n    f.write(os.urandom(10000))\n\nwith path.open(\"rb\") as f:\n    content = f.read()\n\nchunk_datas = []\n\n\nasync def send(chunk_data):\n    chunk_datas.append(chunk_data)\n\n\nresponse = AiofileFileResponse(path)\nawait response.stream(send)\nreceived_content = b\"\".join([cd.get(\"body\", b\"\") for cd in chunk_datas])\n\nassert content == received_content";
                 var nbb_formatted_code = "import os\n\nfrom pathlib import Path\n\npath = Path(\"testdata.bin\")\n\nwith path.open(\"wb\") as f:\n    f.write(os.urandom(10000))\n\nwith path.open(\"rb\") as f:\n    content = f.read()\n\nchunk_datas = []\n\n\nasync def send(chunk_data):\n    chunk_datas.append(chunk_data)\n\n\nresponse = AiofileFileResponse(path)\nawait response.stream(send)\nreceived_content = b\"\".join([cd.get(\"body\", b\"\") for cd in chunk_datas])\n\nassert content == received_content";
                 var nbb_cells = Jupyter.notebook.get_cells();
@@ -292,14 +383,14 @@ var element = $('#3cea4f2d-712c-4723-ade3-169b9b5b8660');
 
 
 
-<div id="23163435-8ddd-493d-b59a-08e6142a1236"></div>
+<div id="30dcf496-13a3-4520-809e-5b8556d76afd"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#23163435-8ddd-493d-b59a-08e6142a1236');
+var element = $('#30dcf496-13a3-4520-809e-5b8556d76afd');
 
             setTimeout(function() {
-                var nbb_cell_id = 15;
-                var nbb_unformatted_code = "response = AiofileFileResponse(\"foobar\")\nassert '<AiofileFileResponse status_code=200>' == repr(response)";
+                var nbb_cell_id = 7;
+                var nbb_unformatted_code = "response = AiofileFileResponse(\"foobar\")\nassert \"<AiofileFileResponse status_code=200>\" == repr(response)";
                 var nbb_formatted_code = "response = AiofileFileResponse(\"foobar\")\nassert \"<AiofileFileResponse status_code=200>\" == repr(response)";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
@@ -341,8 +432,11 @@ var element = $('#23163435-8ddd-493d-b59a-08e6142a1236');
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L80" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/fileresponse/http.html#AsyncResponseBase"><code>AsyncResponseBase</code></a></p>
+<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L102" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
 </blockquote>
+<p>An HTTP response base class with dictionary-accessed headers.</p>
+<p>This class doesn't handle content. It should not be used directly.
+Use the HttpResponse and StreamingHttpResponse subclasses instead.</p>
 
 </div>
 
@@ -390,14 +484,14 @@ var element = $('#23163435-8ddd-493d-b59a-08e6142a1236');
 
 
 
-<div id="c5c0087d-36c3-43a5-9db0-b94cc2c46d81"></div>
+<div id="91fa5ec9-216d-4985-bf02-cb506fb87d5a"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#c5c0087d-36c3-43a5-9db0-b94cc2c46d81');
+var element = $('#91fa5ec9-216d-4985-bf02-cb506fb87d5a');
 
             setTimeout(function() {
-                var nbb_cell_id = 21;
-                var nbb_unformatted_code = "response = AiobotocoreFileResponse(\"bucket\", \"key\")\nassert '<AiobotocoreFileResponse status_code=200>' == repr(response)";
+                var nbb_cell_id = 9;
+                var nbb_unformatted_code = "response = AiobotocoreFileResponse(\"bucket\", \"key\")\nassert \"<AiobotocoreFileResponse status_code=200>\" == repr(response)";
                 var nbb_formatted_code = "response = AiobotocoreFileResponse(\"bucket\", \"key\")\nassert \"<AiobotocoreFileResponse status_code=200>\" == repr(response)";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
