@@ -13,12 +13,15 @@ class AsyncFileASGIHandler(ASGIHandler):
     Same as default ASGIHandler from Django if there's no `is_async_fileresponse`
     attribute. If set to true, AsyncFileASGIHandler delegates the streaming of the
     actual response to the response to allow for statements like:
+    ```python
         async with aiofiles.open(path):
             ...
-
+    ```
     or
+    ```python
         async with minio_response["Body"] as stream:
             ...
+    ```
     """
     async def send_response(self, response, send):
         is_async_fileresponse = getattr(response, "is_async_fileresponse", False)
