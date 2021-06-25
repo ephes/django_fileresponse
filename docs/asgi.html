@@ -42,6 +42,8 @@ nb_path: "nbs/02_asgi.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="get_asgi_application" class="doc_header"><code>get_asgi_application</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/asgi.py#L12" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_asgi_application</code>()</p>
 </blockquote>
+<p>Similar to django.core.asgi.get_asgi_application, but uses AsyncFileASGIHandler
+instead of Djangos ASGIHandler.</p>
 
 </div>
 
@@ -56,6 +58,130 @@ nb_path: "nbs/02_asgi.ipynb"
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Tests">Tests<a class="anchor-link" href="#Tests"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">configure</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="n">application</span> <span class="o">=</span> <span class="n">get_asgi_application</span><span class="p">()</span>
+<span class="k">assert</span> <span class="s2">&quot;&lt;class &#39;fileresponse.handlers.AsyncFileASGIHandler&#39;&gt;&quot;</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span>
+    <span class="n">application</span><span class="o">.</span><span class="vm">__class__</span>
+<span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="61e19c31-e7c4-4019-8c81-25492d7b3979"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#61e19c31-e7c4-4019-8c81-25492d7b3979');
+
+            setTimeout(function() {
+                var nbb_cell_id = 16;
+                var nbb_unformatted_code = "from django.conf import settings\n\ntry:\n    settings.configure()\nexcept RuntimeError:\n    pass\n\napplication = get_asgi_application()\nassert \"<class 'fileresponse.handlers.AsyncFileASGIHandler'>\" == str(application.__class__)";
+                var nbb_formatted_code = "from django.conf import settings\n\ntry:\n    settings.configure()\nexcept RuntimeError:\n    pass\n\napplication = get_asgi_application()\nassert \"<class 'fileresponse.handlers.AsyncFileASGIHandler'>\" == str(\n    application.__class__\n)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">django.core.asgi</span> <span class="kn">import</span> <span class="n">get_asgi_application</span> <span class="k">as</span> <span class="n">get_django_asgi_application</span>
+
+<span class="k">assert</span> <span class="n">get_django_asgi_application</span><span class="p">()</span> <span class="o">!=</span> <span class="n">application</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="fc650081-0a1f-47e7-b1e9-229820a5c51c"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#fc650081-0a1f-47e7-b1e9-229820a5c51c');
+
+            setTimeout(function() {
+                var nbb_cell_id = 17;
+                var nbb_unformatted_code = "from django.core.asgi import get_asgi_application as get_django_asgi_application\n\nassert get_django_asgi_application() != application";
+                var nbb_formatted_code = "from django.core.asgi import get_asgi_application as get_django_asgi_application\n\nassert get_django_asgi_application() != application";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
 
 </div>
     {% endraw %}

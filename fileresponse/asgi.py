@@ -10,5 +10,9 @@ from fileresponse.handlers import AsyncFileASGIHandler
 
 
 def get_asgi_application():
+    """
+    Similar to django.core.asgi.get_asgi_application, but uses AsyncFileASGIHandler
+    instead of Djangos ASGIHandler.
+    """
     django.setup(set_prefix=False)
     return AsyncFileASGIHandler()
