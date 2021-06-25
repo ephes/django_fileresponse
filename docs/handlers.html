@@ -42,7 +42,14 @@ nb_path: "nbs/01_handlers.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="AsyncFileASGIHandler" class="doc_header"><code>class</code> <code>AsyncFileASGIHandler</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/handlers.py#L11" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AsyncFileASGIHandler</code>() :: <code>ASGIHandler</code></p>
 </blockquote>
-<p>Handler for ASGI requests.</p>
+<p>Same as default ASGIHandler from Django if there's no <code>is_async_fileresponse</code>
+attribute. If set to true, AsyncFileASGIHandler delegates the streaming of the
+actual response to the response to allow for statements like:
+    async with aiofiles.open(path):
+        ...</p>
+<p>or
+    async with minio_response["Body"] as stream:
+        ...</p>
 
 </div>
 
@@ -127,10 +134,10 @@ nb_path: "nbs/01_handlers.ipynb"
 
 
 
-<div id="348c74ca-32f2-4a78-beb4-269d90e72275"></div>
+<div id="e150903d-a428-4170-8df6-84db0767ce0e"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#348c74ca-32f2-4a78-beb4-269d90e72275');
+var element = $('#e150903d-a428-4170-8df6-84db0767ce0e');
 
             setTimeout(function() {
                 var nbb_cell_id = 6;
@@ -194,10 +201,10 @@ var element = $('#348c74ca-32f2-4a78-beb4-269d90e72275');
 
 
 
-<div id="9bb5a3ee-a199-47d6-85b6-9aa1d9e84402"></div>
+<div id="995fc16b-afd3-4bcc-bccb-70b2a0d3eaba"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#9bb5a3ee-a199-47d6-85b6-9aa1d9e84402');
+var element = $('#995fc16b-afd3-4bcc-bccb-70b2a0d3eaba');
 
             setTimeout(function() {
                 var nbb_cell_id = 7;
@@ -261,10 +268,10 @@ var element = $('#9bb5a3ee-a199-47d6-85b6-9aa1d9e84402');
 
 
 
-<div id="28ba6f78-f784-4a8f-8ea8-751cbefabb34"></div>
+<div id="9155608b-5240-4e4d-9307-fdb4e3a6acfa"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#28ba6f78-f784-4a8f-8ea8-751cbefabb34');
+var element = $('#9155608b-5240-4e4d-9307-fdb4e3a6acfa');
 
             setTimeout(function() {
                 var nbb_cell_id = 8;
