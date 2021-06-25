@@ -135,8 +135,9 @@ class AiobotocoreFileResponse(AsyncResponse):
     read asynchronously.
     """
 
-    def __init__(self, bucket, key, chunk_size=4096):
+    def __init__(self, bucket, key, chunk_size=4096, **kwargs):
         super().__init__(chunk_size=chunk_size)
+        self.client_config = self.create_client_config(kwargs)
         self.bucket = bucket
         self.key = key
 
@@ -144,6 +145,23 @@ class AiobotocoreFileResponse(AsyncResponse):
         return "<%(cls)s status_code=%(status_code)d>" % {
             "cls": self.__class__.__name__,
             "status_code": self.status_code,
+        }
+
+    def create_client_config(self, kwargs):
+        return {
+            "endpoint_url": kwargs.get(
+                "endpoint_url", settings.FILERESPONSE_S3_ENDPOINT_URL
+            ),
+            "region_name": kwargs.get("region_name", settings.FILERESPONSE_S3_REGION),
+            "aws_access_key_id": kwargs.get(
+                "aws_access_key_id", settings.FILERESPONSE_S3_ACCESS_KEY_ID
+            ),
+            "aws_secret_access_key": kwargs.get(
+                "secret_access_key", settings.FILERESPONSE_S3_SECRET_ACCESS_KEY
+            ),
+            "use_ssl": kwargs.get(
+                "use_ssl", getattr(settings, "FILERESPONSE_S3_USE_SSL", False)
+            ),
         }
 
     async def stream(self, send):

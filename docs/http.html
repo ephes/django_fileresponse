@@ -100,10 +100,10 @@ for files and other file like streams.</p>
 
 
 
-<div id="fe991a70-e859-48f3-8488-38f502c7f5f8"></div>
+<div id="cf40673d-ab9a-41ea-99f8-1ed6dc85a782"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#fe991a70-e859-48f3-8488-38f502c7f5f8');
+var element = $('#cf40673d-ab9a-41ea-99f8-1ed6dc85a782');
 
             setTimeout(function() {
                 var nbb_cell_id = 6;
@@ -193,10 +193,10 @@ var element = $('#fe991a70-e859-48f3-8488-38f502c7f5f8');
 
 
 
-<div id="748fb328-1374-4cc1-9612-da70c0cd32ef"></div>
+<div id="c279f938-a094-41ff-ba8b-c20fa7215abd"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#748fb328-1374-4cc1-9612-da70c0cd32ef');
+var element = $('#c279f938-a094-41ff-ba8b-c20fa7215abd');
 
             setTimeout(function() {
                 var nbb_cell_id = 3;
@@ -253,10 +253,10 @@ var element = $('#748fb328-1374-4cc1-9612-da70c0cd32ef');
 
 
 
-<div id="cb29f788-2b40-4039-9589-000176c59154"></div>
+<div id="d831868b-c65f-493c-a90b-400833a115ab"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#cb29f788-2b40-4039-9589-000176c59154');
+var element = $('#d831868b-c65f-493c-a90b-400833a115ab');
 
             setTimeout(function() {
                 var nbb_cell_id = 4;
@@ -361,10 +361,10 @@ filesystem access.</p>
 
 
 
-<div id="b83d423c-c832-49ae-9e55-864c838feadf"></div>
+<div id="e445b83a-b149-40d4-88c1-aced7e9579f6"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#b83d423c-c832-49ae-9e55-864c838feadf');
+var element = $('#e445b83a-b149-40d4-88c1-aced7e9579f6');
 
             setTimeout(function() {
                 var nbb_cell_id = 10;
@@ -462,10 +462,10 @@ var element = $('#b83d423c-c832-49ae-9e55-864c838feadf');
 
 
 
-<div id="de56f2a3-b9dd-4c1c-81e4-422377210df2"></div>
+<div id="987331ee-0994-4420-baea-f9bd55b23c3e"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#de56f2a3-b9dd-4c1c-81e4-422377210df2');
+var element = $('#987331ee-0994-4420-baea-f9bd55b23c3e');
 
             setTimeout(function() {
                 var nbb_cell_id = 6;
@@ -522,10 +522,10 @@ var element = $('#de56f2a3-b9dd-4c1c-81e4-422377210df2');
 
 
 
-<div id="d0a0c101-675b-4407-a223-98876430ec3c"></div>
+<div id="a9970f47-75eb-4eff-999d-0a674d2ede7e"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#d0a0c101-675b-4407-a223-98876430ec3c');
+var element = $('#a9970f47-75eb-4eff-999d-0a674d2ede7e');
 
             setTimeout(function() {
                 var nbb_cell_id = 7;
@@ -571,7 +571,7 @@ var element = $('#d0a0c101-675b-4407-a223-98876430ec3c');
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L127" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
+<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L127" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
 </blockquote>
 <p>Async response class for serving files from an s3 compatible object store
 like <a href="http://min.io">MinIO</a>. It's only about opening / configuring the stream
@@ -603,6 +603,72 @@ read asynchronously.</p>
 </div>
 </div>
 </div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">django</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">configure</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<span class="k">def</span> <span class="nf">configure_settings</span><span class="p">():</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">FILERESPONSE_S3_ENDPOINT_URL</span> <span class="o">=</span> <span class="s2">&quot;asdf&quot;</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">FILERESPONSE_S3_REGION</span> <span class="o">=</span> <span class="s2">&quot;asdf&quot;</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">FILERESPONSE_S3_ACCESS_KEY_ID</span> <span class="o">=</span> <span class="s2">&quot;asdf&quot;</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">FILERESPONSE_S3_SECRET_ACCESS_KEY</span> <span class="o">=</span> <span class="s2">&quot;asdf&quot;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="636817d6-f1d7-4c66-add9-855a78aad926"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#636817d6-f1d7-4c66-add9-855a78aad926');
+
+            setTimeout(function() {
+                var nbb_cell_id = 36;
+                var nbb_unformatted_code = "import django\n\n\ntry:\n    settings.configure()\nexcept RuntimeError:\n    pass\n\n\ndef configure_settings():\n    settings.FILERESPONSE_S3_ENDPOINT_URL = \"asdf\"\n    settings.FILERESPONSE_S3_REGION = \"asdf\"\n    settings.FILERESPONSE_S3_ACCESS_KEY_ID = \"asdf\"\n    settings.FILERESPONSE_S3_SECRET_ACCESS_KEY = \"asdf\"";
+                var nbb_formatted_code = "import django\n\n\ntry:\n    settings.configure()\nexcept RuntimeError:\n    pass\n\n\ndef configure_settings():\n    settings.FILERESPONSE_S3_ENDPOINT_URL = \"asdf\"\n    settings.FILERESPONSE_S3_REGION = \"asdf\"\n    settings.FILERESPONSE_S3_ACCESS_KEY_ID = \"asdf\"\n    settings.FILERESPONSE_S3_SECRET_ACCESS_KEY = \"asdf\"";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="Just-test-repr">Just test repr<a class="anchor-link" href="#Just-test-repr"> </a></h4>
@@ -616,7 +682,8 @@ read asynchronously.</p>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">AiobotocoreFileResponse</span><span class="p">(</span><span class="s2">&quot;bucket&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">configure_settings</span><span class="p">()</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">AiobotocoreFileResponse</span><span class="p">(</span><span class="s2">&quot;bucket&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">)</span>
 <span class="k">assert</span> <span class="s2">&quot;&lt;AiobotocoreFileResponse status_code=200&gt;&quot;</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 </pre></div>
 
@@ -632,15 +699,81 @@ read asynchronously.</p>
 
 
 
-<div id="de963aff-6809-421e-bbc5-9412e4b24412"></div>
+<div id="99000558-a4e2-4b5e-9a6d-1f4e2d0a52e3"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#de963aff-6809-421e-bbc5-9412e4b24412');
+var element = $('#99000558-a4e2-4b5e-9a6d-1f4e2d0a52e3');
 
             setTimeout(function() {
-                var nbb_cell_id = 9;
-                var nbb_unformatted_code = "response = AiobotocoreFileResponse(\"bucket\", \"key\")\nassert \"<AiobotocoreFileResponse status_code=200>\" == repr(response)";
-                var nbb_formatted_code = "response = AiobotocoreFileResponse(\"bucket\", \"key\")\nassert \"<AiobotocoreFileResponse status_code=200>\" == repr(response)";
+                var nbb_cell_id = 37;
+                var nbb_unformatted_code = "configure_settings()\nresponse = AiobotocoreFileResponse(\"bucket\", \"key\")\nassert \"<AiobotocoreFileResponse status_code=200>\" == repr(response)";
+                var nbb_formatted_code = "configure_settings()\nresponse = AiobotocoreFileResponse(\"bucket\", \"key\")\nassert \"<AiobotocoreFileResponse status_code=200>\" == repr(response)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Test-endpoint-url-config">Test endpoint url config<a class="anchor-link" href="#Test-endpoint-url-config"> </a></h4>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">configure_settings</span><span class="p">()</span>
+
+<span class="n">expected_endpoint_url</span> <span class="o">=</span> <span class="s2">&quot;http://foobar:9000/&quot;</span>
+
+<span class="n">settings</span><span class="o">.</span><span class="n">FILERESPONSE_S3_ENDPOINT_URL</span> <span class="o">=</span> <span class="s2">&quot;asdf&quot;</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">AiobotocoreFileResponse</span><span class="p">(</span><span class="s2">&quot;bucket&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="n">endpoint_url</span><span class="o">=</span><span class="n">expected_endpoint_url</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">expected_endpoint_url</span> <span class="o">==</span> <span class="n">response</span><span class="o">.</span><span class="n">client_config</span><span class="p">[</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="383f0ef9-1276-44fa-9191-d566c2bdd75a"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#383f0ef9-1276-44fa-9191-d566c2bdd75a');
+
+            setTimeout(function() {
+                var nbb_cell_id = 39;
+                var nbb_unformatted_code = "configure_settings()\n\nexpected_endpoint_url = \"http://foobar:9000/\"\n\nsettings.FILERESPONSE_S3_ENDPOINT_URL = \"asdf\"\nresponse = AiobotocoreFileResponse(\"bucket\", \"key\", endpoint_url=expected_endpoint_url)\n\nassert expected_endpoint_url == response.client_config[\"endpoint_url\"]";
+                var nbb_formatted_code = "configure_settings()\n\nexpected_endpoint_url = \"http://foobar:9000/\"\n\nsettings.FILERESPONSE_S3_ENDPOINT_URL = \"asdf\"\nresponse = AiobotocoreFileResponse(\"bucket\", \"key\", endpoint_url=expected_endpoint_url)\n\nassert expected_endpoint_url == response.client_config[\"endpoint_url\"]";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
