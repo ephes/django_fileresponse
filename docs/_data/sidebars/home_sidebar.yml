@@ -10,9 +10,6 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: module fileresponse here
-      url: core.html
-    - output: web,pdf
       title: Get Fileresponse Application
       url: asgi.html
     - output: web,pdf

@@ -1,7 +1,6 @@
 {
   "fileresponse": {
     "Overview": "/",
-    "module fileresponse here": "core.html",
     "Get Fileresponse Application": "asgi.html",
     "ASGIHandlers": "handlers.html",
     "Async File Responses": "http.html",

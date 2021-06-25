@@ -2,8 +2,7 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"say_hello": "00_core.ipynb",
-         "get_asgi_application": "01_asgi.ipynb",
+index = {"get_asgi_application": "01_asgi.ipynb",
          "AsyncFileASGIHandler": "01_handlers.ipynb",
          "AsyncResponse": "01_http.ipynb",
          "AiofileFileResponse": "01_http.ipynb",
@@ -13,8 +12,7 @@ index = {"say_hello": "00_core.ipynb",
          "patch_lib_name": "01_scripts.ipynb",
          "nbdev_build_docs_patched": "01_scripts.ipynb"}
 
-modules = ["core.py",
-           "asgi.py",
+modules = ["asgi.py",
            "handlers.py",
            "http.py",
            "scripts.py"]
