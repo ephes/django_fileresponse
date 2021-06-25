@@ -12,15 +12,15 @@ entries:
     - output: web,pdf
       title: ASGIHandlers
       url: handlers.html
-    - external_url: http.html
-      output: web,pdf
-      title: Async File Responses
     - output: web,pdf
       title: Workaround for lib_name != lib_path
       url: scripts.html
     - output: web,pdf
       title: Get Fileresponse Application
       url: asgi.html
+    - external_url: http.html
+      output: web,pdf
+      title: Async File Responses
     - output: web,pdf
       title: Create Local MinIO Server
       url: create_local_minio_server.html

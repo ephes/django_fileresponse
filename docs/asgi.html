@@ -64,6 +64,67 @@ instead of Djangos ASGIHandler.</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Usage">Usage<a class="anchor-link" href="#Usage"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fileresponse.asgi</span> <span class="kn">import</span> <span class="n">get_asgi_application</span>
+
+<span class="n">application</span> <span class="o">=</span> <span class="n">get_asgi_application</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="fab571fb-a6b2-4dcb-992a-422d0fc9c411"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#fab571fb-a6b2-4dcb-992a-422d0fc9c411');
+
+            setTimeout(function() {
+                var nbb_cell_id = 19;
+                var nbb_unformatted_code = "# dont_test\n\nfrom fileresponse.asgi import get_asgi_application\n\napplication = get_asgi_application()";
+                var nbb_formatted_code = "# dont_test\n\nfrom fileresponse.asgi import get_asgi_application\n\napplication = get_asgi_application()";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Tests">Tests<a class="anchor-link" href="#Tests"> </a></h2>
 </div>
 </div>
@@ -106,10 +167,10 @@ instead of Djangos ASGIHandler.</p>
 
 
 
-<div id="4cc13f4a-b807-4d5b-acae-dd1180b22251"></div>
+<div id="779d904e-ae4c-4795-9386-fcad6c687bae"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#4cc13f4a-b807-4d5b-acae-dd1180b22251');
+var element = $('#779d904e-ae4c-4795-9386-fcad6c687bae');
 
             setTimeout(function() {
                 var nbb_cell_id = 16;
@@ -139,7 +200,7 @@ var element = $('#4cc13f4a-b807-4d5b-acae-dd1180b22251');
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Assert-application-is-not-the-standard-Django">Assert application is not the standard Django<a class="anchor-link" href="#Assert-application-is-not-the-standard-Django"> </a></h3>
+<h3 id="Assert-application-is-not-the-standard-Django-asgi-application">Assert application is not the standard Django asgi application<a class="anchor-link" href="#Assert-application-is-not-the-standard-Django-asgi-application"> </a></h3>
 </div>
 </div>
 </div>
@@ -167,10 +228,10 @@ var element = $('#4cc13f4a-b807-4d5b-acae-dd1180b22251');
 
 
 
-<div id="41edbef6-4ea9-4b40-ab74-ac4ce6675b04"></div>
+<div id="f2ee773c-fe43-4610-9201-ccc663d07281"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#41edbef6-4ea9-4b40-ab74-ac4ce6675b04');
+var element = $('#f2ee773c-fe43-4610-9201-ccc663d07281');
 
             setTimeout(function() {
                 var nbb_cell_id = 17;
