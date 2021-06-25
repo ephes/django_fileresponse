@@ -20,7 +20,7 @@ entries:
       url: asgi.html
     - external_url: http.html
       output: web,pdf
-      title: Async File Responses
+      title: Async Responses
     - output: web,pdf
       title: Create Local MinIO Server
       url: create_local_minio_server.html
