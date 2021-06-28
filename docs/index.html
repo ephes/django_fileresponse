@@ -63,6 +63,7 @@ nb_path: "nbs/index.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Replace-Default-ASGIHandler">Replace Default ASGIHandler<a class="anchor-link" href="#Replace-Default-ASGIHandler"> </a></h2><p>You have to replace Djangos <code>ASGIHandler</code>, because it synchronously calls <code>__next__</code> in <a href="https://github.com/django/django/blob/66af94d56ea08ccf8d906708a6cc002dd3ab24d3/django/core/handlers/asgi.py#L242">for part in response</a> which makes it impossible to await reading from a filesystem/object-store.</p>
+<p>So you have to replace the default <code>ASGIHandler</code> in <code>asgi.py</code>.</p>
 
 </div>
 </div>
@@ -98,10 +99,10 @@ nb_path: "nbs/index.ipynb"
 
 
 
-<div id="8c1dceac-f272-4389-b223-54089a0f86e0"></div>
+<div id="baf63db4-835a-433e-8d7b-41161ca83af7"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#8c1dceac-f272-4389-b223-54089a0f86e0');
+var element = $('#baf63db4-835a-433e-8d7b-41161ca83af7');
 
             setTimeout(function() {
                 var nbb_cell_id = 11;
@@ -160,15 +161,78 @@ var element = $('#8c1dceac-f272-4389-b223-54089a0f86e0');
 
 
 
-<div id="6e88fded-c355-43e9-9a81-641d0a5a5eb5"></div>
+<div id="1c29a9fd-1638-402d-b889-e03a7c5e4157"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#6e88fded-c355-43e9-9a81-641d0a5a5eb5');
+var element = $('#1c29a9fd-1638-402d-b889-e03a7c5e4157');
 
             setTimeout(function() {
                 var nbb_cell_id = 10;
                 var nbb_unformatted_code = "from fileresponse.asgi import get_asgi_application\n\napplication = get_asgi_application()";
                 var nbb_formatted_code = "from fileresponse.asgi import get_asgi_application\n\napplication = get_asgi_application()";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you use a different mechanism to launch your application, you could also just import the modified <a href="/fileresponse/handlers.html#AsyncFileASGIHandler"><code>AsyncFileASGIHandler</code></a> directly:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fileresponse.handlers</span> <span class="kn">import</span> <span class="n">AsyncFileASGIHandler</span>
+
+<span class="n">django</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">set_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">application</span> <span class="o">=</span> <span class="n">AsyncFileASGIHandler</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="46f14ad9-25cc-4009-963f-f8b4545989d7"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#46f14ad9-25cc-4009-963f-f8b4545989d7');
+
+            setTimeout(function() {
+                var nbb_cell_id = 14;
+                var nbb_unformatted_code = "from fileresponse.handlers import AsyncFileASGIHandler\n\ndjango.setup(set_prefix=False)\napplication = AsyncFileASGIHandler()";
+                var nbb_formatted_code = "from fileresponse.handlers import AsyncFileASGIHandler\n\ndjango.setup(set_prefix=False)\napplication = AsyncFileASGIHandler()";
                 var nbb_cells = Jupyter.notebook.get_cells();
                 for (var i = 0; i < nbb_cells.length; ++i) {
                     if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
@@ -231,10 +295,10 @@ var element = $('#6e88fded-c355-43e9-9a81-641d0a5a5eb5');
 
 
 
-<div id="8b78c157-fe3c-4a97-b1e1-128982689aef"></div>
+<div id="d8cf8168-2260-4710-a6e5-312828427d3b"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#8b78c157-fe3c-4a97-b1e1-128982689aef');
+var element = $('#d8cf8168-2260-4710-a6e5-312828427d3b');
 
             setTimeout(function() {
                 var nbb_cell_id = 2;
@@ -295,10 +359,10 @@ var element = $('#8b78c157-fe3c-4a97-b1e1-128982689aef');
 
 
 
-<div id="2728e847-8f98-4639-b050-aa27278f655b"></div>
+<div id="859f1f30-0f02-4af2-902a-f06f45ae2a8a"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#2728e847-8f98-4639-b050-aa27278f655b');
+var element = $('#859f1f30-0f02-4af2-902a-f06f45ae2a8a');
 
             setTimeout(function() {
                 var nbb_cell_id = 3;

@@ -19,6 +19,8 @@
 
 You have to replace Djangos `ASGIHandler`, because it synchronously calls `__next__` in [for part in response](https://github.com/django/django/blob/66af94d56ea08ccf8d906708a6cc002dd3ab24d3/django/core/handlers/asgi.py#L242) which makes it impossible to await reading from a filesystem/object-store.
 
+So you have to replace the default `ASGIHandler` in `asgi.py`.
+
 So instead of building your application like this:
 
 ```python
@@ -37,6 +39,19 @@ You have to import a modified ASGIHandler from fileresponse:
 from fileresponse.asgi import get_asgi_application
 
 application = get_asgi_application()
+```
+
+
+    <IPython.core.display.Javascript object>
+
+
+If you use a different mechanism to launch your application, you could also just import the modified `AsyncFileASGIHandler` directly:
+
+```python
+from fileresponse.handlers import AsyncFileASGIHandler
+
+django.setup(set_prefix=False)
+application = AsyncFileASGIHandler()
 ```
 
 
