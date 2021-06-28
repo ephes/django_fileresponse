@@ -19,20 +19,29 @@
 
 You have to replace Djangos `ASGIHandler`, because it synchronously calls `__next__` in [for part in response](https://github.com/django/django/blob/66af94d56ea08ccf8d906708a6cc002dd3ab24d3/django/core/handlers/asgi.py#L242) which makes it impossible to await reading from a filesystem/object-store.
 
-
 So instead of building your application like this:
+
 ```python
 from django.core.asgi import get_asgi_application
 
 application = get_asgi_application()
 ```
 
+
+    <IPython.core.display.Javascript object>
+
+
 You have to import a modified ASGIHandler from fileresponse:
+
 ```python
 from fileresponse.asgi import get_asgi_application
 
 application = get_asgi_application()
 ```
+
+
+    <IPython.core.display.Javascript object>
+
 
 ## How to use Async Fileresponses in your Views
 

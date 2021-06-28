@@ -63,20 +63,134 @@ nb_path: "nbs/index.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Replace-Default-ASGIHandler">Replace Default ASGIHandler<a class="anchor-link" href="#Replace-Default-ASGIHandler"> </a></h2><p>You have to replace Djangos <code>ASGIHandler</code>, because it synchronously calls <code>__next__</code> in <a href="https://github.com/django/django/blob/66af94d56ea08ccf8d906708a6cc002dd3ab24d3/django/core/handlers/asgi.py#L242">for part in response</a> which makes it impossible to await reading from a filesystem/object-store.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>So instead of building your application like this:</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.core.asgi</span> <span class="kn">import</span> <span class="n">get_asgi_application</span>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">django.core.asgi</span> <span class="kn">import</span> <span class="n">get_asgi_application</span>
 
 <span class="n">application</span> <span class="o">=</span> <span class="n">get_asgi_application</span><span class="p">()</span>
 </pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="9856dc78-bf0a-413b-8142-93f821d67ced"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#9856dc78-bf0a-413b-8142-93f821d67ced');
+
+            setTimeout(function() {
+                var nbb_cell_id = 11;
+                var nbb_unformatted_code = "from django.core.asgi import get_asgi_application\n\napplication = get_asgi_application()";
+                var nbb_formatted_code = "from django.core.asgi import get_asgi_application\n\napplication = get_asgi_application()";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>You have to import a modified ASGIHandler from fileresponse:</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fileresponse.asgi</span> <span class="kn">import</span> <span class="n">get_asgi_application</span>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fileresponse.asgi</span> <span class="kn">import</span> <span class="n">get_asgi_application</span>
 
 <span class="n">application</span> <span class="o">=</span> <span class="n">get_asgi_application</span><span class="p">()</span>
 </pre></div>
 
+    </div>
 </div>
 </div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="dbc090e8-8c7f-40ce-a304-b5cd95c6a9e7"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#dbc090e8-8c7f-40ce-a304-b5cd95c6a9e7');
+
+            setTimeout(function() {
+                var nbb_cell_id = 10;
+                var nbb_unformatted_code = "from fileresponse.asgi import get_asgi_application\n\napplication = get_asgi_application()";
+                var nbb_formatted_code = "from fileresponse.asgi import get_asgi_application\n\napplication = get_asgi_application()";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            
+</script>
 </div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="How-to-use-Async-Fileresponses-in-your-Views">How to use Async Fileresponses in your Views<a class="anchor-link" href="#How-to-use-Async-Fileresponses-in-your-Views"> </a></h2><p>Add functions below to your <code>views.py</code></p>
@@ -117,10 +231,10 @@ nb_path: "nbs/index.ipynb"
 
 
 
-<div id="723c5206-5781-49cc-b354-f97d2cf0aa40"></div>
+<div id="6c3fc687-cf6f-408a-82f0-1278fff169f0"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#723c5206-5781-49cc-b354-f97d2cf0aa40');
+var element = $('#6c3fc687-cf6f-408a-82f0-1278fff169f0');
 
             setTimeout(function() {
                 var nbb_cell_id = 2;
@@ -181,10 +295,10 @@ var element = $('#723c5206-5781-49cc-b354-f97d2cf0aa40');
 
 
 
-<div id="e1533d24-9a72-48c7-868c-92c6d7c022ee"></div>
+<div id="e0ac9e79-0a8d-416c-8378-df06c7b18658"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#e1533d24-9a72-48c7-868c-92c6d7c022ee');
+var element = $('#e0ac9e79-0a8d-416c-8378-df06c7b18658');
 
             setTimeout(function() {
                 var nbb_cell_id = 3;
