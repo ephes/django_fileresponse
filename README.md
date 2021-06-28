@@ -2,7 +2,7 @@
 > Serve files directly from Django.
 
 
-`django_fileresponse` is a library that allows you to serve files directly from Django.
+`django_fileresponse` ([link to documentation](https://ephes.github.io/django_fileresponse/)) is a library that allows you to serve files directly from Django.
 
 ## Features of django_fileresponse
 
