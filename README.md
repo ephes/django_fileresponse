@@ -67,3 +67,15 @@ async def get_file(request, key):
 
     <IPython.core.display.Javascript object>
 
+
+## Settings
+
+### Example Settings for an S3 Compatible Object Store
+
+```
+FILERESPONSE_S3_ACCESS_KEY_ID="minioadmin"
+FILERESPONSE_S3_SECRET_ACCESS_KEY="minioadmin"
+FILERESPONSE_S3_REGION="us-west-2"
+FILERESPONSE_S3_STORAGE_BUCKET_NAME="fileresponse"
+FILERESPONSE_S3_ENDPOINT_URL="http://localhost:9000"
+```
