@@ -15,11 +15,30 @@
 
 `django_fileresponse` is on PyPI so you can just run `pip install django_fileresponse`.
 
-## How to use
+## Replace Default ASGIHandler
+
+You have to replace Djangos `ASGIHandler`, because it synchronously calls `__next__` in [for part in response](https://github.com/django/django/blob/66af94d56ea08ccf8d906708a6cc002dd3ab24d3/django/core/handlers/asgi.py#L242) which makes it impossible to await reading from a filesystem/object-store.
+
+
+So instead of building your application like this:
+```python
+from django.core.asgi import get_asgi_application
+
+application = get_asgi_application()
+```
+
+You have to import a modified ASGIHandler from fileresponse:
+```python
+from fileresponse.asgi import get_asgi_application
+
+application = get_asgi_application()
+```
+
+## How to use Async Fileresponses in your Views
+
+Add functions below to your `views.py`
 
 ### Serving from Filesystem
-
-In your views.py add this:
 
 ```python
 from fileresponse.http import AiofileFileResponse as AiofileFileResponse

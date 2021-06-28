@@ -62,14 +62,31 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-to-use">How to use<a class="anchor-link" href="#How-to-use"> </a></h2>
+<h2 id="Replace-Default-ASGIHandler">Replace Default ASGIHandler<a class="anchor-link" href="#Replace-Default-ASGIHandler"> </a></h2><p>You have to replace Djangos <code>ASGIHandler</code>, because it synchronously calls <code>__next__</code> in <a href="https://github.com/django/django/blob/66af94d56ea08ccf8d906708a6cc002dd3ab24d3/django/core/handlers/asgi.py#L242">for part in response</a> which makes it impossible to await reading from a filesystem/object-store.</p>
+<p>So instead of building your application like this:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.core.asgi</span> <span class="kn">import</span> <span class="n">get_asgi_application</span>
+
+<span class="n">application</span> <span class="o">=</span> <span class="n">get_asgi_application</span><span class="p">()</span>
+</pre></div>
+<p>You have to import a modified ASGIHandler from fileresponse:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fileresponse.asgi</span> <span class="kn">import</span> <span class="n">get_asgi_application</span>
+
+<span class="n">application</span> <span class="o">=</span> <span class="n">get_asgi_application</span><span class="p">()</span>
+</pre></div>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Serving-from-Filesystem">Serving from Filesystem<a class="anchor-link" href="#Serving-from-Filesystem"> </a></h3><p>In your views.py add this:</p>
+<h2 id="How-to-use-Async-Fileresponses-in-your-Views">How to use Async Fileresponses in your Views<a class="anchor-link" href="#How-to-use-Async-Fileresponses-in-your-Views"> </a></h2><p>Add functions below to your <code>views.py</code></p>
 
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Serving-from-Filesystem">Serving from Filesystem<a class="anchor-link" href="#Serving-from-Filesystem"> </a></h3>
 </div>
 </div>
 </div>
@@ -100,10 +117,10 @@ nb_path: "nbs/index.ipynb"
 
 
 
-<div id="0a9c2f01-c56f-4016-885a-16675b051367"></div>
+<div id="2139e51c-2bf4-4290-a9e5-d0a3057550b7"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#0a9c2f01-c56f-4016-885a-16675b051367');
+var element = $('#2139e51c-2bf4-4290-a9e5-d0a3057550b7');
 
             setTimeout(function() {
                 var nbb_cell_id = 2;
@@ -164,10 +181,10 @@ var element = $('#0a9c2f01-c56f-4016-885a-16675b051367');
 
 
 
-<div id="2cae4ac0-2224-42df-8965-7c4aa04b986e"></div>
+<div id="34797e7a-367d-46ca-9e92-a5c089932225"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#2cae4ac0-2224-42df-8965-7c4aa04b986e');
+var element = $('#34797e7a-367d-46ca-9e92-a5c089932225');
 
             setTimeout(function() {
                 var nbb_cell_id = 3;
