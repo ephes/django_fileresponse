@@ -166,14 +166,7 @@ class AiobotocoreFileResponse(AsyncResponse):
 
     async def stream(self, send):
         session = aiobotocore.get_session()
-        async with session.create_client(
-            "s3",
-            endpoint_url=settings.MINIO_ENDPOINT_URL,
-            region_name=settings.DJANGO_AWS_REGION,
-            aws_secret_access_key=settings.DJANGO_AWS_SECRET_ACCESS_KEY,
-            aws_access_key_id=settings.DJANGO_AWS_ACCESS_KEY_ID,
-            use_ssl=False,
-        ) as client:
+        async with session.create_client("s3", **self.client_config) as client:
             minio_response = await client.get_object(Bucket=self.bucket, Key=self.key)
             async with minio_response["Body"] as stream:
                 await self.send_stream_to_client(stream, send)

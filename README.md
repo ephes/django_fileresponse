@@ -4,6 +4,8 @@
 
 `django_fileresponse` is a library that allows you to serve files directly from Django.
 
+Hello World!
+
 ## Features of django_fileresponse
 
 `django_fileresponse` provides the following features for developers:
