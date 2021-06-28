@@ -103,3 +103,8 @@ FILERESPONSE_S3_REGION="us-west-2"
 FILERESPONSE_S3_STORAGE_BUCKET_NAME="fileresponse"
 FILERESPONSE_S3_ENDPOINT_URL="http://localhost:9000"
 ```
+
+## More Information
+
+* [DjangoCon Europe 2021 Talk about file serving with Django](https://wersdoerfer.de/blogs/ephes_blog/djangocon-2021/)
+* [Podcast episode about DjangoCon Europe 2021](https://python-podcast.de/show/djangoconeu-2021/)
