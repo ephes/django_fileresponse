@@ -4,8 +4,6 @@
 
 `django_fileresponse` is a library that allows you to serve files directly from Django.
 
-Hello World!
-
 ## Features of django_fileresponse
 
 `django_fileresponse` provides the following features for developers:
@@ -19,15 +17,34 @@ Hello World!
 
 ## How to use
 
-Fill me in please! Don't forget code examples:
+### Serving from Filesystem
+
+In your views.py add this:
 
 ```python
-1+1
+from fileresponse.http import AiofileFileResponse as AiofileFileResponse
+
+
+async def get_file(request, path):
+    file_path = Path(path)
+    return AiofileFileResponse(file_path)
 ```
 
 
+    <IPython.core.display.Javascript object>
 
 
-    2
+### Serve Files from an S3 Compatible Object Store
 
+```python
+from fileresponse.http import AiobotocoreFileResponse
+
+
+async def get_file(request, key):
+    bucket = settings.FILERESPONSE_S3_ACCESS_KEY_ID
+    return AiobotocoreFileResponse(bucket, key, chunk_size=4096)
+```
+
+
+    <IPython.core.display.Javascript object>
 
