@@ -41,6 +41,15 @@ retained. Each send is awaited before reading again, so slow clients apply
 backpressure. All response classes accept <code>chunk_size</code> as an integer from
 1 through 1,048,576 bytes (1 MiB), default 4096. Invalid values, including
 booleans, raise <code>ValueError</code> before opening a stream or sending headers.</p>
+<p>Responses expose Django's async <code>StreamingHttpResponse</code> interface, including
+<code>is_async</code> and <code>streaming_content</code>, so <code>GZipMiddleware</code> and other async streaming
+middleware can transform their content. The custom handler sends the wrapped
+iterator and closes the original file or S3 body/client promptly on cancellation
+or read/send failure. ASGI header names are lowercase; header values and
+separate cookies are preserved.</p>
+<p>Legacy custom adapters that call <code>send_stream_to_client(stream, send)</code> from
+<code>stream(send)</code> also send middleware-transformed content; they retain ownership
+of their already-open resource context. Each response is single-use.</p>
 
 </div>
 </div>
@@ -60,8 +69,9 @@ booleans, raise <code>ValueError</code> before opening a stream or sending heade
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Replace-Default-ASGIHandler">Replace Default ASGIHandler<a class="anchor-link" href="#Replace-Default-ASGIHandler"> </a></h2><p>You have to replace Djangos <code>ASGIHandler</code>, because it synchronously calls <code>__next__</code> in <a href="https://github.com/django/django/blob/66af94d56ea08ccf8d906708a6cc002dd3ab24d3/django/core/handlers/asgi.py#L242">for part in response</a> which makes it impossible to await reading from a filesystem/object-store.</p>
-<p>So you have to replace the default <code>ASGIHandler</code> in <code>asgi.py</code>.</p>
+<h2 id="Replace-Default-ASGIHandler">Replace Default ASGIHandler<a class="anchor-link" href="#Replace-Default-ASGIHandler"> </a></h2><p>Use <a href="/django_fileresponse/handlers.html#AsyncFileASGIHandler"><code>AsyncFileASGIHandler</code></a> to send middleware-wrapped async content and ensure
+prompt cleanup of the original filesystem or S3 resource when streaming fails
+or the client disconnects.</p>
 
 </div>
 </div>

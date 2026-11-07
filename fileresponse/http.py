@@ -4,12 +4,13 @@ __all__ = ['AsyncResponse', 'AiofileFileResponse', 'AiobotocoreFileResponse']
 
 # Cell
 
+from contextlib import aclosing
 import time
 
-from django.http.response import HttpResponseBase
+from django.http.response import StreamingHttpResponse
 
 
-class AsyncResponse(HttpResponseBase):
+class AsyncResponse(StreamingHttpResponse):
     """
     Provides the `is_async_fileresponse` attribute checked by
     fileresponse.handlers.AsyncFileASGIHandler.
@@ -18,7 +19,6 @@ class AsyncResponse(HttpResponseBase):
     for files and other file like streams.
     """
 
-    streaming = True  # common middleware needs this
     is_async_fileresponse = True
 
     def __init__(self, *args, **kwargs):
@@ -38,7 +38,9 @@ class AsyncResponse(HttpResponseBase):
         # set default values
         content_type = kwargs.get("content_type", "application/octet-stream")
         super_kwargs["content_type"] = content_type
-        super().__init__(**super_kwargs)
+        self._stream_override = None
+        self._source_iterator = self._source_content()
+        super().__init__(self._source_iterator, **super_kwargs)
 
     @property
     def response_headers(self):
@@ -49,22 +51,49 @@ class AsyncResponse(HttpResponseBase):
                 header = header.encode("ascii")
             if isinstance(value, str):
                 value = value.encode("latin1")
-            response_headers.append((bytes(header), bytes(value)))
+            response_headers.append((bytes(header).lower(), bytes(value)))
         for c in self.cookies.values():
             response_headers.append(
-                (b"Set-Cookie", c.output(header="").encode("ascii").strip())
+                (b"set-cookie", c.output(header="").encode("ascii").strip())
             )
         return response_headers
 
-    async def send_stream_to_client(self, stream, send):
-        """
-        Core streaming logic. Supports all streams from which
-        chunks of content could be read like this:
+    async def _read_chunks(self, stream):
+        while chunk := await stream.read(self.chunk_size):
+            yield chunk
 
-        ```python
-            chunk = await stream.read(chunk_size)
-        ```
-        """
+    async def _stream_content(self):
+        # Adapters override this async generator to own their resource contexts.
+        if False:
+            yield b""
+
+    async def _source_content(self):
+        # Resolve the source lazily: legacy adapters supply their open stream
+        # only after middleware has captured this response's iterator.
+        content = (
+            self._stream_content() if self._stream_override is None
+            else self._read_chunks(self._stream_override)
+        )
+        async with aclosing(content):
+            async for chunk in content:
+                yield chunk
+
+    async def stream(self, send):
+        """Send the content currently installed by async streaming middleware."""
+        # Middleware generators need not forward aclose() to their source.
+        # Keep ownership of that source so failures/cancellation close I/O now.
+        async with aclosing(self._source_iterator):
+            async with aclosing(aiter(self)) as content:
+                await self._send_content(content, send)
+
+    async def send_stream_to_client(self, stream, send):
+        """Bind an already-open stream and send middleware-wrapped content."""
+        self._stream_override = stream
+        # Call the base implementation to avoid recursing into a legacy
+        # adapter's stream(send), which may have called this helper.
+        await AsyncResponse.stream(self, send)
+
+    async def _send_content(self, content, send):
         started_serving = time.perf_counter()
         await send(
             {
@@ -73,21 +102,15 @@ class AsyncResponse(HttpResponseBase):
                 "headers": self.response_headers,
             }
         )
-        sent_size = 0
-
-        more_body = True
-        while more_body:
-            chunk = await stream.read(self.chunk_size)
-            chunk_len = len(chunk)
-            more_body = chunk_len > 0
+        async for chunk in content:
             await send(
                 {
                     "type": "http.response.body",
                     "body": chunk,
-                    "more_body": more_body,
+                    "more_body": True,
                 }
             )
-            sent_size += chunk_len
+        await send({"type": "http.response.body", "body": b"", "more_body": False})
         self.elapsed = time.perf_counter() - started_serving
 
 # Cell
@@ -97,9 +120,9 @@ import aiofiles
 
 class AiofileFileResponse(AsyncResponse):
     """
-    Async response class for serving files from the filesystem. It's only
-    used to open a stream and to hand it over to AsyncResponse which then
-    handles all of the content streaming.
+    Async response class for serving files from the filesystem. The async
+    content iterator owns the open file context; AsyncResponse sends the iterator
+    installed by middleware and closes the source on failure or cancellation.
 
     It uses aiofiles to get the stream object from which chunks of data could be
     read asynchronously. The aiofiles library uses a threadpool to provide async
@@ -116,9 +139,10 @@ class AiofileFileResponse(AsyncResponse):
             "status_code": self.status_code,
         }
 
-    async def stream(self, send):
+    async def _stream_content(self):
         async with aiofiles.open(self.path, mode="rb") as stream:  # type: ignore
-            await self.send_stream_to_client(stream, send)
+            async for chunk in self._read_chunks(stream):
+                yield chunk
 
 # Cell
 
@@ -131,9 +155,8 @@ from django.core.exceptions import ImproperlyConfigured
 class AiobotocoreFileResponse(AsyncResponse):
     """
     Async response class for serving files from an s3 compatible object store
-    like [MinIO](http://min.io). It's only about opening / configuring the stream
-    and then using AsyncResponse to handle the actual streaming of content to
-    the client.
+    like [MinIO](http://min.io). Its async content iterator owns both the
+    client and body contexts, including when middleware wraps the content.
 
     It uses aiobotocore to get the stream object from which chunks of data could be
     read asynchronously.
@@ -175,9 +198,10 @@ class AiobotocoreFileResponse(AsyncResponse):
         )
         return config
 
-    async def stream(self, send):
+    async def _stream_content(self):
         session = get_session()
         async with session.create_client("s3", **self.client_config) as client:
             minio_response = await client.get_object(Bucket=self.bucket, Key=self.key)
             async with minio_response["Body"] as stream:
-                await self.send_stream_to_client(stream, send)
+                async for chunk in self._read_chunks(stream):
+                    yield chunk

@@ -17,15 +17,27 @@ backpressure. All response classes accept `chunk_size` as an integer from
 1 through 1,048,576 bytes (1 MiB), default 4096. Invalid values, including
 booleans, raise `ValueError` before opening a stream or sending headers.
 
+Responses expose Django's async `StreamingHttpResponse` interface, including
+`is_async` and `streaming_content`, so `GZipMiddleware` and other async streaming
+middleware can transform their content. The custom handler sends the wrapped
+iterator and closes the original file or S3 body/client promptly on cancellation
+or read/send failure. ASGI header names are lowercase; header values and
+separate cookies are preserved.
+
+Legacy custom adapters that call `send_stream_to_client(stream, send)` from
+`stream(send)` also send middleware-transformed content; they retain ownership
+of their already-open resource context. Each response is single-use.
+
+
 ## Installing
 
 `django_fileresponse` is on PyPI so you can just run `pip install django_fileresponse`.
 
 ## Replace Default ASGIHandler
 
-You have to replace Djangos `ASGIHandler`, because it synchronously calls `__next__` in [for part in response](https://github.com/django/django/blob/66af94d56ea08ccf8d906708a6cc002dd3ab24d3/django/core/handlers/asgi.py#L242) which makes it impossible to await reading from a filesystem/object-store.
-
-So you have to replace the default `ASGIHandler` in `asgi.py`.
+Use `AsyncFileASGIHandler` to send middleware-wrapped async content and ensure
+prompt cleanup of the original filesystem or S3 resource when streaming fails
+or the client disconnects.
 
 So instead of building your application like this:
 
