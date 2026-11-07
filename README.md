@@ -11,6 +11,12 @@
 - **Use asyncio to serve files with high concurrency** directly from Django.
 - Uses [aiofiles](https://github.com/Tinche/aiofiles) to **asynchronously read from filesystem** and [aiobotocore](https://github.com/aio-libs/aiobotocore) to **asynchronously read from s3 compatible object stores**
 
+Streaming memory is proportional to the chunk size; emitted payloads are not
+retained. Each send is awaited before reading again, so slow clients apply
+backpressure. All response classes accept `chunk_size` as an integer from
+1 through 1,048,576 bytes (1 MiB), default 4096. Invalid values, including
+booleans, raise `ValueError` before opening a stream or sending headers.
+
 ## Installing
 
 `django_fileresponse` is on PyPI so you can just run `pip install django_fileresponse`.
