@@ -23,6 +23,12 @@ class AsyncResponse(HttpResponseBase):
 
     def __init__(self, *args, **kwargs):
         self.chunk_size = kwargs.get("chunk_size", 4096)
+        if (
+            isinstance(self.chunk_size, bool)
+            or not isinstance(self.chunk_size, int)
+            or not 1 <= self.chunk_size <= 1024 * 1024
+        ):
+            raise ValueError("chunk_size must be an integer between 1 and 1048576")
         self.raw_headers = kwargs.get("raw_headers", {})
 
         # copy relevant super kwargs from kwargs
@@ -68,7 +74,6 @@ class AsyncResponse(HttpResponseBase):
                 "headers": self.response_headers,
             }
         )
-        chunks = []
         sent_size = 0
 
         more_body = True
@@ -76,7 +81,6 @@ class AsyncResponse(HttpResponseBase):
             chunk = await stream.read(self.chunk_size)
             chunk_len = len(chunk)
             more_body = chunk_len > 0
-            chunks.append(chunk)
             await send(
                 {
                     "type": "http.response.body",
