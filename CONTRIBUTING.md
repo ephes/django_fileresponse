@@ -2,10 +2,25 @@
 
 ## How to get started
 
-Before anything else, please install the git hooks that run automatic scripts during each commit and merge to strip the notebooks of superfluous metadata (and avoid merge conflicts). After cloning the repository, run the following command inside it:
+Use CPython 3.11–3.13 and install the bounded development extra in a virtual
+environment:
+
+```sh
+python -m pip install -e '.[dev]'
 ```
-nbdev_install_git_hooks
-```
+
+Canonical library code and README content live in `nbs/*.ipynb`. After editing,
+run `python scripts/generate.py --docs`. This uses nbdev 1.2.11 in a disposable
+copy, preserves the site's `/django_fileresponse/` base URL, and renders API docs
+without running service demonstrations. Do not run `nbdev_test_nbs` over all
+notebooks: MinIO, project creation and bulk download examples are not CI tests.
+
+Run the local CI equivalents listed in README: Ruff, mypy, generated-file parity,
+`python -m unittest discover -s tests -v`, `python -m build`, and
+`python scripts/package_smoke.py`. The last command checks both distributions in
+fresh environments outside the checkout. Use only synthetic fixtures and fake
+S3 boundaries. No credentials or external services are needed. No changelog is
+currently maintained; document behavior changes in the canonical notebooks.
 
 ## Did you find a bug?
 
