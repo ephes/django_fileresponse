@@ -37,6 +37,23 @@ chunk size, and each send is awaited before the next read. All response classes
 accept an integer <code>chunk_size</code> from 1 through 1,048,576 bytes (1 MiB), default
 <code>4096</code>. Booleans and other values raise <code>ValueError</code> at construction, before
 opening a stream or sending headers.</p>
+<p><a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a> uses Django's public <code>StreamingHttpResponse</code> interface:
+<code>is_async</code> is true and <code>streaming_content</code> is an async iterator. Middleware such
+as Django's <code>GZipMiddleware</code> can wrap that iterator; both <code>stream(send)</code> and
+<a href="/django_fileresponse/handlers.html#AsyncFileASGIHandler"><code>AsyncFileASGIHandler</code></a> send the transformed bytes. Keep middleware wrappers
+asynchronous to preserve bounded memory and backpressure. The original file or
+S3 body/client context closes on completion, read/send failure or cancellation,
+even when the wrapper does not forward iterator cleanup.</p>
+<p>ASGI header names, including each separate <code>set-cookie</code>, are lowercase. Values
+retain Django's encoding and newline validation.</p>
+<p>For custom adapters, override <code>_stream_content()</code> with an async generator that
+opens the resource in <code>async with</code> and yields chunks from <code>_read_chunks(stream)</code>.
+The existing <code>send_stream_to_client(stream, send)</code> helper remains available for
+already-open streams; the caller owns that stream's context. Legacy adapters
+that open a resource in <code>stream(send)</code> and call this helper also send the
+middleware-wrapped iterator. Calling the helper binds the supplied stream
+lazily without bypassing middleware or reopening the built-in file/S3 source.
+Responses and their content iterators are single-use, as in Django.</p>
 
 </div>
 </div>
@@ -53,7 +70,7 @@ opening a stream or sending headers.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AsyncResponse" class="doc_header"><code>class</code> <code>AsyncResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L12" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AsyncResponse</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <code>HttpResponseBase</code></p>
+<h2 id="AsyncResponse" class="doc_header"><code>class</code> <code>AsyncResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L13" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AsyncResponse</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <code>StreamingHttpResponse</code></p>
 </blockquote>
 <p>Provides the <code>is_async_fileresponse</code> attribute checked by
 fileresponse.handlers.AsyncFileASGIHandler.</p>
@@ -91,7 +108,10 @@ for files and other file like streams.</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">YourSpecialServiceResponse</span><span class="p">(</span><span class="n">AsyncResponse</span><span class="p">):</span>
-    <span class="o">...</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_stream_content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">your_service</span><span class="o">.</span><span class="n">open_stream</span><span class="p">()</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_chunks</span><span class="p">(</span><span class="n">stream</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">chunk</span>
 </pre></div>
 
     </div>
@@ -201,11 +221,11 @@ for files and other file like streams.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L98" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
+<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L121" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
 </blockquote>
-<p>Async response class for serving files from the filesystem. It's only
-used to open a stream and to hand it over to AsyncResponse which then
-handles all of the content streaming.</p>
+<p>Async response class for serving files from the filesystem. The async
+content iterator owns the open file context; AsyncResponse sends the iterator
+installed by middleware and closes the source on failure or cancellation.</p>
 <p>It uses aiofiles to get the stream object from which chunks of data could be
 read asynchronously. The aiofiles library uses a threadpool to provide async
 filesystem access.</p>
@@ -375,12 +395,11 @@ settings raise <code>ImproperlyConfigured</code> at construction, before network
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L131" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
+<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L155" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
 </blockquote>
 <p>Async response class for serving files from an s3 compatible object store
-like <a href="http://min.io">MinIO</a>. It's only about opening / configuring the stream
-and then using AsyncResponse to handle the actual streaming of content to
-the client.</p>
+like <a href="http://min.io">MinIO</a>. Its async content iterator owns both the
+client and body contexts, including when middleware wraps the content.</p>
 <p>It uses aiobotocore to get the stream object from which chunks of data could be
 read asynchronously.</p>
 

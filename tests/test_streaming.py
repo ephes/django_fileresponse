@@ -33,32 +33,49 @@ class GeneratedStream:
 class StreamingTests(unittest.IsolatedAsyncioTestCase):
     async def test_memory_is_bounded_by_chunk_size(self):
         chunk_size = 64 * 1024
-        for total in (1024 * 1024, 32 * 1024 * 1024):
-            with self.subTest(total=total):
-                stream = GeneratedStream(total)
-                response = AsyncResponse(chunk_size=chunk_size)
-                sent = 0
-                bodies = 0
+        for route in ("helper", "stream", "wrapped"):
+            for total in (1024 * 1024, 32 * 1024 * 1024):
+                with self.subTest(total=total, route=route):
+                    stream = GeneratedStream(total)
+                    class GeneratedResponse(AsyncResponse):
+                        async def _stream_content(self):
+                            async for chunk in self._read_chunks(stream):
+                                yield chunk
 
-                async def send(message):
-                    nonlocal sent, bodies
-                    if message["type"] == "http.response.body":
-                        bodies += 1
-                        body = message["body"]
-                        self.assertEqual(body, bytes([bodies % 251]) * len(body))
-                        self.assertLessEqual(len(body), chunk_size)
-                        sent += len(body)
-                        self.assertEqual(message["more_body"], bool(body))
+                    response = GeneratedResponse(chunk_size=chunk_size)
+                    if route == "wrapped":
+                        content = response.streaming_content
 
-                tracemalloc.start()
-                try:
-                    await response.send_stream_to_client(stream, send)
-                    _, peak = tracemalloc.get_traced_memory()
-                finally:
-                    tracemalloc.stop()
-                self.assertEqual(sent, total)
-                self.assertEqual(bodies, total // chunk_size + 1)
-                self.assertLess(peak, 8 * chunk_size + 256 * 1024)
+                        async def wrapped():
+                            async for chunk in content:
+                                yield chunk
+
+                        response.streaming_content = wrapped()
+                    sent = 0
+                    bodies = 0
+
+                    async def send(message):
+                        nonlocal sent, bodies
+                        if message["type"] == "http.response.body":
+                            bodies += 1
+                            body = message["body"]
+                            self.assertEqual(body, bytes([bodies % 251]) * len(body))
+                            self.assertLessEqual(len(body), chunk_size)
+                            sent += len(body)
+                            self.assertEqual(message["more_body"], bool(body))
+
+                    tracemalloc.start()
+                    try:
+                        if route == "helper":
+                            await response.send_stream_to_client(stream, send)
+                        else:
+                            await response.stream(send)
+                        _, peak = tracemalloc.get_traced_memory()
+                    finally:
+                        tracemalloc.stop()
+                    self.assertEqual(sent, total)
+                    self.assertEqual(bodies, total // chunk_size + 1)
+                    self.assertLess(peak, 8 * chunk_size + 256 * 1024)
 
     async def test_slow_send_blocks_next_read(self):
         stream = GeneratedStream(6)
