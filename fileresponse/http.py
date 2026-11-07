@@ -38,7 +38,6 @@ class AsyncResponse(HttpResponseBase):
         # set default values
         content_type = kwargs.get("content_type", "application/octet-stream")
         super_kwargs["content_type"] = content_type
-        status = kwargs.get("status", 200)
         super().__init__(**super_kwargs)
 
     @property
@@ -123,9 +122,10 @@ class AiofileFileResponse(AsyncResponse):
 
 # Cell
 
-import aiobotocore
+from aiobotocore.session import get_session
 
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 
 
 class AiobotocoreFileResponse(AsyncResponse):
@@ -152,24 +152,31 @@ class AiobotocoreFileResponse(AsyncResponse):
         }
 
     def create_client_config(self, kwargs):
-        return {
-            "endpoint_url": kwargs.get(
-                "endpoint_url", settings.FILERESPONSE_S3_ENDPOINT_URL
-            ),
-            "region_name": kwargs.get("region_name", settings.FILERESPONSE_S3_REGION),
-            "aws_access_key_id": kwargs.get(
-                "aws_access_key_id", settings.FILERESPONSE_S3_ACCESS_KEY_ID
-            ),
-            "aws_secret_access_key": kwargs.get(
-                "secret_access_key", settings.FILERESPONSE_S3_SECRET_ACCESS_KEY
-            ),
-            "use_ssl": kwargs.get(
-                "use_ssl", getattr(settings, "FILERESPONSE_S3_USE_SSL", False)
-            ),
-        }
+        options = (
+            ("endpoint_url", "endpoint_url", "FILERESPONSE_S3_ENDPOINT_URL"),
+            ("region_name", "region_name", "FILERESPONSE_S3_REGION"),
+            ("aws_access_key_id", "aws_access_key_id", "FILERESPONSE_S3_ACCESS_KEY_ID"),
+            ("aws_secret_access_key", "secret_access_key", "FILERESPONSE_S3_SECRET_ACCESS_KEY"),
+        )
+        config = {}
+        for client_option, override, setting_name in options:
+            if override in kwargs:
+                config[client_option] = kwargs[override]
+            else:
+                try:
+                    config[client_option] = getattr(settings, setting_name)
+                except AttributeError as exc:
+                    raise ImproperlyConfigured(
+                        f"Set {setting_name} or pass {override!r}"
+                    ) from exc
+        config["use_ssl"] = (
+            kwargs["use_ssl"] if "use_ssl" in kwargs
+            else getattr(settings, "FILERESPONSE_S3_USE_SSL", False)
+        )
+        return config
 
     async def stream(self, send):
-        session = aiobotocore.get_session()
+        session = get_session()
         async with session.create_client("s3", **self.client_config) as client:
             minio_response = await client.get_object(Bucket=self.bucket, Key=self.key)
             async with minio_response["Body"] as stream:

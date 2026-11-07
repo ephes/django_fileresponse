@@ -39,6 +39,7 @@ nb_path: "nbs/01_scripts.ipynb"
 <div class="output_area">
 
 
+
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="get_config" class="doc_header"><code>get_config</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/scripts.py#L11" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_config</code>(<strong><code>settings_path</code></strong>)</p>
 </blockquote>
@@ -61,6 +62,7 @@ nb_path: "nbs/01_scripts.ipynb"
 <div class="output">
 
 <div class="output_area">
+
 
 
 <div class="output_markdown rendered_html output_subarea ">
@@ -97,59 +99,23 @@ nb_path: "nbs/01_scripts.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">setup_settings_file</span><span class="p">(</span><span class="n">settings_path</span><span class="p">):</span>
-    <span class="n">original_lib_name</span> <span class="o">=</span> <span class="s2">&quot;django_fileresponse&quot;</span>
-    <span class="n">settings_content</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">setup_settings_file</span><span class="p">(</span><span class="n">settings_path</span><span class="p">):</span>
+    <span class="n">original_lib_name</span> <span class="o">=</span> <span class="s2">"django_fileresponse"</span>
+    <span class="n">settings_content</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
 <span class="s2">    [DEFAULT]</span>
-<span class="s2">    lib_name = </span><span class="si">{</span><span class="n">original_lib_name</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="n">settings_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="s2">    lib_name = </span><span class="si">{</span><span class="n">original_lib_name</span><span class="si">}</span>
+<span class="s2">    """</span>
+    <span class="k">with</span> <span class="n">settings_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">settings_content</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">settings_path</span><span class="p">,</span> <span class="n">original_lib_name</span>
 
 
-<span class="k">def</span> <span class="nf">get_actual_lib_name</span><span class="p">(</span><span class="n">settings_path</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_actual_lib_name</span><span class="p">(</span><span class="n">settings_path</span><span class="p">):</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">settings_path</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;DEFAULT&quot;</span><span class="p">][</span><span class="s2">&quot;lib_name&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">config</span><span class="p">[</span><span class="s2">"DEFAULT"</span><span class="p">][</span><span class="s2">"lib_name"</span><span class="p">]</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-
-<div id="c51e84fa-7b4e-4efa-8fa1-2a305acfc974"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#c51e84fa-7b4e-4efa-8fa1-2a305acfc974');
-
-            setTimeout(function() {
-                var nbb_cell_id = 70;
-                var nbb_unformatted_code = "\n\ndef setup_settings_file(settings_path):\n    original_lib_name = \"django_fileresponse\"\n    settings_content = f\"\"\"\n    [DEFAULT]\n    lib_name = {original_lib_name}\n    \"\"\"\n    with settings_path.open(\"w\") as f:\n        f.write(settings_content)\n    return settings_path, original_lib_name\n\n\ndef get_actual_lib_name(settings_path):\n    config = get_config(settings_path)\n    return config[\"DEFAULT\"][\"lib_name\"]";
-                var nbb_formatted_code = "def setup_settings_file(settings_path):\n    original_lib_name = \"django_fileresponse\"\n    settings_content = f\"\"\"\n    [DEFAULT]\n    lib_name = {original_lib_name}\n    \"\"\"\n    with settings_path.open(\"w\") as f:\n        f.write(settings_content)\n    return settings_path, original_lib_name\n\n\ndef get_actual_lib_name(settings_path):\n    config = get_config(settings_path)\n    return config[\"DEFAULT\"][\"lib_name\"]";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -170,6 +136,7 @@ var element = $('#c51e84fa-7b4e-4efa-8fa1-2a305acfc974');
 <div class="output">
 
 <div class="output_area">
+
 
 
 <div class="output_markdown rendered_html output_subarea ">
@@ -206,12 +173,12 @@ var element = $('#c51e84fa-7b4e-4efa-8fa1-2a305acfc974');
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">settings_path</span><span class="p">,</span> <span class="n">original_lib_name</span> <span class="o">=</span> <span class="n">setup_settings_file</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;test.ini&quot;</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">patch_lib_name</span><span class="p">(</span><span class="n">settings_path</span><span class="p">,</span> <span class="s2">&quot;fileresponse&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">patched_config</span><span class="p">:</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">settings_path</span><span class="p">,</span> <span class="n">original_lib_name</span> <span class="o">=</span> <span class="n">setup_settings_file</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s2">"test.ini"</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">patch_lib_name</span><span class="p">(</span><span class="n">settings_path</span><span class="p">,</span> <span class="s2">"fileresponse"</span><span class="p">)</span> <span class="k">as</span> <span class="n">patched_config</span><span class="p">:</span>
     <span class="n">patched_lib_name</span> <span class="o">=</span> <span class="n">get_actual_lib_name</span><span class="p">(</span><span class="n">settings_path</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;lib_name original vs patched: &quot;</span><span class="p">,</span> <span class="n">original_lib_name</span><span class="p">,</span> <span class="n">patched_lib_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"lib_name original vs patched: "</span><span class="p">,</span> <span class="n">original_lib_name</span><span class="p">,</span> <span class="n">patched_lib_name</span><span class="p">)</span>
 <span class="n">reset_lib_name</span> <span class="o">=</span> <span class="n">get_actual_lib_name</span><span class="p">(</span><span class="n">settings_path</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;after leaving contextmanager, lib_name is back to original: &quot;</span><span class="p">,</span> <span class="n">reset_lib_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"after leaving contextmanager, lib_name is back to original: "</span><span class="p">,</span> <span class="n">reset_lib_name</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -230,36 +197,6 @@ after leaving contextmanager, lib_name is back to original:  django_fileresponse
 </div>
 </div>
 
-<div class="output_area">
-
-
-
-
-<div id="5a74920a-22a8-4467-b4ea-2adf39904d34"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#5a74920a-22a8-4467-b4ea-2adf39904d34');
-
-            setTimeout(function() {
-                var nbb_cell_id = 68;
-                var nbb_unformatted_code = "settings_path, original_lib_name = setup_settings_file(Path.cwd() / \"test.ini\")\nwith patch_lib_name(settings_path, \"fileresponse\") as patched_config:\n    patched_lib_name = get_actual_lib_name(settings_path)\n    print(\"lib_name original vs patched: \", original_lib_name, patched_lib_name)\nreset_lib_name = get_actual_lib_name(settings_path)\nprint(\"after leaving contextmanager, lib_name is back to original: \", reset_lib_name)";
-                var nbb_formatted_code = "settings_path, original_lib_name = setup_settings_file(Path.cwd() / \"test.ini\")\nwith patch_lib_name(settings_path, \"fileresponse\") as patched_config:\n    patched_lib_name = get_actual_lib_name(settings_path)\n    print(\"lib_name original vs patched: \", original_lib_name, patched_lib_name)\nreset_lib_name = get_actual_lib_name(settings_path)\nprint(\"after leaving contextmanager, lib_name is back to original: \", reset_lib_name)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -274,10 +211,10 @@ var element = $('#5a74920a-22a8-4467-b4ea-2adf39904d34');
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># arange</span>
-<span class="n">settings_path</span><span class="p">,</span> <span class="n">original_lib_name</span> <span class="o">=</span> <span class="n">setup_settings_file</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;test.ini&quot;</span><span class="p">)</span>
+<span class="n">settings_path</span><span class="p">,</span> <span class="n">original_lib_name</span> <span class="o">=</span> <span class="n">setup_settings_file</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s2">"test.ini"</span><span class="p">)</span>
 
 <span class="c1"># act and assert</span>
-<span class="n">patched_lib_name</span> <span class="o">=</span> <span class="s2">&quot;fileresponse&quot;</span>
+<span class="n">patched_lib_name</span> <span class="o">=</span> <span class="s2">"fileresponse"</span>
 <span class="k">with</span> <span class="n">patch_lib_name</span><span class="p">(</span><span class="n">settings_path</span><span class="p">,</span> <span class="n">patched_lib_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">patched_config</span><span class="p">:</span>
     <span class="n">actual_lib_name</span> <span class="o">=</span> <span class="n">get_actual_lib_name</span><span class="p">(</span><span class="n">settings_path</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">patched_lib_name</span> <span class="o">==</span> <span class="n">actual_lib_name</span>
@@ -288,42 +225,6 @@ var element = $('#5a74920a-22a8-4467-b4ea-2adf39904d34');
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-
-<div id="118d1df6-bc5a-476d-b7ac-ea5556c31768"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#118d1df6-bc5a-476d-b7ac-ea5556c31768');
-
-            setTimeout(function() {
-                var nbb_cell_id = 69;
-                var nbb_unformatted_code = "# Test for patch_lib_name contextmanager\n# arange\nsettings_path, original_lib_name = setup_settings_file(Path.cwd() / \"test.ini\")\n\n# act and assert\npatched_lib_name = \"fileresponse\"\nwith patch_lib_name(settings_path, patched_lib_name) as patched_config:\n    actual_lib_name = get_actual_lib_name(settings_path)\n    assert patched_lib_name == actual_lib_name\n\n# assert\nactual_lib_name = get_actual_lib_name(settings_path)\nassert original_lib_name == actual_lib_name";
-                var nbb_formatted_code = "# Test for patch_lib_name contextmanager\n# arange\nsettings_path, original_lib_name = setup_settings_file(Path.cwd() / \"test.ini\")\n\n# act and assert\npatched_lib_name = \"fileresponse\"\nwith patch_lib_name(settings_path, patched_lib_name) as patched_config:\n    actual_lib_name = get_actual_lib_name(settings_path)\n    assert patched_lib_name == actual_lib_name\n\n# assert\nactual_lib_name = get_actual_lib_name(settings_path)\nassert original_lib_name == actual_lib_name";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -344,6 +245,7 @@ var element = $('#118d1df6-bc5a-476d-b7ac-ea5556c31768');
 <div class="output">
 
 <div class="output_area">
+
 
 
 <div class="output_markdown rendered_html output_subarea ">
@@ -368,5 +270,5 @@ var element = $('#118d1df6-bc5a-476d-b7ac-ea5556c31768');
     {% endraw %}
 
 </div>
- 
+
 

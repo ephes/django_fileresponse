@@ -98,41 +98,6 @@ for files and other file like streams.</p>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-
-<div id="6d10a61f-8525-4ff2-9b90-531516ec2203" class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#6d10a61f-8525-4ff2-9b90-531516ec2203');
-
-            setTimeout(function() {
-                var nbb_cell_id = 6;
-                var nbb_unformatted_code = "# dont_test\n\nclass YourSpecialServiceResponse(AsyncResponse):\n    ...";
-                var nbb_formatted_code = "# dont_test\n\n\nclass YourSpecialServiceResponse(AsyncResponse):\n    ...";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -190,41 +155,6 @@ var element = $('#6d10a61f-8525-4ff2-9b90-531516ec2203');
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-
-<div id="42c57791-7098-4312-9693-77a48373f414" class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#42c57791-7098-4312-9693-77a48373f414');
-
-            setTimeout(function() {
-                var nbb_cell_id = 3;
-                var nbb_unformatted_code = "chunks = []\n\n\nasync def send(chunk):\n    chunks.append(chunk)\n\n\nclass Stream:\n    def __init__(self, data):\n        self.index = 0\n        self.data = data\n        self.data_len = len(data)\n\n    async def read(self, chunk_size):\n        if self.index + chunk_size >= self.data_len:\n            chunk = self.data[self.index :]\n        else:\n            chunk = self.data[self.index : self.index + chunk_size]\n        self.index += chunk_size\n        return chunk\n\n\ncontent = \"1234567890\"\nstream = Stream(content)\nresponse = AsyncResponse(chunk_size=3)\nawait response.send_stream_to_client(stream, send)\n\nsent_body = \"\".join([c[\"body\"] for c in chunks if \"body\" in c])\nassert content == sent_body";
-                var nbb_formatted_code = "chunks = []\n\n\nasync def send(chunk):\n    chunks.append(chunk)\n\n\nclass Stream:\n    def __init__(self, data):\n        self.index = 0\n        self.data = data\n        self.data_len = len(data)\n\n    async def read(self, chunk_size):\n        if self.index + chunk_size >= self.data_len:\n            chunk = self.data[self.index :]\n        else:\n            chunk = self.data[self.index : self.index + chunk_size]\n        self.index += chunk_size\n        return chunk\n\n\ncontent = \"1234567890\"\nstream = Stream(content)\nresponse = AsyncResponse(chunk_size=3)\nawait response.send_stream_to_client(stream, send)\n\nsent_body = \"\".join([c[\"body\"] for c in chunks if \"body\" in c])\nassert content == sent_body";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -246,41 +176,6 @@ var element = $('#42c57791-7098-4312-9693-77a48373f414');
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-
-<div id="9f30334e-08b4-4dda-9496-ba5d042bdc8d" class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#9f30334e-08b4-4dda-9496-ba5d042bdc8d');
-
-            setTimeout(function() {
-                var nbb_cell_id = 4;
-                var nbb_unformatted_code = "response = AsyncResponse(chunk_size=3)\nassert len(response.response_headers) > 0";
-                var nbb_formatted_code = "response = AsyncResponse(chunk_size=3)\nassert len(response.response_headers) > 0";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -306,7 +201,7 @@ var element = $('#9f30334e-08b4-4dda-9496-ba5d042bdc8d');
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L99" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
+<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L98" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
 </blockquote>
 <p>Async response class for serving files from the filesystem. It's only
 used to open a stream and to hand it over to AsyncResponse which then
@@ -354,41 +249,6 @@ filesystem access.</p>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-
-<div id="29e8ba65-c34e-4c2c-99c7-bd378527650e" class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#29e8ba65-c34e-4c2c-99c7-bd378527650e');
-
-            setTimeout(function() {
-                var nbb_cell_id = 10;
-                var nbb_unformatted_code = "# dont_test\nfrom fileresponse.http import AiofileFileResponse\n\n\nasync def aget_file(request, num=None):\n    file_path = Path(__file__).parent.parent / \"data\" / str(num)\n    return AiofileFileResponse(file_path, chunk_size=4096)";
-                var nbb_formatted_code = "# dont_test\nfrom fileresponse.http import AiofileFileResponse\n\n\nasync def aget_file(request, num=None):\n    file_path = Path(__file__).parent.parent / \"data\" / str(num)\n    return AiofileFileResponse(file_path, chunk_size=4096)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -460,35 +320,6 @@ var element = $('#29e8ba65-c34e-4c2c-99c7-bd378527650e');
 </div>
 </div>
 
-<div class="output_area">
-
-
-
-
-<div id="e46ef62e-034a-45da-9d1f-775711132c4e" class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#e46ef62e-034a-45da-9d1f-775711132c4e');
-
-            setTimeout(function() {
-                var nbb_cell_id = 6;
-                var nbb_unformatted_code = "import os\n\nfrom pathlib import Path\n\npath = Path(\"testdata.bin\")\n\nwith path.open(\"wb\") as f:\n    f.write(os.urandom(10000))\n\nwith path.open(\"rb\") as f:\n    content = f.read()\n\nchunk_datas = []\n\n\nasync def send(chunk_data):\n    chunk_datas.append(chunk_data)\n\n\nresponse = AiofileFileResponse(path)\nawait response.stream(send)\nreceived_content = b\"\".join([cd.get(\"body\", b\"\") for cd in chunk_datas])\n\nassert content == received_content";
-                var nbb_formatted_code = "import os\n\nfrom pathlib import Path\n\npath = Path(\"testdata.bin\")\n\nwith path.open(\"wb\") as f:\n    f.write(os.urandom(10000))\n\nwith path.open(\"rb\") as f:\n    content = f.read()\n\nchunk_datas = []\n\n\nasync def send(chunk_data):\n    chunk_datas.append(chunk_data)\n\n\nresponse = AiofileFileResponse(path)\nawait response.stream(send)\nreceived_content = b\"\".join([cd.get(\"body\", b\"\") for cd in chunk_datas])\n\nassert content == received_content";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -516,47 +347,18 @@ var element = $('#e46ef62e-034a-45da-9d1f-775711132c4e');
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-
-<div id="1cf0a64d-4d39-4ed6-808f-a95335236480" class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#1cf0a64d-4d39-4ed6-808f-a95335236480');
-
-            setTimeout(function() {
-                var nbb_cell_id = 7;
-                var nbb_unformatted_code = "response = AiofileFileResponse(\"foobar\")\nassert \"<AiofileFileResponse status_code=200>\" == repr(response)";
-                var nbb_formatted_code = "response = AiofileFileResponse(\"foobar\")\nassert \"<AiofileFileResponse status_code=200>\" == repr(response)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="AiobotocoreFileResponse">AiobotocoreFileResponse<a class="anchor-link" href="#AiobotocoreFileResponse"> </a></h2><p>Serve a file asynchronously using <a href="https://github.com/aio-libs/aiobotocore">aiobotocore</a>.</p>
+<p>The adapter uses the public <code>aiobotocore.session.get_session</code> API. Constructor
+overrides are resolved independently: <code>endpoint_url</code>, <code>region_name</code>,
+<code>aws_access_key_id</code>, <code>secret_access_key</code> and <code>use_ssl</code>. Each supplied option
+bypasses its Django S3 setting; omitted options fall back to the corresponding
+<code>FILERESPONSE_S3_*</code> setting. <code>use_ssl</code> defaults to <code>False</code>. Missing required
+settings raise <code>ImproperlyConfigured</code> at construction, before network access.</p>
 
 </div>
 </div>
@@ -632,41 +434,6 @@ read asynchronously.</p>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-
-<div id="e995eb83-6afc-412f-9e44-da9599f61ea7" class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#e995eb83-6afc-412f-9e44-da9599f61ea7');
-
-            setTimeout(function() {
-                var nbb_cell_id = 41;
-                var nbb_unformatted_code = "import django\n\n\ntry:\n    settings.configure()\nexcept RuntimeError:\n    pass\n\n\ndef configure_settings():\n    settings.FILERESPONSE_S3_ENDPOINT_URL = \"asdf\"\n    settings.FILERESPONSE_S3_REGION = \"asdf\"\n    settings.FILERESPONSE_S3_ACCESS_KEY_ID = \"asdf\"\n    settings.FILERESPONSE_S3_SECRET_ACCESS_KEY = \"asdf\"";
-                var nbb_formatted_code = "import django\n\n\ntry:\n    settings.configure()\nexcept RuntimeError:\n    pass\n\n\ndef configure_settings():\n    settings.FILERESPONSE_S3_ENDPOINT_URL = \"asdf\"\n    settings.FILERESPONSE_S3_REGION = \"asdf\"\n    settings.FILERESPONSE_S3_ACCESS_KEY_ID = \"asdf\"\n    settings.FILERESPONSE_S3_SECRET_ACCESS_KEY = \"asdf\"";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -689,41 +456,6 @@ var element = $('#e995eb83-6afc-412f-9e44-da9599f61ea7');
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-
-<div id="0aa7633f-a8a8-4ce1-a876-db21dad80615" class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#0aa7633f-a8a8-4ce1-a876-db21dad80615');
-
-            setTimeout(function() {
-                var nbb_cell_id = 42;
-                var nbb_unformatted_code = "configure_settings()\nresponse = AiobotocoreFileResponse(\"bucket\", \"key\")\nassert \"<AiobotocoreFileResponse status_code=200>\" == repr(response)";
-                var nbb_formatted_code = "configure_settings()\nresponse = AiobotocoreFileResponse(\"bucket\", \"key\")\nassert \"<AiobotocoreFileResponse status_code=200>\" == repr(response)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -754,41 +486,6 @@ var element = $('#0aa7633f-a8a8-4ce1-a876-db21dad80615');
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-
-<div id="ebbd17b4-0332-4fb5-ab12-f65300539790" class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#ebbd17b4-0332-4fb5-ab12-f65300539790');
-
-            setTimeout(function() {
-                var nbb_cell_id = 43;
-                var nbb_unformatted_code = "configure_settings()\n\nexpected_endpoint_url = \"http://foobar:9000/\"\n\nsettings.FILERESPONSE_S3_ENDPOINT_URL = \"asdf\"\nresponse = AiobotocoreFileResponse(\"bucket\", \"key\", endpoint_url=expected_endpoint_url)\n\nassert expected_endpoint_url == response.client_config[\"endpoint_url\"]";
-                var nbb_formatted_code = "configure_settings()\n\nexpected_endpoint_url = \"http://foobar:9000/\"\n\nsettings.FILERESPONSE_S3_ENDPOINT_URL = \"asdf\"\nresponse = AiobotocoreFileResponse(\"bucket\", \"key\", endpoint_url=expected_endpoint_url)\n\nassert expected_endpoint_url == response.client_config[\"endpoint_url\"]";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            
-</script>
-</div>
-
-</div>
-
 </div>
 </div>
 
