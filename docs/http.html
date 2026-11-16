@@ -86,6 +86,12 @@ bytes, or middleware ending without exhausting a known-length source raises
 propagates to the ASGI server without a successful terminal body message. Reads
 remain bounded and each body send is awaited. Without reliable source length,
 EOF remains the completion signal; this is not a checksum or snapshot guarantee.</p>
+<p>Owned middleware/source iterators, filesystem descriptors, S3 bodies and clients
+are all closed on failure. If cleanup also fails, the original transfer exception
+or cancellation is re-raised unchanged. Up to eight exception notes report the
+cleanup exception class only (no exception text, paths or credentials). A
+standalone cleanup failure still propagates, and remaining closes are attempted.
+Legacy adapters retain responsibility for their own externally opened contexts.</p>
 
 </div>
 </div>
@@ -102,7 +108,7 @@ EOF remains the completion signal; this is not a checksum or snapshot guarantee.
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AsyncResponse" class="doc_header"><code>class</code> <code>AsyncResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L13" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AsyncResponse</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <code>StreamingHttpResponse</code></p>
+<h2 id="AsyncResponse" class="doc_header"><code>class</code> <code>AsyncResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L41" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AsyncResponse</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <code>StreamingHttpResponse</code></p>
 </blockquote>
 <p>Provides the <code>is_async_fileresponse</code> attribute checked by
 fileresponse.handlers.AsyncFileASGIHandler.</p>
@@ -253,11 +259,11 @@ for files and other file like streams.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L180" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
+<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L213" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
 </blockquote>
 <p>Async response class for serving files from the filesystem. The async
-content iterator owns the open file context; AsyncResponse sends the iterator
-installed by middleware and closes the source on failure or cancellation.</p>
+admission context owns the open descriptor and file; AsyncResponse sends the
+iterator installed by middleware and closes all resources on failure.</p>
 <p>It uses aiofiles to get the stream object from which chunks of data could be
 read asynchronously. The aiofiles library uses a threadpool to provide async
 filesystem access.</p>
@@ -427,11 +433,11 @@ settings raise <code>ImproperlyConfigured</code> at construction, before network
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L225" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
+<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L259" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
 </blockquote>
 <p>Async response class for serving files from an s3 compatible object store
-like <a href="http://min.io">MinIO</a>. Its async content iterator owns both the
-client and body contexts, including when middleware wraps the content.</p>
+like <a href="http://min.io">MinIO</a>. Its admission context owns both the client
+and body, including when middleware wraps the content.</p>
 <p>It uses aiobotocore to get the stream object from which chunks of data could be
 read asynchronously.</p>
 

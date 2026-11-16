@@ -53,6 +53,12 @@ even when middleware transforms the payload. A shortened or grown source raises
 `OSError` and sends no successful terminal body. Sources without reliable length
 finish at EOF; this check does not provide a checksum or an immutable snapshot.
 
+Cleanup attempts every owned iterator/body/client/descriptor close. Read, send
+and cancellation failures keep their original exception identity if cleanup also
+fails; bounded exception notes report only cleanup exception classes. Standalone
+cleanup errors propagate after remaining closes are attempted. Legacy adapters
+remain responsible for externally opened resource contexts.
+
 
 ## Installing
 

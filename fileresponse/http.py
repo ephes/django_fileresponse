@@ -4,10 +4,38 @@ __all__ = ['AsyncResponse', 'AiofileFileResponse', 'AiobotocoreFileResponse']
 
 # Cell
 
-from contextlib import aclosing, asynccontextmanager, nullcontext
+from contextlib import AsyncExitStack, aclosing, asynccontextmanager, nullcontext
 import time
 
 from django.http.response import StreamingHttpResponse
+
+
+def _note_cleanup_failure(primary, cleanup):
+    # Keep diagnostics bounded and omit exception text (paths/credentials).
+    prefix = "Response cleanup failed: "
+    notes = getattr(primary, "__notes__", ())
+    if sum(note.startswith(prefix) for note in notes) < 8:
+        primary.add_note(prefix + type(cleanup).__name__[:80])
+
+
+@asynccontextmanager
+async def _preserve_cleanup(context):
+    resource = await context.__aenter__()
+    try:
+        yield resource
+    except GeneratorExit as closing:
+        # aclose() uses GeneratorExit as control flow. A close failure must
+        # reach the owner, which knows the actual read/send/cancellation error.
+        await context.__aexit__(type(closing), closing, closing.__traceback__)
+        raise
+    except BaseException as primary:
+        try:
+            await context.__aexit__(type(primary), primary, primary.__traceback__)
+        except BaseException as cleanup:
+            _note_cleanup_failure(primary, cleanup)
+        raise
+    else:
+        await context.__aexit__(None, None, None)
 
 
 class AsyncResponse(StreamingHttpResponse):
@@ -48,6 +76,7 @@ class AsyncResponse(StreamingHttpResponse):
         self._stream_claimed = False
         self._stream_override = None
         self._source_iterator = self._source_content()
+        self._content_iterators = []
         super().__init__(self._source_iterator, **super_kwargs)
 
     @StreamingHttpResponse.streaming_content.setter
@@ -57,6 +86,8 @@ class AsyncResponse(StreamingHttpResponse):
         if self._body_transformed:
             self.headers.pop("Content-Length", None)
         StreamingHttpResponse.streaming_content.__set__(self, value)
+        if hasattr(value, "aclose") and not any(value is item for item in self._content_iterators):
+            self._content_iterators.append(value)
 
     def _apply_source_metadata(self, length, content_type):
         if isinstance(length, int) and not isinstance(length, bool) and length >= 0:
@@ -105,15 +136,15 @@ class AsyncResponse(StreamingHttpResponse):
             else self._read_chunks(self._stream_override)
         )
         received = 0
-        async with aclosing(content):
+        async with _preserve_cleanup(aclosing(content)):
             async for chunk in content:
                 received += len(chunk)
                 if self._expected_length is not None and received > self._expected_length:
                     raise OSError("Source length mismatch: extra bytes")
                 yield chunk
-        if self._expected_length is not None and received != self._expected_length:
-            raise OSError("Source length mismatch: early EOF")
-        self._source_complete = True
+            if self._expected_length is not None and received != self._expected_length:
+                raise OSError("Source length mismatch: early EOF")
+            self._source_complete = True
 
     @asynccontextmanager
     async def _admit_source(self):
@@ -130,16 +161,18 @@ class AsyncResponse(StreamingHttpResponse):
             raise RuntimeError("Response stream already consumed")
         self._stream_claimed = True
         admission = self._admit_source() if stream is None else nullcontext(stream)
-        async with admission as source:
+        async with _preserve_cleanup(admission) as source:
             self._stream_override = source
             await self._stream_admitted(send)
 
     async def _stream_admitted(self, send):
-        # Middleware generators need not forward aclose() to their source.
-        # Keep ownership of that source so failures/cancellation close I/O now.
-        async with aclosing(self._source_iterator):
-            async with aclosing(aiter(self)) as content:
-                await self._send_content(content, send)
+        # Close installed middleware iterators as well as the original source;
+        # async generators need not forward aclose() to the iterators they wrap.
+        async with AsyncExitStack() as resources:
+            for iterator in self._content_iterators:
+                await resources.enter_async_context(_preserve_cleanup(aclosing(iterator)))
+            content = await resources.enter_async_context(_preserve_cleanup(aclosing(aiter(self))))
+            await self._send_content(content, send)
 
     async def send_stream_to_client(self, stream, send):
         """Bind an already-open stream and send middleware-wrapped content."""
@@ -180,8 +213,8 @@ import aiofiles
 class AiofileFileResponse(AsyncResponse):
     """
     Async response class for serving files from the filesystem. The async
-    content iterator owns the open file context; AsyncResponse sends the iterator
-    installed by middleware and closes the source on failure or cancellation.
+    admission context owns the open descriptor and file; AsyncResponse sends the
+    iterator installed by middleware and closes all resources on failure.
 
     It uses aiofiles to get the stream object from which chunks of data could be
     read asynchronously. The aiofiles library uses a threadpool to provide async
@@ -202,16 +235,17 @@ class AiofileFileResponse(AsyncResponse):
     async def _admit_source(self):
         # Nonblocking open refuses FIFOs without waiting for a writer. Validate
         # the opened descriptor, not a path that can change between operations.
-        descriptor = os.open(self.path, os.O_RDONLY | os.O_NONBLOCK)
-        try:
+        async with _preserve_cleanup(AsyncExitStack()) as resources:
+            descriptor = os.open(self.path, os.O_RDONLY | os.O_NONBLOCK)
+            resources.callback(os.close, descriptor)
             metadata = os.fstat(descriptor)
             if not stat.S_ISREG(metadata.st_mode):
                 raise OSError("Only regular files can be streamed")
             self._apply_source_metadata(metadata.st_size, mimetypes.guess_type(str(self.path))[0])
-            async with aiofiles.open(descriptor, mode="rb", closefd=False) as stream:
+            async with _preserve_cleanup(
+                aiofiles.open(descriptor, mode="rb", closefd=False)
+            ) as stream:
                 yield stream
-        finally:
-            os.close(descriptor)
 
 
 # Cell
@@ -225,8 +259,8 @@ from django.core.exceptions import ImproperlyConfigured
 class AiobotocoreFileResponse(AsyncResponse):
     """
     Async response class for serving files from an s3 compatible object store
-    like [MinIO](http://min.io). Its async content iterator owns both the
-    client and body contexts, including when middleware wraps the content.
+    like [MinIO](http://min.io). Its admission context owns both the client
+    and body, including when middleware wraps the content.
 
     It uses aiobotocore to get the stream object from which chunks of data could be
     read asynchronously.
@@ -272,9 +306,9 @@ class AiobotocoreFileResponse(AsyncResponse):
     @asynccontextmanager
     async def _admit_source(self):
         session = get_session()
-        async with session.create_client("s3", **self.client_config) as client:
+        async with _preserve_cleanup(session.create_client("s3", **self.client_config)) as client:
             minio_response = await client.get_object(Bucket=self.bucket, Key=self.key)
-            async with minio_response["Body"] as stream:
+            async with _preserve_cleanup(minio_response["Body"]) as stream:
                 self._apply_source_metadata(
                     minio_response.get("ContentLength"), minio_response.get("ContentType")
                 )

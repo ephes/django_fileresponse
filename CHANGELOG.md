@@ -12,3 +12,6 @@
   caller metadata and omitting source length for middleware-transformed bodies.
 - Refuse successful transfer completion when original source bytes differ from
   the admitted length, including under compression and explicit HTTP overrides.
+- Attempt all owned cleanup while preserving primary transfer failures and
+  cancellation, report bounded cleanup exception notes, and propagate standalone
+  cleanup errors. Explicitly close installed middleware iterators.
