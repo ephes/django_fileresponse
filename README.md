@@ -34,6 +34,9 @@ raise before any ASGI message. Local files must be regular files; FIFOs and
 devices are refused without a blocking open. Header-send failures also close
 all acquired resources. Body reads remain lazy after admission.
 
+Sequential or concurrent reuse raises `RuntimeError("Response stream already consumed")`
+before another header is sent. Failed admission also consumes the response.
+
 
 ## Installing
 

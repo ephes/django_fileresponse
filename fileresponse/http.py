@@ -38,6 +38,7 @@ class AsyncResponse(StreamingHttpResponse):
         # set default values
         content_type = kwargs.get("content_type", "application/octet-stream")
         super_kwargs["content_type"] = content_type
+        self._stream_claimed = False
         self._stream_override = None
         self._source_iterator = self._source_content()
         super().__init__(self._source_iterator, **super_kwargs)
@@ -88,6 +89,10 @@ class AsyncResponse(StreamingHttpResponse):
         await self._stream_response(send)
 
     async def _stream_response(self, send, stream=None):
+        # No await before the claim: concurrent callers cannot change the source.
+        if self._stream_claimed:
+            raise RuntimeError("Response stream already consumed")
+        self._stream_claimed = True
         admission = self._admit_source() if stream is None else nullcontext(stream)
         async with admission as source:
             self._stream_override = source
