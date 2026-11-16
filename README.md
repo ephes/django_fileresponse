@@ -29,6 +29,12 @@ Legacy custom adapters that call `send_stream_to_client(stream, send)` from
 of their already-open resource context. Each response is single-use.
 
 
+Filesystem and S3 sources are acquired before headers. Missing/refused sources
+raise before any ASGI message. Local files must be regular files; FIFOs and
+devices are refused without a blocking open. Header-send failures also close
+all acquired resources. Body reads remain lazy after admission.
+
+
 ## Installing
 
 `django_fileresponse` is on PyPI so you can just run `pip install django_fileresponse`.

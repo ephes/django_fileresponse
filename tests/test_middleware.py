@@ -101,6 +101,12 @@ class MiddlewareTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(body.exited)
         self.assertTrue(client.exited)
 
+    async def asyncSetUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.path = Path(self.directory.name) / "synthetic.bin"
+        self.path.write_bytes(b"synthetic content" * 10)
+
     async def test_wrapped_stream_failures_close_filesystem_and_s3_resources(self):
         for adapter in ("filesystem", "s3"):
             for failure in ("read", "send", "cancel"):
@@ -114,7 +120,7 @@ class MiddlewareTests(unittest.IsolatedAsyncioTestCase):
                     client.get_object = get_object
                     session = SimpleNamespace(create_client=lambda *args, **kwargs: client)
                     if adapter == "filesystem":
-                        response = http.AiofileFileResponse("unused", chunk_size=7)
+                        response = http.AiofileFileResponse(self.path, chunk_size=7)
                     else:
                         response = http.AiobotocoreFileResponse(
                             "bucket", "key", chunk_size=7,
@@ -159,7 +165,7 @@ class MiddlewareTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_wrapped_content_is_sent_with_backpressure(self):
         body = SyntheticStream()
-        response = http.AiofileFileResponse("unused", chunk_size=7)
+        response = http.AiofileFileResponse(self.path, chunk_size=7)
         content = response.streaming_content
 
         async def wrapped():
@@ -219,7 +225,7 @@ class MiddlewareTests(unittest.IsolatedAsyncioTestCase):
     async def test_raw_stream_helper_on_builtin_response_uses_supplied_stream(self):
         body = SyntheticStream()
         expected = body.data
-        response = compress(http.AiofileFileResponse("unused", chunk_size=7))
+        response = compress(http.AiofileFileResponse(self.path, chunk_size=7))
         messages = []
 
         async def send(message):

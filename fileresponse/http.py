@@ -4,7 +4,7 @@ __all__ = ['AsyncResponse', 'AiofileFileResponse', 'AiobotocoreFileResponse']
 
 # Cell
 
-from contextlib import aclosing
+from contextlib import aclosing, asynccontextmanager, nullcontext
 import time
 
 from django.http.response import StreamingHttpResponse
@@ -78,8 +78,22 @@ class AsyncResponse(StreamingHttpResponse):
             async for chunk in content:
                 yield chunk
 
+    @asynccontextmanager
+    async def _admit_source(self):
+        """Acquire a source before headers; custom adapters may override this."""
+        yield None
+
     async def stream(self, send):
         """Send the content currently installed by async streaming middleware."""
+        await self._stream_response(send)
+
+    async def _stream_response(self, send, stream=None):
+        admission = self._admit_source() if stream is None else nullcontext(stream)
+        async with admission as source:
+            self._stream_override = source
+            await self._stream_admitted(send)
+
+    async def _stream_admitted(self, send):
         # Middleware generators need not forward aclose() to their source.
         # Keep ownership of that source so failures/cancellation close I/O now.
         async with aclosing(self._source_iterator):
@@ -88,10 +102,8 @@ class AsyncResponse(StreamingHttpResponse):
 
     async def send_stream_to_client(self, stream, send):
         """Bind an already-open stream and send middleware-wrapped content."""
-        self._stream_override = stream
-        # Call the base implementation to avoid recursing into a legacy
-        # adapter's stream(send), which may have called this helper.
-        await AsyncResponse.stream(self, send)
+        # Delegate internally without recursing into a legacy stream(send).
+        await self._stream_response(send, stream)
 
     async def _send_content(self, content, send):
         started_serving = time.perf_counter()
@@ -114,6 +126,9 @@ class AsyncResponse(StreamingHttpResponse):
         self.elapsed = time.perf_counter() - started_serving
 
 # Cell
+
+import os
+import stat
 
 import aiofiles
 
@@ -139,10 +154,19 @@ class AiofileFileResponse(AsyncResponse):
             "status_code": self.status_code,
         }
 
-    async def _stream_content(self):
-        async with aiofiles.open(self.path, mode="rb") as stream:  # type: ignore
-            async for chunk in self._read_chunks(stream):
-                yield chunk
+    @asynccontextmanager
+    async def _admit_source(self):
+        # Nonblocking open refuses FIFOs without waiting for a writer. Validate
+        # the opened descriptor, not a path that can change between operations.
+        descriptor = os.open(self.path, os.O_RDONLY | os.O_NONBLOCK)
+        try:
+            if not stat.S_ISREG(os.fstat(descriptor).st_mode):
+                raise OSError("Only regular files can be streamed")
+            async with aiofiles.open(descriptor, mode="rb", closefd=False) as stream:
+                yield stream
+        finally:
+            os.close(descriptor)
+
 
 # Cell
 
@@ -198,10 +222,10 @@ class AiobotocoreFileResponse(AsyncResponse):
         )
         return config
 
-    async def _stream_content(self):
+    @asynccontextmanager
+    async def _admit_source(self):
         session = get_session()
         async with session.create_client("s3", **self.client_config) as client:
             minio_response = await client.get_object(Bucket=self.bucket, Key=self.key)
             async with minio_response["Body"] as stream:
-                async for chunk in self._read_chunks(stream):
-                    yield chunk
+                yield stream

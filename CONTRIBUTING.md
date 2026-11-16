@@ -19,8 +19,8 @@ Run the local CI equivalents listed in README: Ruff, mypy, generated-file parity
 `python -m unittest discover -s tests -v`, `python -m build`, and
 `python scripts/package_smoke.py`. The last command checks both distributions in
 fresh environments outside the checkout. Use only synthetic fixtures and fake
-S3 boundaries. No credentials or external services are needed. No changelog is
-currently maintained; document behavior changes in the canonical notebooks.
+S3 boundaries. No credentials or external services are needed. Document behavior changes in the canonical notebooks and in the Unreleased
+section of CHANGELOG.md.
 
 ## Did you find a bug?
 
