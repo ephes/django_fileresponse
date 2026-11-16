@@ -8,3 +8,5 @@
   error, preserving legacy helper delegation and middleware transformations.
 - Forward Django status, reason, content type, charset and headers consistently
   from both adapters while keeping S3 connection options separate.
+- Populate safe source type and length during admission, preserving explicit
+  caller metadata and omitting source length for middleware-transformed bodies.

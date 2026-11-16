@@ -42,6 +42,12 @@ Use `headers={"Content-Disposition": 'attachment; filename="download.bin"',
 "Cache-Control": "private"}` for download/cache policy. S3 connection settings
 remain separate from these Django response options.
 
+During admission, file descriptor size/S3 `ContentLength` supplies `Content-Length`;
+the local filename/S3 `ContentType` supplies `Content-Type` when available.
+Explicit caller headers take precedence. Replacing `streaming_content`, including
+Django GZip wrapping, discards the old length and prevents adding the original
+source size. Source metadata is available at send time, not construction time.
+
 
 ## Installing
 

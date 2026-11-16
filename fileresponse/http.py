@@ -36,12 +36,40 @@ class AsyncResponse(StreamingHttpResponse):
         super_kwargs = {key: kwargs[key] for key in self.response_options if key in kwargs}
 
         # set default values
-        content_type = kwargs.get("content_type", "application/octet-stream")
-        super_kwargs["content_type"] = content_type
+        header_options = kwargs.get("headers") or {}
+        self._content_type_explicit = (
+            kwargs.get("content_type") is not None
+            or any(name.lower() == "content-type" for name in header_options)
+        )
+        if not self._content_type_explicit:
+            super_kwargs["content_type"] = "application/octet-stream"
+        self._expected_length = None
         self._stream_claimed = False
         self._stream_override = None
         self._source_iterator = self._source_content()
         super().__init__(self._source_iterator, **super_kwargs)
+
+    @StreamingHttpResponse.streaming_content.setter
+    def streaming_content(self, value):
+        # A replacement may change the representation size, as with Django GZip.
+        self._body_transformed = value is not self._source_iterator
+        if self._body_transformed:
+            self.headers.pop("Content-Length", None)
+        StreamingHttpResponse.streaming_content.__set__(self, value)
+
+    def _apply_source_metadata(self, length, content_type):
+        if isinstance(length, int) and not isinstance(length, bool) and length >= 0:
+            self._expected_length = length
+            if not self._body_transformed and "Content-Length" not in self:
+                self["Content-Length"] = str(length)
+        if (
+            not self._content_type_explicit
+            and self.get("Content-Type") == "application/octet-stream"
+            and isinstance(content_type, str)
+            and content_type
+            and all(32 <= ord(char) < 127 for char in content_type)
+        ):
+            self["Content-Type"] = content_type
 
     @property
     def response_headers(self):
@@ -132,6 +160,7 @@ class AsyncResponse(StreamingHttpResponse):
 
 # Cell
 
+import mimetypes
 import os
 import stat
 
@@ -165,8 +194,10 @@ class AiofileFileResponse(AsyncResponse):
         # the opened descriptor, not a path that can change between operations.
         descriptor = os.open(self.path, os.O_RDONLY | os.O_NONBLOCK)
         try:
-            if not stat.S_ISREG(os.fstat(descriptor).st_mode):
+            metadata = os.fstat(descriptor)
+            if not stat.S_ISREG(metadata.st_mode):
                 raise OSError("Only regular files can be streamed")
+            self._apply_source_metadata(metadata.st_size, mimetypes.guess_type(str(self.path))[0])
             async with aiofiles.open(descriptor, mode="rb", closefd=False) as stream:
                 yield stream
         finally:
@@ -234,4 +265,7 @@ class AiobotocoreFileResponse(AsyncResponse):
         async with session.create_client("s3", **self.client_config) as client:
             minio_response = await client.get_object(Bucket=self.bucket, Key=self.key)
             async with minio_response["Body"] as stream:
+                self._apply_source_metadata(
+                    minio_response.get("ContentLength"), minio_response.get("ContentType")
+                )
                 yield stream

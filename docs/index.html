@@ -60,6 +60,11 @@ before another header is sent. Failed admission also consumes the response.</p>
 Use <code>headers={"Content-Disposition": 'attachment; filename="download.bin"',
 "Cache-Control": "private"}</code> for download/cache policy. S3 connection settings
 remain separate from these Django response options.</p>
+<p>During admission, file descriptor size/S3 <code>ContentLength</code> supplies <code>Content-Length</code>;
+the local filename/S3 <code>ContentType</code> supplies <code>Content-Type</code> when available.
+Explicit caller headers take precedence. Replacing <code>streaming_content</code>, including
+Django GZip wrapping, discards the old length and prevents adding the original
+source size. Source metadata is available at send time, not construction time.</p>
 
 </div>
 </div>
