@@ -32,7 +32,9 @@ of their already-open resource context. Each response is single-use.
 Filesystem and S3 sources are acquired before headers. Missing/refused sources
 raise before any ASGI message. Local files must be regular files; FIFOs and
 devices are refused without a blocking open. Header-send failures also close
-all acquired resources. Body reads remain lazy after admission.
+all acquired resources. Body reads remain lazy after admission. Direct iteration
+through Django's stock `ASGIHandler` or test client also streams the source,
+admitting it on the first read after headers were sent.
 
 Sequential or concurrent reuse raises `RuntimeError("Response stream already consumed")`
 before another header is sent. Failed admission also consumes the response.

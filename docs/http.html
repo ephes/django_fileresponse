@@ -56,10 +56,17 @@ lazily without bypassing middleware or reopening the built-in file/S3 source.
 Responses and their content iterators are single-use, as in Django.</p>
 <p>Built-in adapters acquire their source before sending response headers. Missing
 files and S3 acquisition errors propagate before any ASGI message. Local opens
-use a nonblocking descriptor and admit regular files only, refusing directories,
-FIFOs and devices. Acquired resources close even if sending headers fails; body
+run in a worker thread, use a nonblocking descriptor where the platform supports
+it, and admit regular files only, refusing directories, FIFOs and devices. Acquired resources close even if sending headers fails; body
 reads remain lazy and bounded by <code>chunk_size</code>. Custom adapters can implement the
-<code>_admit_source()</code> async context manager for the same pre-header guarantee.</p>
+<code>_admit_source()</code> async context manager for the same pre-header guarantee.
+Consumers that iterate the response directly (Django's stock <code>ASGIHandler</code>,
+the test client, <code>async for chunk in response</code>) also stream the source: they
+admit it lazily on the first read. Their headers are already sent by then, so
+acquisition errors and length mismatches surface as iterator exceptions, and
+source metadata is not added to those headers. Direct iteration counts as the
+response's single consumer. Closing the response iterator early, as Django does
+on client disconnect, closes the source and any middleware iterators.</p>
 <p>A response admits exactly one consumer across <code>stream(send)</code> and
 <code>send_stream_to_client(stream, send)</code>. Further or concurrent attempts raise
 <code>RuntimeError("Response stream already consumed")</code> before sending any message or
@@ -259,7 +266,7 @@ for files and other file like streams.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L213" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
+<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L254" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
 </blockquote>
 <p>Async response class for serving files from the filesystem. The async
 admission context owns the open descriptor and file; AsyncResponse sends the
@@ -433,7 +440,7 @@ settings raise <code>ImproperlyConfigured</code> at construction, before network
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L259" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
+<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L302" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
 </blockquote>
 <p>Async response class for serving files from an s3 compatible object store
 like <a href="http://min.io">MinIO</a>. Its admission context owns both the client

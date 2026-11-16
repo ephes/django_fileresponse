@@ -4,6 +4,12 @@
 
 - Acquire filesystem and S3 sources before sending headers; refuse non-regular
   local files without blocking, and close acquired sources on header-send errors.
+  Local open and stat run in a worker thread; a cancelled admission still closes
+  the descriptor. Direct iteration through Django's `StreamingHttpResponse`
+  interface (stock `ASGIHandler`, test client) admits the source on first read
+  and streams it instead of yielding an empty body; closing the response
+  iterator early (client disconnect, `break`) closes the source and middleware
+  iterators.
 - Refuse sequential and concurrent response reuse before headers with a stable
   error, preserving legacy helper delegation and middleware transformations.
 - Forward Django status, reason, content type, charset and headers consistently

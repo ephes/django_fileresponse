@@ -131,20 +131,24 @@ class AsyncResponse(StreamingHttpResponse):
     async def _source_content(self):
         # Resolve the source lazily: legacy adapters supply their open stream
         # only after middleware has captured this response's iterator.
-        content = (
-            self._stream_content() if self._stream_override is None
-            else self._read_chunks(self._stream_override)
-        )
-        received = 0
-        async with _preserve_cleanup(aclosing(content)):
-            async for chunk in content:
-                received += len(chunk)
-                if self._expected_length is not None and received > self._expected_length:
-                    raise OSError("Source length mismatch: extra bytes")
-                yield chunk
-            if self._expected_length is not None and received != self._expected_length:
-                raise OSError("Source length mismatch: early EOF")
-            self._source_complete = True
+        # Direct iteration through Django's StreamingHttpResponse interface
+        # (stock ASGIHandler, test client) admits here, after its headers.
+        direct = not self._stream_claimed
+        self._stream_claimed = True
+        admission = self._admit_source() if direct else nullcontext(self._stream_override)
+        async with _preserve_cleanup(admission) as source:
+            self._stream_override = source
+            content = self._stream_content() if source is None else self._read_chunks(source)
+            received = 0
+            async with _preserve_cleanup(aclosing(content)):
+                async for chunk in content:
+                    received += len(chunk)
+                    if self._expected_length is not None and received > self._expected_length:
+                        raise OSError("Source length mismatch: extra bytes")
+                    yield chunk
+                if self._expected_length is not None and received != self._expected_length:
+                    raise OSError("Source length mismatch: early EOF")
+                self._source_complete = True
 
     @asynccontextmanager
     async def _admit_source(self):
@@ -165,13 +169,26 @@ class AsyncResponse(StreamingHttpResponse):
             self._stream_override = source
             await self._stream_admitted(send)
 
-    async def _stream_admitted(self, send):
+    async def __aiter__(self):
+        # Django's __aiter__ does not close the iterator it wraps, so a direct
+        # consumer stopping early (disconnect, break) would leave the source open.
+        async with self._owned_content() as content:
+            async for part in content:
+                yield part
+
+    @asynccontextmanager
+    async def _owned_content(self):
         # Close installed middleware iterators as well as the original source;
         # async generators need not forward aclose() to the iterators they wrap.
         async with AsyncExitStack() as resources:
             for iterator in self._content_iterators:
                 await resources.enter_async_context(_preserve_cleanup(aclosing(iterator)))
-            content = await resources.enter_async_context(_preserve_cleanup(aclosing(aiter(self))))
+            yield await resources.enter_async_context(
+                _preserve_cleanup(aclosing(StreamingHttpResponse.__aiter__(self)))
+            )
+
+    async def _stream_admitted(self, send):
+        async with self._owned_content() as content:
             await self._send_content(content, send)
 
     async def send_stream_to_client(self, stream, send):
@@ -203,11 +220,35 @@ class AsyncResponse(StreamingHttpResponse):
 
 # Cell
 
+import asyncio
 import mimetypes
 import os
 import stat
 
 import aiofiles
+
+
+def _open_regular_file(path):
+    # Nonblocking open refuses FIFOs without waiting for a writer. Validate
+    # the opened descriptor, not a path that can change between operations.
+    descriptor = os.open(path, os.O_RDONLY | getattr(os, "O_NONBLOCK", 0))
+    try:
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise OSError("Only regular files can be streamed")
+    except BaseException as primary:
+        try:
+            os.close(descriptor)
+        except BaseException as cleanup:
+            _note_cleanup_failure(primary, cleanup)
+        raise
+    return descriptor, metadata
+
+
+def _close_unclaimed(opening):
+    # A cancelled admission cannot stop the worker thread; close what it opened.
+    if not opening.cancelled() and opening.exception() is None:
+        os.close(opening.result()[0])
 
 
 class AiofileFileResponse(AsyncResponse):
@@ -233,14 +274,16 @@ class AiofileFileResponse(AsyncResponse):
 
     @asynccontextmanager
     async def _admit_source(self):
-        # Nonblocking open refuses FIFOs without waiting for a writer. Validate
-        # the opened descriptor, not a path that can change between operations.
+        # Open and inspect in a worker thread so slow filesystems do not stall
+        # the event loop, as aiofiles does for reads.
+        opening = asyncio.ensure_future(asyncio.to_thread(_open_regular_file, self.path))
+        try:
+            descriptor, metadata = await asyncio.shield(opening)
+        except asyncio.CancelledError:
+            opening.add_done_callback(_close_unclaimed)
+            raise
         async with _preserve_cleanup(AsyncExitStack()) as resources:
-            descriptor = os.open(self.path, os.O_RDONLY | os.O_NONBLOCK)
             resources.callback(os.close, descriptor)
-            metadata = os.fstat(descriptor)
-            if not stat.S_ISREG(metadata.st_mode):
-                raise OSError("Only regular files can be streamed")
             self._apply_source_metadata(metadata.st_size, mimetypes.guess_type(str(self.path))[0])
             async with _preserve_cleanup(
                 aiofiles.open(descriptor, mode="rb", closefd=False)
