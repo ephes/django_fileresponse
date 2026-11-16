@@ -6,3 +6,5 @@
   local files without blocking, and close acquired sources on header-send errors.
 - Refuse sequential and concurrent response reuse before headers with a stable
   error, preserving legacy helper delegation and middleware transformations.
+- Forward Django status, reason, content type, charset and headers consistently
+  from both adapters while keeping S3 connection options separate.

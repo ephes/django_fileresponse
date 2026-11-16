@@ -20,6 +20,7 @@ class AsyncResponse(StreamingHttpResponse):
     """
 
     is_async_fileresponse = True
+    response_options = {"content_type", "status", "reason", "charset", "headers"}
 
     def __init__(self, *args, **kwargs):
         self.chunk_size = kwargs.get("chunk_size", 4096)
@@ -32,8 +33,7 @@ class AsyncResponse(StreamingHttpResponse):
         self.raw_headers = kwargs.get("raw_headers", {})
 
         # copy relevant super kwargs from kwargs
-        super_kwargs_names = {"content_type", "status", "reason", "charset", "headers"}
-        super_kwargs = {key: kwargs.get(key) for key in super_kwargs_names}
+        super_kwargs = {key: kwargs[key] for key in self.response_options if key in kwargs}
 
         # set default values
         content_type = kwargs.get("content_type", "application/octet-stream")
@@ -149,8 +149,8 @@ class AiofileFileResponse(AsyncResponse):
     filesystem access.
     """
 
-    def __init__(self, path, chunk_size=4096):
-        super().__init__(path, chunk_size=chunk_size)
+    def __init__(self, path, chunk_size=4096, **kwargs):
+        super().__init__(path, chunk_size=chunk_size, **kwargs)
         self.path = path
 
     def __repr__(self):
@@ -192,7 +192,8 @@ class AiobotocoreFileResponse(AsyncResponse):
     """
 
     def __init__(self, bucket, key, chunk_size=4096, **kwargs):
-        super().__init__(chunk_size=chunk_size)
+        response_kwargs = {key: value for key, value in kwargs.items() if key in self.response_options}
+        super().__init__(chunk_size=chunk_size, **response_kwargs)
         self.client_config = self.create_client_config(kwargs)
         self.bucket = bucket
         self.key = key

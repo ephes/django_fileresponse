@@ -56,6 +56,10 @@ devices are refused without a blocking open. Header-send failures also close
 all acquired resources. Body reads remain lazy after admission.</p>
 <p>Sequential or concurrent reuse raises <code>RuntimeError("Response stream already consumed")</code>
 before another header is sent. Failed admission also consumes the response.</p>
+<p>Both adapters accept <code>status</code>, <code>reason</code>, <code>content_type</code>, <code>charset</code> and <code>headers</code>.
+Use <code>headers={"Content-Disposition": 'attachment; filename="download.bin"',
+"Cache-Control": "private"}</code> for download/cache policy. S3 connection settings
+remain separate from these Django response options.</p>
 
 </div>
 </div>

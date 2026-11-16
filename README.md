@@ -37,6 +37,11 @@ all acquired resources. Body reads remain lazy after admission.
 Sequential or concurrent reuse raises `RuntimeError("Response stream already consumed")`
 before another header is sent. Failed admission also consumes the response.
 
+Both adapters accept `status`, `reason`, `content_type`, `charset` and `headers`.
+Use `headers={"Content-Disposition": 'attachment; filename="download.bin"',
+"Cache-Control": "private"}` for download/cache policy. S3 connection settings
+remain separate from these Django response options.
+
 
 ## Installing
 

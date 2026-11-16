@@ -65,6 +65,11 @@ reads remain lazy and bounded by <code>chunk_size</code>. Custom adapters can im
 <code>RuntimeError("Response stream already consumed")</code> before sending any message or
 replacing the source, including after a failed first admission. Legacy adapters
 may still delegate from <code>stream</code> to the helper once.</p>
+<p>Both built-in adapters accept Django response options <code>status</code>, <code>reason</code>,
+<code>content_type</code>, <code>charset</code> and <code>headers</code>, in addition to <code>chunk_size</code>. For example,
+<code>AiofileFileResponse(path, headers={"Content-Disposition": 'attachment; filename="download.bin"',
+"Cache-Control": "private"}, content_type="application/octet-stream")</code>. S3
+connection options are handled separately and are never response headers.</p>
 
 </div>
 </div>
@@ -232,7 +237,7 @@ for files and other file like streams.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L141" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
+<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L141" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
 </blockquote>
 <p>Async response class for serving files from the filesystem. The async
 content iterator owns the open file context; AsyncResponse sends the iterator
