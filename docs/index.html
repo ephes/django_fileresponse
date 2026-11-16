@@ -65,6 +65,10 @@ the local filename/S3 <code>ContentType</code> supplies <code>Content-Type</code
 Explicit caller headers take precedence. Replacing <code>streaming_content</code>, including
 Django GZip wrapping, discards the old length and prevents adding the original
 source size. Source metadata is available at send time, not construction time.</p>
+<p>Transfers validate the original source byte count against its admitted length,
+even when middleware transforms the payload. A shortened or grown source raises
+<code>OSError</code> and sends no successful terminal body. Sources without reliable length
+finish at EOF; this check does not provide a checksum or an immutable snapshot.</p>
 
 </div>
 </div>

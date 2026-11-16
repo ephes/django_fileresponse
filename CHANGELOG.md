@@ -10,3 +10,5 @@
   from both adapters while keeping S3 connection options separate.
 - Populate safe source type and length during admission, preserving explicit
   caller metadata and omitting source length for middleware-transformed bodies.
+- Refuse successful transfer completion when original source bytes differ from
+  the admitted length, including under compression and explicit HTTP overrides.

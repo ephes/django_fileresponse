@@ -44,6 +44,7 @@ class AsyncResponse(StreamingHttpResponse):
         if not self._content_type_explicit:
             super_kwargs["content_type"] = "application/octet-stream"
         self._expected_length = None
+        self._source_complete = False
         self._stream_claimed = False
         self._stream_override = None
         self._source_iterator = self._source_content()
@@ -103,9 +104,16 @@ class AsyncResponse(StreamingHttpResponse):
             self._stream_content() if self._stream_override is None
             else self._read_chunks(self._stream_override)
         )
+        received = 0
         async with aclosing(content):
             async for chunk in content:
+                received += len(chunk)
+                if self._expected_length is not None and received > self._expected_length:
+                    raise OSError("Source length mismatch: extra bytes")
                 yield chunk
+        if self._expected_length is not None and received != self._expected_length:
+            raise OSError("Source length mismatch: early EOF")
+        self._source_complete = True
 
     @asynccontextmanager
     async def _admit_source(self):
@@ -155,6 +163,8 @@ class AsyncResponse(StreamingHttpResponse):
                     "more_body": True,
                 }
             )
+        if self._expected_length is not None and not self._source_complete:
+            raise OSError("Source length mismatch: source not exhausted")
         await send({"type": "http.response.body", "body": b"", "more_body": False})
         self.elapsed = time.perf_counter() - started_serving
 

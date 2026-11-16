@@ -48,6 +48,11 @@ Explicit caller headers take precedence. Replacing `streaming_content`, includin
 Django GZip wrapping, discards the old length and prevents adding the original
 source size. Source metadata is available at send time, not construction time.
 
+Transfers validate the original source byte count against its admitted length,
+even when middleware transforms the payload. A shortened or grown source raises
+`OSError` and sends no successful terminal body. Sources without reliable length
+finish at EOF; this check does not provide a checksum or an immutable snapshot.
+
 
 ## Installing
 

@@ -79,6 +79,13 @@ old length and prevents adding the source length later, so GZip and other
 transformations cannot advertise the original size. Middleware remains
 responsible for other representation headers (for example Django GZip weakens
 ETag and adds Content-Encoding). Source metadata is acquired only at send time.</p>
+<p>The original source byte count must match the admitted descriptor/S3 length,
+independently of caller HTTP headers and middleware compression. Early EOF, extra
+bytes, or middleware ending without exhausting a known-length source raises
+<code>OSError("Source length mismatch: ...")</code>. Once headers have begun, the exception
+propagates to the ASGI server without a successful terminal body message. Reads
+remain bounded and each body send is awaited. Without reliable source length,
+EOF remains the completion signal; this is not a checksum or snapshot guarantee.</p>
 
 </div>
 </div>
@@ -246,7 +253,7 @@ for files and other file like streams.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L170" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
+<h2 id="AiofileFileResponse" class="doc_header"><code>class</code> <code>AiofileFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L180" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiofileFileResponse</code>(<strong><code>path</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
 </blockquote>
 <p>Async response class for serving files from the filesystem. The async
 content iterator owns the open file context; AsyncResponse sends the iterator
@@ -420,7 +427,7 @@ settings raise <code>ImproperlyConfigured</code> at construction, before network
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L215" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
+<h2 id="AiobotocoreFileResponse" class="doc_header"><code>class</code> <code>AiobotocoreFileResponse</code><a href="https://github.com/ephes/django_fileresponse/tree/main/fileresponse/http.py#L225" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AiobotocoreFileResponse</code>(<strong><code>bucket</code></strong>, <strong><code>key</code></strong>, <strong><code>chunk_size</code></strong>=<em><code>4096</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/django_fileresponse/http.html#AsyncResponse"><code>AsyncResponse</code></a></p>
 </blockquote>
 <p>Async response class for serving files from an s3 compatible object store
 like <a href="http://min.io">MinIO</a>. Its async content iterator owns both the
